@@ -1,0 +1,1 @@
+enum CaseType { primary, redo }
