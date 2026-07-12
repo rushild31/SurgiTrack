@@ -2140,6 +2140,711 @@ class CaseAttachmentsCompanion extends UpdateCompanion<CaseAttachment> {
   }
 }
 
+class $PatientAttachmentsTable extends PatientAttachments
+    with TableInfo<$PatientAttachmentsTable, PatientAttachmentData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PatientAttachmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _patientIdMeta = const VerificationMeta(
+    'patientId',
+  );
+  @override
+  late final GeneratedColumn<int> patientId = GeneratedColumn<int>(
+    'patient_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _filePathMeta = const VerificationMeta(
+    'filePath',
+  );
+  @override
+  late final GeneratedColumn<String> filePath = GeneratedColumn<String>(
+    'file_path',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fileTypeMeta = const VerificationMeta(
+    'fileType',
+  );
+  @override
+  late final GeneratedColumn<String> fileType = GeneratedColumn<String>(
+    'file_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    patientId,
+    displayName,
+    filePath,
+    fileType,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'patient_attachments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PatientAttachmentData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('patient_id')) {
+      context.handle(
+        _patientIdMeta,
+        patientId.isAcceptableOrUnknown(data['patient_id']!, _patientIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_patientIdMeta);
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayNameMeta);
+    }
+    if (data.containsKey('file_path')) {
+      context.handle(
+        _filePathMeta,
+        filePath.isAcceptableOrUnknown(data['file_path']!, _filePathMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_filePathMeta);
+    }
+    if (data.containsKey('file_type')) {
+      context.handle(
+        _fileTypeMeta,
+        fileType.isAcceptableOrUnknown(data['file_type']!, _fileTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fileTypeMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PatientAttachmentData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PatientAttachmentData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      patientId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}patient_id'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      )!,
+      filePath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file_path'],
+      )!,
+      fileType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file_type'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PatientAttachmentsTable createAlias(String alias) {
+    return $PatientAttachmentsTable(attachedDatabase, alias);
+  }
+}
+
+class PatientAttachmentData extends DataClass
+    implements Insertable<PatientAttachmentData> {
+  final int id;
+  final int patientId;
+  final String displayName;
+  final String filePath;
+  final String fileType;
+  final DateTime createdAt;
+  const PatientAttachmentData({
+    required this.id,
+    required this.patientId,
+    required this.displayName,
+    required this.filePath,
+    required this.fileType,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['patient_id'] = Variable<int>(patientId);
+    map['display_name'] = Variable<String>(displayName);
+    map['file_path'] = Variable<String>(filePath);
+    map['file_type'] = Variable<String>(fileType);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  PatientAttachmentsCompanion toCompanion(bool nullToAbsent) {
+    return PatientAttachmentsCompanion(
+      id: Value(id),
+      patientId: Value(patientId),
+      displayName: Value(displayName),
+      filePath: Value(filePath),
+      fileType: Value(fileType),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory PatientAttachmentData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PatientAttachmentData(
+      id: serializer.fromJson<int>(json['id']),
+      patientId: serializer.fromJson<int>(json['patientId']),
+      displayName: serializer.fromJson<String>(json['displayName']),
+      filePath: serializer.fromJson<String>(json['filePath']),
+      fileType: serializer.fromJson<String>(json['fileType']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'patientId': serializer.toJson<int>(patientId),
+      'displayName': serializer.toJson<String>(displayName),
+      'filePath': serializer.toJson<String>(filePath),
+      'fileType': serializer.toJson<String>(fileType),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  PatientAttachmentData copyWith({
+    int? id,
+    int? patientId,
+    String? displayName,
+    String? filePath,
+    String? fileType,
+    DateTime? createdAt,
+  }) => PatientAttachmentData(
+    id: id ?? this.id,
+    patientId: patientId ?? this.patientId,
+    displayName: displayName ?? this.displayName,
+    filePath: filePath ?? this.filePath,
+    fileType: fileType ?? this.fileType,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  PatientAttachmentData copyWithCompanion(PatientAttachmentsCompanion data) {
+    return PatientAttachmentData(
+      id: data.id.present ? data.id.value : this.id,
+      patientId: data.patientId.present ? data.patientId.value : this.patientId,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      filePath: data.filePath.present ? data.filePath.value : this.filePath,
+      fileType: data.fileType.present ? data.fileType.value : this.fileType,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PatientAttachmentData(')
+          ..write('id: $id, ')
+          ..write('patientId: $patientId, ')
+          ..write('displayName: $displayName, ')
+          ..write('filePath: $filePath, ')
+          ..write('fileType: $fileType, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, patientId, displayName, filePath, fileType, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PatientAttachmentData &&
+          other.id == this.id &&
+          other.patientId == this.patientId &&
+          other.displayName == this.displayName &&
+          other.filePath == this.filePath &&
+          other.fileType == this.fileType &&
+          other.createdAt == this.createdAt);
+}
+
+class PatientAttachmentsCompanion
+    extends UpdateCompanion<PatientAttachmentData> {
+  final Value<int> id;
+  final Value<int> patientId;
+  final Value<String> displayName;
+  final Value<String> filePath;
+  final Value<String> fileType;
+  final Value<DateTime> createdAt;
+  const PatientAttachmentsCompanion({
+    this.id = const Value.absent(),
+    this.patientId = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.filePath = const Value.absent(),
+    this.fileType = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  PatientAttachmentsCompanion.insert({
+    this.id = const Value.absent(),
+    required int patientId,
+    required String displayName,
+    required String filePath,
+    required String fileType,
+    required DateTime createdAt,
+  }) : patientId = Value(patientId),
+       displayName = Value(displayName),
+       filePath = Value(filePath),
+       fileType = Value(fileType),
+       createdAt = Value(createdAt);
+  static Insertable<PatientAttachmentData> custom({
+    Expression<int>? id,
+    Expression<int>? patientId,
+    Expression<String>? displayName,
+    Expression<String>? filePath,
+    Expression<String>? fileType,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (patientId != null) 'patient_id': patientId,
+      if (displayName != null) 'display_name': displayName,
+      if (filePath != null) 'file_path': filePath,
+      if (fileType != null) 'file_type': fileType,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  PatientAttachmentsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? patientId,
+    Value<String>? displayName,
+    Value<String>? filePath,
+    Value<String>? fileType,
+    Value<DateTime>? createdAt,
+  }) {
+    return PatientAttachmentsCompanion(
+      id: id ?? this.id,
+      patientId: patientId ?? this.patientId,
+      displayName: displayName ?? this.displayName,
+      filePath: filePath ?? this.filePath,
+      fileType: fileType ?? this.fileType,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (patientId.present) {
+      map['patient_id'] = Variable<int>(patientId.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (filePath.present) {
+      map['file_path'] = Variable<String>(filePath.value);
+    }
+    if (fileType.present) {
+      map['file_type'] = Variable<String>(fileType.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PatientAttachmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('patientId: $patientId, ')
+          ..write('displayName: $displayName, ')
+          ..write('filePath: $filePath, ')
+          ..write('fileType: $fileType, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PatientTagsTable extends PatientTags
+    with TableInfo<$PatientTagsTable, PatientTagData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PatientTagsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _patientIdMeta = const VerificationMeta(
+    'patientId',
+  );
+  @override
+  late final GeneratedColumn<int> patientId = GeneratedColumn<int>(
+    'patient_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _tagMeta = const VerificationMeta('tag');
+  @override
+  late final GeneratedColumn<String> tag = GeneratedColumn<String>(
+    'tag',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, patientId, tag, createdAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'patient_tags';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PatientTagData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('patient_id')) {
+      context.handle(
+        _patientIdMeta,
+        patientId.isAcceptableOrUnknown(data['patient_id']!, _patientIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_patientIdMeta);
+    }
+    if (data.containsKey('tag')) {
+      context.handle(
+        _tagMeta,
+        tag.isAcceptableOrUnknown(data['tag']!, _tagMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_tagMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PatientTagData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PatientTagData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      patientId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}patient_id'],
+      )!,
+      tag: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tag'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PatientTagsTable createAlias(String alias) {
+    return $PatientTagsTable(attachedDatabase, alias);
+  }
+}
+
+class PatientTagData extends DataClass implements Insertable<PatientTagData> {
+  final int id;
+  final int patientId;
+  final String tag;
+  final DateTime createdAt;
+  const PatientTagData({
+    required this.id,
+    required this.patientId,
+    required this.tag,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['patient_id'] = Variable<int>(patientId);
+    map['tag'] = Variable<String>(tag);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  PatientTagsCompanion toCompanion(bool nullToAbsent) {
+    return PatientTagsCompanion(
+      id: Value(id),
+      patientId: Value(patientId),
+      tag: Value(tag),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory PatientTagData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PatientTagData(
+      id: serializer.fromJson<int>(json['id']),
+      patientId: serializer.fromJson<int>(json['patientId']),
+      tag: serializer.fromJson<String>(json['tag']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'patientId': serializer.toJson<int>(patientId),
+      'tag': serializer.toJson<String>(tag),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  PatientTagData copyWith({
+    int? id,
+    int? patientId,
+    String? tag,
+    DateTime? createdAt,
+  }) => PatientTagData(
+    id: id ?? this.id,
+    patientId: patientId ?? this.patientId,
+    tag: tag ?? this.tag,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  PatientTagData copyWithCompanion(PatientTagsCompanion data) {
+    return PatientTagData(
+      id: data.id.present ? data.id.value : this.id,
+      patientId: data.patientId.present ? data.patientId.value : this.patientId,
+      tag: data.tag.present ? data.tag.value : this.tag,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PatientTagData(')
+          ..write('id: $id, ')
+          ..write('patientId: $patientId, ')
+          ..write('tag: $tag, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, patientId, tag, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PatientTagData &&
+          other.id == this.id &&
+          other.patientId == this.patientId &&
+          other.tag == this.tag &&
+          other.createdAt == this.createdAt);
+}
+
+class PatientTagsCompanion extends UpdateCompanion<PatientTagData> {
+  final Value<int> id;
+  final Value<int> patientId;
+  final Value<String> tag;
+  final Value<DateTime> createdAt;
+  const PatientTagsCompanion({
+    this.id = const Value.absent(),
+    this.patientId = const Value.absent(),
+    this.tag = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  PatientTagsCompanion.insert({
+    this.id = const Value.absent(),
+    required int patientId,
+    required String tag,
+    required DateTime createdAt,
+  }) : patientId = Value(patientId),
+       tag = Value(tag),
+       createdAt = Value(createdAt);
+  static Insertable<PatientTagData> custom({
+    Expression<int>? id,
+    Expression<int>? patientId,
+    Expression<String>? tag,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (patientId != null) 'patient_id': patientId,
+      if (tag != null) 'tag': tag,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  PatientTagsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? patientId,
+    Value<String>? tag,
+    Value<DateTime>? createdAt,
+  }) {
+    return PatientTagsCompanion(
+      id: id ?? this.id,
+      patientId: patientId ?? this.patientId,
+      tag: tag ?? this.tag,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (patientId.present) {
+      map['patient_id'] = Variable<int>(patientId.value);
+    }
+    if (tag.present) {
+      map['tag'] = Variable<String>(tag.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PatientTagsCompanion(')
+          ..write('id: $id, ')
+          ..write('patientId: $patientId, ')
+          ..write('tag: $tag, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -2148,7 +2853,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CaseAttachmentsTable caseAttachments = $CaseAttachmentsTable(
     this,
   );
+  late final $PatientAttachmentsTable patientAttachments =
+      $PatientAttachmentsTable(this);
+  late final $PatientTagsTable patientTags = $PatientTagsTable(this);
   late final PatientDao patientDao = PatientDao(this as AppDatabase);
+  late final PatientAttachmentDao patientAttachmentDao = PatientAttachmentDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2157,6 +2868,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     patients,
     surgicalCases,
     caseAttachments,
+    patientAttachments,
+    patientTags,
   ];
 }
 
@@ -3157,6 +3870,409 @@ typedef $$CaseAttachmentsTableProcessedTableManager =
       CaseAttachment,
       PrefetchHooks Function()
     >;
+typedef $$PatientAttachmentsTableCreateCompanionBuilder =
+    PatientAttachmentsCompanion Function({
+      Value<int> id,
+      required int patientId,
+      required String displayName,
+      required String filePath,
+      required String fileType,
+      required DateTime createdAt,
+    });
+typedef $$PatientAttachmentsTableUpdateCompanionBuilder =
+    PatientAttachmentsCompanion Function({
+      Value<int> id,
+      Value<int> patientId,
+      Value<String> displayName,
+      Value<String> filePath,
+      Value<String> fileType,
+      Value<DateTime> createdAt,
+    });
+
+class $$PatientAttachmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $PatientAttachmentsTable> {
+  $$PatientAttachmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get patientId => $composableBuilder(
+    column: $table.patientId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get filePath => $composableBuilder(
+    column: $table.filePath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fileType => $composableBuilder(
+    column: $table.fileType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PatientAttachmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PatientAttachmentsTable> {
+  $$PatientAttachmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get patientId => $composableBuilder(
+    column: $table.patientId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get filePath => $composableBuilder(
+    column: $table.filePath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fileType => $composableBuilder(
+    column: $table.fileType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PatientAttachmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PatientAttachmentsTable> {
+  $$PatientAttachmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get patientId =>
+      $composableBuilder(column: $table.patientId, builder: (column) => column);
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get filePath =>
+      $composableBuilder(column: $table.filePath, builder: (column) => column);
+
+  GeneratedColumn<String> get fileType =>
+      $composableBuilder(column: $table.fileType, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$PatientAttachmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PatientAttachmentsTable,
+          PatientAttachmentData,
+          $$PatientAttachmentsTableFilterComposer,
+          $$PatientAttachmentsTableOrderingComposer,
+          $$PatientAttachmentsTableAnnotationComposer,
+          $$PatientAttachmentsTableCreateCompanionBuilder,
+          $$PatientAttachmentsTableUpdateCompanionBuilder,
+          (
+            PatientAttachmentData,
+            BaseReferences<
+              _$AppDatabase,
+              $PatientAttachmentsTable,
+              PatientAttachmentData
+            >,
+          ),
+          PatientAttachmentData,
+          PrefetchHooks Function()
+        > {
+  $$PatientAttachmentsTableTableManager(
+    _$AppDatabase db,
+    $PatientAttachmentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PatientAttachmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PatientAttachmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PatientAttachmentsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> patientId = const Value.absent(),
+                Value<String> displayName = const Value.absent(),
+                Value<String> filePath = const Value.absent(),
+                Value<String> fileType = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => PatientAttachmentsCompanion(
+                id: id,
+                patientId: patientId,
+                displayName: displayName,
+                filePath: filePath,
+                fileType: fileType,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int patientId,
+                required String displayName,
+                required String filePath,
+                required String fileType,
+                required DateTime createdAt,
+              }) => PatientAttachmentsCompanion.insert(
+                id: id,
+                patientId: patientId,
+                displayName: displayName,
+                filePath: filePath,
+                fileType: fileType,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PatientAttachmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PatientAttachmentsTable,
+      PatientAttachmentData,
+      $$PatientAttachmentsTableFilterComposer,
+      $$PatientAttachmentsTableOrderingComposer,
+      $$PatientAttachmentsTableAnnotationComposer,
+      $$PatientAttachmentsTableCreateCompanionBuilder,
+      $$PatientAttachmentsTableUpdateCompanionBuilder,
+      (
+        PatientAttachmentData,
+        BaseReferences<
+          _$AppDatabase,
+          $PatientAttachmentsTable,
+          PatientAttachmentData
+        >,
+      ),
+      PatientAttachmentData,
+      PrefetchHooks Function()
+    >;
+typedef $$PatientTagsTableCreateCompanionBuilder =
+    PatientTagsCompanion Function({
+      Value<int> id,
+      required int patientId,
+      required String tag,
+      required DateTime createdAt,
+    });
+typedef $$PatientTagsTableUpdateCompanionBuilder =
+    PatientTagsCompanion Function({
+      Value<int> id,
+      Value<int> patientId,
+      Value<String> tag,
+      Value<DateTime> createdAt,
+    });
+
+class $$PatientTagsTableFilterComposer
+    extends Composer<_$AppDatabase, $PatientTagsTable> {
+  $$PatientTagsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get patientId => $composableBuilder(
+    column: $table.patientId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tag => $composableBuilder(
+    column: $table.tag,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PatientTagsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PatientTagsTable> {
+  $$PatientTagsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get patientId => $composableBuilder(
+    column: $table.patientId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get tag => $composableBuilder(
+    column: $table.tag,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PatientTagsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PatientTagsTable> {
+  $$PatientTagsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get patientId =>
+      $composableBuilder(column: $table.patientId, builder: (column) => column);
+
+  GeneratedColumn<String> get tag =>
+      $composableBuilder(column: $table.tag, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$PatientTagsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PatientTagsTable,
+          PatientTagData,
+          $$PatientTagsTableFilterComposer,
+          $$PatientTagsTableOrderingComposer,
+          $$PatientTagsTableAnnotationComposer,
+          $$PatientTagsTableCreateCompanionBuilder,
+          $$PatientTagsTableUpdateCompanionBuilder,
+          (
+            PatientTagData,
+            BaseReferences<_$AppDatabase, $PatientTagsTable, PatientTagData>,
+          ),
+          PatientTagData,
+          PrefetchHooks Function()
+        > {
+  $$PatientTagsTableTableManager(_$AppDatabase db, $PatientTagsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PatientTagsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PatientTagsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PatientTagsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> patientId = const Value.absent(),
+                Value<String> tag = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => PatientTagsCompanion(
+                id: id,
+                patientId: patientId,
+                tag: tag,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int patientId,
+                required String tag,
+                required DateTime createdAt,
+              }) => PatientTagsCompanion.insert(
+                id: id,
+                patientId: patientId,
+                tag: tag,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PatientTagsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PatientTagsTable,
+      PatientTagData,
+      $$PatientTagsTableFilterComposer,
+      $$PatientTagsTableOrderingComposer,
+      $$PatientTagsTableAnnotationComposer,
+      $$PatientTagsTableCreateCompanionBuilder,
+      $$PatientTagsTableUpdateCompanionBuilder,
+      (
+        PatientTagData,
+        BaseReferences<_$AppDatabase, $PatientTagsTable, PatientTagData>,
+      ),
+      PatientTagData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3167,4 +4283,8 @@ class $AppDatabaseManager {
       $$SurgicalCasesTableTableManager(_db, _db.surgicalCases);
   $$CaseAttachmentsTableTableManager get caseAttachments =>
       $$CaseAttachmentsTableTableManager(_db, _db.caseAttachments);
+  $$PatientAttachmentsTableTableManager get patientAttachments =>
+      $$PatientAttachmentsTableTableManager(_db, _db.patientAttachments);
+  $$PatientTagsTableTableManager get patientTags =>
+      $$PatientTagsTableTableManager(_db, _db.patientTags);
 }

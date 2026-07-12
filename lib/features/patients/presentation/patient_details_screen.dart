@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/patients/domain/patient.dart';
 import 'package:surgitrack/features/patients/providers/patient_provider.dart';
+import 'package:surgitrack/features/patients/providers/patient_attachment_provider.dart';
 import 'package:surgitrack/features/patients/presentation/patient_form_screen.dart';
+import 'package:surgitrack/features/patients/presentation/widgets/add_attachment_button.dart';
+import 'package:surgitrack/features/patients/data/attachment_viewer_service.dart';
 
 class PatientDetailsScreen extends ConsumerWidget {
   final Patient patient;
@@ -12,6 +15,10 @@ class PatientDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final attachmentsAsync = patient.id == null
+        ? null
+        : ref.watch(patientAttachmentsProvider(patient.id!));
+
     return Scaffold(
       appBar: AppBar(
         title: Text(patient.name),
@@ -23,7 +30,6 @@ class PatientDetailsScreen extends ConsumerWidget {
             onPressed: () async {
               final updated = await Navigator.push(
                 context,
-
                 MaterialPageRoute(
                   builder: (_) => PatientFormScreen(patient: patient),
                 ),
@@ -42,7 +48,7 @@ class PatientDetailsScreen extends ConsumerWidget {
               final confirm = await showDialog<bool>(
                 context: context,
 
-                builder: (context) => AlertDialog(
+                builder: (_) => AlertDialog(
                   title: const Text("Delete Patient"),
 
                   content: const Text(
@@ -65,9 +71,7 @@ class PatientDetailsScreen extends ConsumerWidget {
                 ),
               );
 
-              if (confirm != true) {
-                return;
-              }
+              if (confirm != true) return;
 
               await ref
                   .read(patientRepositoryProvider)
@@ -83,71 +87,118 @@ class PatientDetailsScreen extends ConsumerWidget {
         ],
       ),
 
-      body: _PatientInformation(patient: patient),
-    );
-  }
-}
+      body: ListView(
+        padding: const EdgeInsets.all(16),
 
-class _PatientInformation extends StatelessWidget {
-  final Patient patient;
+        children: [
+          _section("Basic Details", [
+            _row("MRD", patient.hospitalId),
 
-  const _PatientInformation({required this.patient});
+            _row("Age", "${patient.age} years"),
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
+            _row("DOB", _date(patient.dateOfBirth)),
 
-      children: [
-        _section("Basic Details", [
-          _row("MRD", patient.hospitalId),
+            _row("Blood Group", patient.bloodGroup ?? "-"),
+          ]),
 
-          _row("Age", "${patient.age} years"),
+          _section("Clinical Profile", [
+            _row(
+              "EF",
+              patient.ejectionFraction == null
+                  ? "-"
+                  : "${patient.ejectionFraction}%",
+            ),
 
-          _row(
-            "DOB",
-            "${patient.dateOfBirth.day}-${patient.dateOfBirth.month}-${patient.dateOfBirth.year}",
-          ),
+            _row("Address", patient.address ?? "-"),
 
-          _row("Blood Group", patient.bloodGroup ?? "-"),
-        ]),
+            _row(
+              "Admission",
+              patient.admissionDate == null
+                  ? "-"
+                  : _date(patient.admissionDate!),
+            ),
+          ]),
 
-        _section("Clinical Profile", [
-          _row(
-            "EF",
-            patient.ejectionFraction == null
-                ? "-"
-                : "${patient.ejectionFraction}%",
-          ),
+          _section("Comorbidities", [
+            patient.comorbidities.isEmpty
+                ? const Text("No comorbidities recorded")
+                : Wrap(
+                    spacing: 8,
 
-          _row("Address", patient.address ?? "-"),
+                    children: patient.comorbidities
+                        .map((e) => Chip(label: Text(e)))
+                        .toList(),
+                  ),
+          ]),
 
-          _row(
-            "Admission",
-            patient.admissionDate == null
-                ? "-"
-                : "${patient.admissionDate!.day}-${patient.admissionDate!.month}-${patient.admissionDate!.year}",
-          ),
-        ]),
+          _section("Past Operative History", [
+            Text(
+              patient.pastOperativeHistory?.isNotEmpty == true
+                  ? patient.pastOperativeHistory!
+                  : "No previous history",
+            ),
+          ]),
 
-        _section("Comorbidities", [
-          Wrap(
-            spacing: 8,
+          if (attachmentsAsync != null)
+            _section("Attachments", [
+              attachmentsAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
 
-            children: patient.comorbidities
-                .map((e) => Chip(label: Text(e)))
-                .toList(),
-          ),
-        ]),
+                error: (error, stack) =>
+                    Text("Error loading attachments\n$error"),
 
-        _section("Past Operative History", [
-          Text(
-            patient.pastOperativeHistory?.isNotEmpty == true
-                ? patient.pastOperativeHistory!
-                : "No previous history",
-          ),
-        ]),
-      ],
+                data: (attachments) {
+                  return Column(
+                    children: [
+                      if (attachments.isEmpty)
+                        const ListTile(title: Text("No attachments added")),
+
+                      ...attachments.map((attachment) {
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+
+                          leading: Icon(
+                            attachment.fileType.toLowerCase() == "pdf"
+                                ? Icons.picture_as_pdf
+                                : Icons.image,
+                          ),
+
+                          title: Text(attachment.displayName),
+
+                          subtitle: Text(attachment.fileType),
+
+                          onTap: () async {
+                            await AttachmentViewerService().openFile(
+                              attachment.filePath,
+                            );
+                          },
+
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+
+                            onPressed: () async {
+                              await ref
+                                  .read(patientAttachmentRepositoryProvider)
+                                  .deleteAttachment(attachment);
+
+                              ref.invalidate(
+                                patientAttachmentsProvider(patient.id!),
+                              );
+                            },
+                          ),
+                        );
+                      }),
+                    ],
+                  );
+                },
+              ),
+
+              const SizedBox(height: 12),
+
+              AddAttachmentButton(patientId: patient.id!),
+            ]),
+        ],
+      ),
     );
   }
 
@@ -164,6 +215,7 @@ class _PatientInformation extends StatelessWidget {
           children: [
             Text(
               title,
+
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
 
@@ -181,12 +233,15 @@ class _PatientInformation extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
 
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
         children: [
           SizedBox(
             width: 120,
 
             child: Text(
               label,
+
               style: const TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
@@ -195,5 +250,9 @@ class _PatientInformation extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _date(DateTime date) {
+    return "${date.day}-${date.month}-${date.year}";
   }
 }
