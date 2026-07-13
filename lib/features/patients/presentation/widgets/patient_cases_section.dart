@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/patients/providers/patient_case_provider.dart';
 
+import 'package:surgitrack/features/cases/presentation/screens/case_details_screen.dart';
+
 class PatientCasesSection extends ConsumerWidget {
   final int patientId;
 
@@ -24,6 +26,7 @@ class PatientCasesSection extends ConsumerWidget {
           children: [
             const Text(
               "Surgical Cases",
+
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
 
@@ -41,10 +44,26 @@ class PatientCasesSection extends ConsumerWidget {
                   title: Text(surgicalCase.diagnosis),
 
                   subtitle: Text(
+                    "${surgicalCase.caseId}\n"
                     "${surgicalCase.specialty} • "
-                    "${surgicalCase.surgeryType} • "
-                    "${surgicalCase.operativeRole}",
+                    "${surgicalCase.operativeRole}\n"
+                    "${surgicalCase.surgeryDate.day}/"
+                    "${surgicalCase.surgeryDate.month}/"
+                    "${surgicalCase.surgeryDate.year}",
                   ),
+
+                  isThreeLine: true,
+
+                  onTap: () {
+                    Navigator.push(
+                      context,
+
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            CaseDetailsScreen(surgicalCase: surgicalCase),
+                      ),
+                    );
+                  },
                 );
               }),
           ],

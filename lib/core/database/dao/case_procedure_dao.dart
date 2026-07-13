@@ -1,11 +1,23 @@
 import 'package:drift/drift.dart';
 
-import '../app_database.dart';
-import '../tables/case_procedures.dart';
+import 'package:surgitrack/core/database/app_database.dart';
+import 'package:surgitrack/core/database/tables/case_procedures.dart';
+import 'package:surgitrack/core/database/tables/procedures.dart';
 
 part 'case_procedure_dao.g.dart';
 
-@DriftAccessor(tables: [CaseProcedures])
+class CaseProcedureWithProcedure {
+  final CaseProcedure caseProcedure;
+
+  final ProcedureData procedure;
+
+  CaseProcedureWithProcedure({
+    required this.caseProcedure,
+    required this.procedure,
+  });
+}
+
+@DriftAccessor(tables: [CaseProcedures, Procedures])
 class CaseProcedureDao extends DatabaseAccessor<AppDatabase>
     with _$CaseProcedureDaoMixin {
   CaseProcedureDao(super.db);
@@ -14,10 +26,21 @@ class CaseProcedureDao extends DatabaseAccessor<AppDatabase>
     return into(caseProcedures).insert(companion);
   }
 
-  Future<List<CaseProcedure>> getProceduresForCase(int caseId) {
-    return (select(
-      caseProcedures,
-    )..where((tbl) => tbl.caseId.equals(caseId))).get();
+  Future<List<CaseProcedureWithProcedure>> getProceduresForCase(int caseId) {
+    final query = select(caseProcedures).join([
+      innerJoin(
+        procedures,
+        procedures.id.equalsExp(caseProcedures.procedureId),
+      ),
+    ])..where(caseProcedures.caseId.equals(caseId));
+
+    return query.map((row) {
+      return CaseProcedureWithProcedure(
+        caseProcedure: row.readTable(caseProcedures),
+
+        procedure: row.readTable(procedures),
+      );
+    }).get();
   }
 
   Future<void> deleteForCase(int caseId) async {

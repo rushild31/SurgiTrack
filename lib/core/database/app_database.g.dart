@@ -1538,18 +1538,6 @@ class $ProceduresTable extends Procedures
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _specialtyMeta = const VerificationMeta(
-    'specialty',
-  );
-  @override
-  late final GeneratedColumn<String> specialty = GeneratedColumn<String>(
-    'specialty',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    defaultValue: const Constant("Cardiac"),
-  );
   static const VerificationMeta _categoryMeta = const VerificationMeta(
     'category',
   );
@@ -1560,6 +1548,18 @@ class $ProceduresTable extends Procedures
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+  );
+  static const VerificationMeta _specialtyMeta = const VerificationMeta(
+    'specialty',
+  );
+  @override
+  late final GeneratedColumn<String> specialty = GeneratedColumn<String>(
+    'specialty',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant("Cardiothoracic Surgery"),
   );
   static const VerificationMeta _parentIdMeta = const VerificationMeta(
     'parentId',
@@ -1626,8 +1626,8 @@ class $ProceduresTable extends Procedures
     id,
     procedureId,
     name,
-    specialty,
     category,
+    specialty,
     parentId,
     aliases,
     description,
@@ -1668,12 +1668,6 @@ class $ProceduresTable extends Procedures
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('specialty')) {
-      context.handle(
-        _specialtyMeta,
-        specialty.isAcceptableOrUnknown(data['specialty']!, _specialtyMeta),
-      );
-    }
     if (data.containsKey('category')) {
       context.handle(
         _categoryMeta,
@@ -1681,6 +1675,12 @@ class $ProceduresTable extends Procedures
       );
     } else if (isInserting) {
       context.missing(_categoryMeta);
+    }
+    if (data.containsKey('specialty')) {
+      context.handle(
+        _specialtyMeta,
+        specialty.isAcceptableOrUnknown(data['specialty']!, _specialtyMeta),
+      );
     }
     if (data.containsKey('parent_id')) {
       context.handle(
@@ -1736,13 +1736,13 @@ class $ProceduresTable extends Procedures
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
-      specialty: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}specialty'],
-      )!,
       category: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}category'],
+      )!,
+      specialty: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}specialty'],
       )!,
       parentId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
@@ -1775,26 +1775,11 @@ class $ProceduresTable extends Procedures
 
 class ProcedureData extends DataClass implements Insertable<ProcedureData> {
   final int id;
-
-  /// Unique procedure identifier
   final String procedureId;
-
-  /// Display name
   final String name;
-
-  /// Cardiac / Thoracic / Vascular / Congenital
-  final String specialty;
-
-  /// CABG, Valve, Aortic, etc.
   final String category;
-
-  /// Parent procedure for hierarchy
-  /// Example:
-  /// Valve Surgery -> AVR
+  final String specialty;
   final int? parentId;
-
-  /// Additional search terms
-  /// Stored as JSON array
   final String? aliases;
   final String? description;
   final bool isActive;
@@ -1803,8 +1788,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
     required this.id,
     required this.procedureId,
     required this.name,
-    required this.specialty,
     required this.category,
+    required this.specialty,
     this.parentId,
     this.aliases,
     this.description,
@@ -1817,8 +1802,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
     map['id'] = Variable<int>(id);
     map['procedure_id'] = Variable<String>(procedureId);
     map['name'] = Variable<String>(name);
-    map['specialty'] = Variable<String>(specialty);
     map['category'] = Variable<String>(category);
+    map['specialty'] = Variable<String>(specialty);
     if (!nullToAbsent || parentId != null) {
       map['parent_id'] = Variable<int>(parentId);
     }
@@ -1838,8 +1823,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
       id: Value(id),
       procedureId: Value(procedureId),
       name: Value(name),
-      specialty: Value(specialty),
       category: Value(category),
+      specialty: Value(specialty),
       parentId: parentId == null && nullToAbsent
           ? const Value.absent()
           : Value(parentId),
@@ -1863,8 +1848,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
       id: serializer.fromJson<int>(json['id']),
       procedureId: serializer.fromJson<String>(json['procedureId']),
       name: serializer.fromJson<String>(json['name']),
-      specialty: serializer.fromJson<String>(json['specialty']),
       category: serializer.fromJson<String>(json['category']),
+      specialty: serializer.fromJson<String>(json['specialty']),
       parentId: serializer.fromJson<int?>(json['parentId']),
       aliases: serializer.fromJson<String?>(json['aliases']),
       description: serializer.fromJson<String?>(json['description']),
@@ -1879,8 +1864,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
       'id': serializer.toJson<int>(id),
       'procedureId': serializer.toJson<String>(procedureId),
       'name': serializer.toJson<String>(name),
-      'specialty': serializer.toJson<String>(specialty),
       'category': serializer.toJson<String>(category),
+      'specialty': serializer.toJson<String>(specialty),
       'parentId': serializer.toJson<int?>(parentId),
       'aliases': serializer.toJson<String?>(aliases),
       'description': serializer.toJson<String?>(description),
@@ -1893,8 +1878,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
     int? id,
     String? procedureId,
     String? name,
-    String? specialty,
     String? category,
+    String? specialty,
     Value<int?> parentId = const Value.absent(),
     Value<String?> aliases = const Value.absent(),
     Value<String?> description = const Value.absent(),
@@ -1904,8 +1889,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
     id: id ?? this.id,
     procedureId: procedureId ?? this.procedureId,
     name: name ?? this.name,
-    specialty: specialty ?? this.specialty,
     category: category ?? this.category,
+    specialty: specialty ?? this.specialty,
     parentId: parentId.present ? parentId.value : this.parentId,
     aliases: aliases.present ? aliases.value : this.aliases,
     description: description.present ? description.value : this.description,
@@ -1919,8 +1904,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
           ? data.procedureId.value
           : this.procedureId,
       name: data.name.present ? data.name.value : this.name,
-      specialty: data.specialty.present ? data.specialty.value : this.specialty,
       category: data.category.present ? data.category.value : this.category,
+      specialty: data.specialty.present ? data.specialty.value : this.specialty,
       parentId: data.parentId.present ? data.parentId.value : this.parentId,
       aliases: data.aliases.present ? data.aliases.value : this.aliases,
       description: data.description.present
@@ -1937,8 +1922,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
           ..write('id: $id, ')
           ..write('procedureId: $procedureId, ')
           ..write('name: $name, ')
-          ..write('specialty: $specialty, ')
           ..write('category: $category, ')
+          ..write('specialty: $specialty, ')
           ..write('parentId: $parentId, ')
           ..write('aliases: $aliases, ')
           ..write('description: $description, ')
@@ -1953,8 +1938,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
     id,
     procedureId,
     name,
-    specialty,
     category,
+    specialty,
     parentId,
     aliases,
     description,
@@ -1968,8 +1953,8 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
           other.id == this.id &&
           other.procedureId == this.procedureId &&
           other.name == this.name &&
-          other.specialty == this.specialty &&
           other.category == this.category &&
+          other.specialty == this.specialty &&
           other.parentId == this.parentId &&
           other.aliases == this.aliases &&
           other.description == this.description &&
@@ -1981,8 +1966,8 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
   final Value<int> id;
   final Value<String> procedureId;
   final Value<String> name;
-  final Value<String> specialty;
   final Value<String> category;
+  final Value<String> specialty;
   final Value<int?> parentId;
   final Value<String?> aliases;
   final Value<String?> description;
@@ -1992,8 +1977,8 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     this.id = const Value.absent(),
     this.procedureId = const Value.absent(),
     this.name = const Value.absent(),
-    this.specialty = const Value.absent(),
     this.category = const Value.absent(),
+    this.specialty = const Value.absent(),
     this.parentId = const Value.absent(),
     this.aliases = const Value.absent(),
     this.description = const Value.absent(),
@@ -2004,8 +1989,8 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     this.id = const Value.absent(),
     required String procedureId,
     required String name,
-    this.specialty = const Value.absent(),
     required String category,
+    this.specialty = const Value.absent(),
     this.parentId = const Value.absent(),
     this.aliases = const Value.absent(),
     this.description = const Value.absent(),
@@ -2018,8 +2003,8 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     Expression<int>? id,
     Expression<String>? procedureId,
     Expression<String>? name,
-    Expression<String>? specialty,
     Expression<String>? category,
+    Expression<String>? specialty,
     Expression<int>? parentId,
     Expression<String>? aliases,
     Expression<String>? description,
@@ -2030,8 +2015,8 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
       if (id != null) 'id': id,
       if (procedureId != null) 'procedure_id': procedureId,
       if (name != null) 'name': name,
-      if (specialty != null) 'specialty': specialty,
       if (category != null) 'category': category,
+      if (specialty != null) 'specialty': specialty,
       if (parentId != null) 'parent_id': parentId,
       if (aliases != null) 'aliases': aliases,
       if (description != null) 'description': description,
@@ -2044,8 +2029,8 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     Value<int>? id,
     Value<String>? procedureId,
     Value<String>? name,
-    Value<String>? specialty,
     Value<String>? category,
+    Value<String>? specialty,
     Value<int?>? parentId,
     Value<String?>? aliases,
     Value<String?>? description,
@@ -2056,8 +2041,8 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
       id: id ?? this.id,
       procedureId: procedureId ?? this.procedureId,
       name: name ?? this.name,
-      specialty: specialty ?? this.specialty,
       category: category ?? this.category,
+      specialty: specialty ?? this.specialty,
       parentId: parentId ?? this.parentId,
       aliases: aliases ?? this.aliases,
       description: description ?? this.description,
@@ -2078,11 +2063,11 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (specialty.present) {
-      map['specialty'] = Variable<String>(specialty.value);
-    }
     if (category.present) {
       map['category'] = Variable<String>(category.value);
+    }
+    if (specialty.present) {
+      map['specialty'] = Variable<String>(specialty.value);
     }
     if (parentId.present) {
       map['parent_id'] = Variable<int>(parentId.value);
@@ -2108,8 +2093,8 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
           ..write('id: $id, ')
           ..write('procedureId: $procedureId, ')
           ..write('name: $name, ')
-          ..write('specialty: $specialty, ')
           ..write('category: $category, ')
+          ..write('specialty: $specialty, ')
           ..write('parentId: $parentId, ')
           ..write('aliases: $aliases, ')
           ..write('description: $description, ')
@@ -4756,8 +4741,8 @@ typedef $$ProceduresTableCreateCompanionBuilder =
       Value<int> id,
       required String procedureId,
       required String name,
-      Value<String> specialty,
       required String category,
+      Value<String> specialty,
       Value<int?> parentId,
       Value<String?> aliases,
       Value<String?> description,
@@ -4769,8 +4754,8 @@ typedef $$ProceduresTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> procedureId,
       Value<String> name,
-      Value<String> specialty,
       Value<String> category,
+      Value<String> specialty,
       Value<int?> parentId,
       Value<String?> aliases,
       Value<String?> description,
@@ -4802,13 +4787,13 @@ class $$ProceduresTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get specialty => $composableBuilder(
-    column: $table.specialty,
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get category => $composableBuilder(
-    column: $table.category,
+  ColumnFilters<String> get specialty => $composableBuilder(
+    column: $table.specialty,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4862,13 +4847,13 @@ class $$ProceduresTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get specialty => $composableBuilder(
-    column: $table.specialty,
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get category => $composableBuilder(
-    column: $table.category,
+  ColumnOrderings<String> get specialty => $composableBuilder(
+    column: $table.specialty,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4918,11 +4903,11 @@ class $$ProceduresTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get specialty =>
-      $composableBuilder(column: $table.specialty, builder: (column) => column);
-
   GeneratedColumn<String> get category =>
       $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get specialty =>
+      $composableBuilder(column: $table.specialty, builder: (column) => column);
 
   GeneratedColumn<int> get parentId =>
       $composableBuilder(column: $table.parentId, builder: (column) => column);
@@ -4976,8 +4961,8 @@ class $$ProceduresTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> procedureId = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> specialty = const Value.absent(),
                 Value<String> category = const Value.absent(),
+                Value<String> specialty = const Value.absent(),
                 Value<int?> parentId = const Value.absent(),
                 Value<String?> aliases = const Value.absent(),
                 Value<String?> description = const Value.absent(),
@@ -4987,8 +4972,8 @@ class $$ProceduresTableTableManager
                 id: id,
                 procedureId: procedureId,
                 name: name,
-                specialty: specialty,
                 category: category,
+                specialty: specialty,
                 parentId: parentId,
                 aliases: aliases,
                 description: description,
@@ -5000,8 +4985,8 @@ class $$ProceduresTableTableManager
                 Value<int> id = const Value.absent(),
                 required String procedureId,
                 required String name,
-                Value<String> specialty = const Value.absent(),
                 required String category,
+                Value<String> specialty = const Value.absent(),
                 Value<int?> parentId = const Value.absent(),
                 Value<String?> aliases = const Value.absent(),
                 Value<String?> description = const Value.absent(),
@@ -5011,8 +4996,8 @@ class $$ProceduresTableTableManager
                 id: id,
                 procedureId: procedureId,
                 name: name,
-                specialty: specialty,
                 category: category,
+                specialty: specialty,
                 parentId: parentId,
                 aliases: aliases,
                 description: description,

@@ -2,18 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/core/database/database_provider.dart';
 
-import '../data/repository/case_procedure_repository.dart';
+import 'package:surgitrack/core/database/dao/case_procedure_dao.dart';
 
-final caseProcedureRepositoryProvider = Provider<CaseProcedureRepository>((
-  ref,
-) {
-  final database = ref.watch(databaseProvider);
+final caseProceduresProvider =
+    FutureProvider.family<List<CaseProcedureWithProcedure>, int>((
+      ref,
+      caseId,
+    ) async {
+      final database = ref.watch(databaseProvider);
 
-  return CaseProcedureRepository(database);
-});
-
-final caseProceduresProvider = FutureProvider.family((ref, int caseId) async {
-  final repository = ref.watch(caseProcedureRepositoryProvider);
-
-  return repository.getProceduresForCase(caseId);
-});
+      return database.caseProcedureDao.getProceduresForCase(caseId);
+    });

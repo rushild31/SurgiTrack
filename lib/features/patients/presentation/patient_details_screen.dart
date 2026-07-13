@@ -9,6 +9,9 @@ import 'package:surgitrack/features/patients/presentation/widgets/add_attachment
 import 'package:surgitrack/features/patients/data/attachment_viewer_service.dart';
 import 'package:surgitrack/features/patients/presentation/widgets/patient_cases_section.dart';
 
+import 'package:surgitrack/features/cases/presentation/screens/add_case_screen.dart';
+import 'package:surgitrack/features/patients/providers/patient_case_provider.dart';
+
 class PatientDetailsScreen extends ConsumerWidget {
   final Patient patient;
 
@@ -88,6 +91,25 @@ class PatientDetailsScreen extends ConsumerWidget {
         ],
       ),
 
+      floatingActionButton: patient.id == null
+          ? null
+          : FloatingActionButton.extended(
+              icon: const Icon(Icons.add_circle_outline),
+
+              label: const Text("Add Case"),
+
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AddCaseScreen(patient: patient),
+                  ),
+                );
+
+                ref.invalidate(patientCasesProvider(patient.id!));
+              },
+            ),
+
       body: ListView(
         padding: const EdgeInsets.all(16),
 
@@ -120,7 +142,7 @@ class PatientDetailsScreen extends ConsumerWidget {
             ),
           ]),
 
-          PatientCasesSection(patientId: patient.id!),
+          if (patient.id != null) PatientCasesSection(patientId: patient.id!),
 
           _section("Comorbidities", [
             patient.comorbidities.isEmpty
@@ -145,7 +167,7 @@ class PatientDetailsScreen extends ConsumerWidget {
           if (attachmentsAsync != null)
             _section("Attachments", [
               attachmentsAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () => const CircularProgressIndicator(),
 
                 error: (error, stack) =>
                     Text("Error loading attachments\n$error"),

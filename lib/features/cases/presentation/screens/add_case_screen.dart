@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:surgitrack/features/patients/domain/patient.dart';
+
 import 'package:surgitrack/features/cases/domain/surgical_case.dart';
 import 'package:surgitrack/features/cases/providers/surgical_case_provider.dart';
 
@@ -8,7 +10,9 @@ import 'package:surgitrack/features/procedures/domain/procedure.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
 
 class AddCaseScreen extends ConsumerStatefulWidget {
-  const AddCaseScreen({super.key});
+  final Patient patient;
+
+  const AddCaseScreen({super.key, required this.patient});
 
   @override
   ConsumerState<AddCaseScreen> createState() => _AddCaseScreenState();
@@ -32,7 +36,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Surgical Case")),
+      appBar: AppBar(title: Text("Add Case - ${widget.patient.name}")),
 
       body: Form(
         key: _formKey,
@@ -57,7 +61,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
               decoration: const InputDecoration(labelText: "Diagnosis"),
 
               validator: (value) {
-                if (value == null || value.isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return "Enter diagnosis";
                 }
 
@@ -65,7 +69,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
               },
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
             ElevatedButton(onPressed: saveCase, child: const Text("Save Case")),
           ],
@@ -90,7 +94,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
     final now = DateTime.now();
 
     final newCase = SurgicalCase(
-      patientId: 1,
+      patientId: widget.patient.id!,
 
       caseId: "CTVS-${now.millisecondsSinceEpoch}",
 
@@ -128,5 +132,12 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
     if (mounted) {
       Navigator.pop(context);
     }
+  }
+
+  @override
+  void dispose() {
+    diagnosisController.dispose();
+
+    super.dispose();
   }
 }

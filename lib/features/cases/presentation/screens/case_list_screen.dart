@@ -8,7 +8,6 @@ import 'package:surgitrack/features/cases/presentation/widgets/cases_empty_state
 
 import 'package:surgitrack/features/cases/presentation/search/case_search_delegate.dart';
 
-import 'add_case_screen.dart';
 import 'case_details_screen.dart';
 
 class CaseListScreen extends ConsumerWidget {
@@ -24,17 +23,23 @@ class CaseListScreen extends ConsumerWidget {
 
         actions: [
           cases.when(
-            data: (list) => IconButton(
-              icon: const Icon(Icons.search),
+            data: (list) {
+              if (list.isEmpty) {
+                return const SizedBox();
+              }
 
-              onPressed: () {
-                showSearch(
-                  context: context,
+              return IconButton(
+                icon: const Icon(Icons.search),
 
-                  delegate: CaseSearchDelegate(list),
-                );
-              },
-            ),
+                onPressed: () {
+                  showSearch(
+                    context: context,
+
+                    delegate: CaseSearchDelegate(list),
+                  );
+                },
+              );
+            },
 
             loading: () => const SizedBox(),
 
@@ -43,22 +48,10 @@ class CaseListScreen extends ConsumerWidget {
         ],
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-
-            MaterialPageRoute(builder: (_) => const AddCaseScreen()),
-          );
-        },
-
-        child: const Icon(Icons.add),
-      ),
-
       body: cases.when(
         loading: () => const Center(child: CircularProgressIndicator()),
 
-        error: (e, _) => Center(child: Text(e.toString())),
+        error: (error, _) => Center(child: Text(error.toString())),
 
         data: (list) {
           if (list.isEmpty) {
@@ -71,8 +64,10 @@ class CaseListScreen extends ConsumerWidget {
             itemCount: list.length,
 
             itemBuilder: (context, index) {
+              final surgicalCase = list[index];
+
               return CaseCard(
-                surgicalCase: list[index],
+                surgicalCase: surgicalCase,
 
                 onTap: () {
                   Navigator.push(
@@ -80,7 +75,7 @@ class CaseListScreen extends ConsumerWidget {
 
                     MaterialPageRoute(
                       builder: (_) =>
-                          CaseDetailsScreen(surgicalCase: list[index]),
+                          CaseDetailsScreen(surgicalCase: surgicalCase),
                     ),
                   );
                 },

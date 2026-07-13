@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/cases/domain/surgical_case.dart';
@@ -15,31 +14,25 @@ class CaseActions {
     final confirm = await showDialog<bool>(
       context: context,
 
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Delete Case?"),
+      builder: (_) => AlertDialog(
+        title: const Text("Delete Case"),
 
-          content: const Text("This cannot be undone."),
+        content: const Text("This will permanently remove this surgical case."),
 
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
 
-              child: const Text("Cancel"),
-            ),
+            child: const Text("Cancel"),
+          ),
 
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
 
-              child: const Text("Delete"),
-            ),
-          ],
-        );
-      },
+            child: const Text("Delete"),
+          ),
+        ],
+      ),
     );
 
     if (confirm != true) {
@@ -47,6 +40,8 @@ class CaseActions {
     }
 
     await ref.read(surgicalCaseRepositoryProvider).deleteCase(surgicalCase.id!);
+
+    ref.invalidate(surgicalCaseListProvider);
 
     if (context.mounted) {
       Navigator.pop(context);

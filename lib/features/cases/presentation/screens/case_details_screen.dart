@@ -76,15 +76,15 @@ class CaseDetailsScreen extends ConsumerWidget {
               }
 
               return Column(
-                children: items
-                    .map(
-                      (e) => ListTile(
-                        leading: const Icon(Icons.medical_services),
+                children: items.map((item) {
+                  return ListTile(
+                    leading: const Icon(Icons.medical_services),
 
-                        title: Text("Procedure ID: ${e.procedureId}"),
-                      ),
-                    )
-                    .toList(),
+                    title: Text(item.procedure.name),
+
+                    subtitle: Text(item.caseProcedure.type),
+                  );
+                }).toList(),
               );
             },
 
