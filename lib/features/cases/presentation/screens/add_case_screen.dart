@@ -22,16 +22,25 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final diagnosisController = TextEditingController();
+  final notesController = TextEditingController();
+
+  DateTime surgeryDate = DateTime.now();
 
   String specialty = "Cardiac";
-
   String surgeryType = "Primary";
-
   String urgency = "Elective";
-
   String operativeRole = "Assistant";
 
-  ProcedureEntity? selectedProcedure;
+  String? outcome;
+
+  final List<ProcedureEntity> selectedProcedures = [];
+
+  @override
+  void dispose() {
+    diagnosisController.dispose();
+    notesController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +55,40 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
           children: [
             ProcedureSelector(
-              selected: selectedProcedure,
+              selected: null,
 
-              onChanged: (value) {
-                setState(() {
-                  selectedProcedure = value;
-                });
+              onChanged: (procedure) {
+                if (procedure == null) return;
+
+                final exists = selectedProcedures.any(
+                  (e) => e.id == procedure.id,
+                );
+
+                if (!exists) {
+                  setState(() {
+                    selectedProcedures.add(procedure);
+                  });
+                }
               },
             ),
+
+            const SizedBox(height: 12),
+
+            if (selectedProcedures.isNotEmpty)
+              Wrap(
+                spacing: 8,
+                children: selectedProcedures.map((procedure) {
+                  return Chip(
+                    label: Text(procedure.name),
+
+                    onDeleted: () {
+                      setState(() {
+                        selectedProcedures.remove(procedure);
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
 
             TextFormField(
               controller: diagnosisController,
@@ -69,6 +104,16 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
               },
             ),
 
+            const SizedBox(height: 12),
+
+            TextFormField(
+              controller: notesController,
+
+              maxLines: 4,
+
+              decoration: const InputDecoration(labelText: "Additional Notes"),
+            ),
+
             const SizedBox(height: 20),
 
             ElevatedButton(onPressed: saveCase, child: const Text("Save Case")),
@@ -79,14 +124,12 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
   }
 
   Future<void> saveCase() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
-    if (selectedProcedure == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Select procedure")));
+    if (selectedProcedures.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Select at least one procedure")),
+      );
 
       return;
     }
@@ -98,7 +141,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
       caseId: "CTVS-${now.millisecondsSinceEpoch}",
 
-      surgeryDate: now,
+      surgeryDate: surgeryDate,
 
       diagnosis: diagnosisController.text.trim(),
 
@@ -116,9 +159,11 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
       graftConduitImplant: null,
 
-      outcome: "Ongoing",
+      outcome: outcome ?? "",
 
-      notes: null,
+      notes: notesController.text.trim().isEmpty
+          ? null
+          : notesController.text.trim(),
 
       createdAt: now,
 
@@ -127,17 +172,10 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
     await ref
         .read(surgicalCaseRepositoryProvider)
-        .addCase(newCase, selectedProcedure!.id!);
+        .addCase(newCase, selectedProcedures.map((e) => e.id!).toList());
 
     if (mounted) {
       Navigator.pop(context);
     }
-  }
-
-  @override
-  void dispose() {
-    diagnosisController.dispose();
-
-    super.dispose();
   }
 }

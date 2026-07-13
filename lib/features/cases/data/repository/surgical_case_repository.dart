@@ -20,30 +20,30 @@ class SurgicalCaseRepository {
   Future<domain.SurgicalCase?> getCaseById(int id) async {
     final row = await database.surgicalCaseDao.getCaseById(id);
 
-    if (row == null) {
-      return null;
-    }
+    if (row == null) return null;
 
     return SurgicalCaseMapper.fromData(row);
   }
 
   Future<void> addCase(
     domain.SurgicalCase surgicalCase,
-    int procedureId,
+    List<int> procedureIds,
   ) async {
     final caseId = await database.surgicalCaseDao.insertCase(
       SurgicalCaseMapper.toCompanion(surgicalCase),
     );
 
-    await database.caseProcedureDao.insertCaseProcedure(
-      CaseProceduresCompanion(
-        caseId: Value(caseId),
+    for (int i = 0; i < procedureIds.length; i++) {
+      await database.caseProcedureDao.insertCaseProcedure(
+        CaseProceduresCompanion(
+          caseId: Value(caseId),
 
-        procedureId: Value(procedureId),
+          procedureId: Value(procedureIds[i]),
 
-        type: const Value("PRIMARY"),
-      ),
-    );
+          type: Value(i == 0 ? "PRIMARY" : "ADDITIONAL"),
+        ),
+      );
+    }
   }
 
   Future<void> updateCase(domain.SurgicalCase surgicalCase) async {

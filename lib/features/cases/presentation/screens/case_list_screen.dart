@@ -23,23 +23,19 @@ class CaseListScreen extends ConsumerWidget {
 
         actions: [
           cases.when(
-            data: (list) {
-              if (list.isEmpty) {
-                return const SizedBox();
-              }
+            data: (list) => list.isEmpty
+                ? const SizedBox()
+                : IconButton(
+                    icon: const Icon(Icons.search),
 
-              return IconButton(
-                icon: const Icon(Icons.search),
+                    onPressed: () {
+                      showSearch(
+                        context: context,
 
-                onPressed: () {
-                  showSearch(
-                    context: context,
-
-                    delegate: CaseSearchDelegate(list),
-                  );
-                },
-              );
-            },
+                        delegate: CaseSearchDelegate(list),
+                      );
+                    },
+                  ),
 
             loading: () => const SizedBox(),
 
@@ -51,36 +47,74 @@ class CaseListScreen extends ConsumerWidget {
       body: cases.when(
         loading: () => const Center(child: CircularProgressIndicator()),
 
-        error: (error, _) => Center(child: Text(error.toString())),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+
+            children: [
+              const Icon(Icons.error_outline, size: 50),
+
+              const SizedBox(height: 12),
+
+              Text(error.toString(), textAlign: TextAlign.center),
+            ],
+          ),
+        ),
 
         data: (list) {
           if (list.isEmpty) {
             return const CasesEmptyState();
           }
 
-          return ListView.builder(
-            padding: const EdgeInsets.only(top: 12),
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
 
-            itemCount: list.length,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-            itemBuilder: (context, index) {
-              final surgicalCase = list[index];
-
-              return CaseCard(
-                surgicalCase: surgicalCase,
-
-                onTap: () {
-                  Navigator.push(
-                    context,
-
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          CaseDetailsScreen(surgicalCase: surgicalCase),
+                  children: [
+                    const Text(
+                      "Logged Cases",
+                      style: TextStyle(fontWeight: FontWeight.w600),
                     ),
-                  );
-                },
-              );
-            },
+
+                    Text(
+                      "${list.length}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(top: 8),
+
+                  itemCount: list.length,
+
+                  itemBuilder: (context, index) {
+                    final surgicalCase = list[index];
+
+                    return CaseCard(
+                      surgicalCase: surgicalCase,
+
+                      onTap: () {
+                        Navigator.push(
+                          context,
+
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                CaseDetailsScreen(surgicalCase: surgicalCase),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),

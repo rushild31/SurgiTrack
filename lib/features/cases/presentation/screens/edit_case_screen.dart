@@ -18,6 +18,10 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
   late TextEditingController diagnosisController;
 
+  late TextEditingController notesController;
+
+  late DateTime surgeryDate;
+
   late String specialty;
 
   late String surgeryType;
@@ -25,6 +29,8 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
   late String urgency;
 
   late String operativeRole;
+
+  String? outcome;
 
   @override
   void initState() {
@@ -34,6 +40,10 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
     diagnosisController = TextEditingController(text: c.diagnosis);
 
+    notesController = TextEditingController(text: c.notes ?? "");
+
+    surgeryDate = c.surgeryDate;
+
     specialty = c.specialty;
 
     surgeryType = c.surgeryType;
@@ -41,11 +51,15 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
     urgency = c.urgency;
 
     operativeRole = c.operativeRole;
+
+    outcome = c.outcome.isEmpty ? null : c.outcome;
   }
 
   @override
   void dispose() {
     diagnosisController.dispose();
+
+    notesController.dispose();
 
     super.dispose();
   }
@@ -55,175 +69,242 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Edit Surgical Case")),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: Form(
+        key: _formKey,
 
-        child: Form(
-          key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
 
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: diagnosisController,
+          children: [
+            TextFormField(
+              controller: diagnosisController,
 
-                decoration: const InputDecoration(labelText: "Diagnosis"),
+              decoration: const InputDecoration(labelText: "Diagnosis"),
 
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Enter diagnosis";
-                  }
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return "Enter diagnosis";
+                }
 
-                  return null;
-                },
+                return null;
+              },
+            ),
+
+            const SizedBox(height: 12),
+
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+
+              title: const Text("Surgery Date"),
+
+              subtitle: Text(
+                "${surgeryDate.day}/"
+                "${surgeryDate.month}/"
+                "${surgeryDate.year}",
               ),
 
-              const SizedBox(height: 16),
+              trailing: const Icon(Icons.calendar_today),
 
-              DropdownButtonFormField<String>(
-                initialValue: specialty,
+              onTap: () async {
+                final picked = await showDatePicker(
+                  context: context,
 
-                decoration: const InputDecoration(labelText: "Specialty"),
+                  initialDate: surgeryDate,
 
-                items: const [
-                  DropdownMenuItem(value: "Cardiac", child: Text("Cardiac")),
+                  firstDate: DateTime(2000),
 
-                  DropdownMenuItem(value: "Thoracic", child: Text("Thoracic")),
+                  lastDate: DateTime.now(),
+                );
 
-                  DropdownMenuItem(value: "Vascular", child: Text("Vascular")),
-                ],
-
-                onChanged: (v) {
+                if (picked != null) {
                   setState(() {
-                    specialty = v!;
+                    surgeryDate = picked;
                   });
-                },
+                }
+              },
+            ),
+
+            _dropdown(
+              label: "Specialty",
+
+              value: specialty,
+
+              items: const ["Cardiac", "Thoracic", "Vascular"],
+
+              onChanged: (v) {
+                setState(() {
+                  specialty = v;
+                });
+              },
+            ),
+
+            _dropdown(
+              label: "Surgery Type",
+
+              value: surgeryType,
+
+              items: const ["Primary", "Redo"],
+
+              onChanged: (v) {
+                setState(() {
+                  surgeryType = v;
+                });
+              },
+            ),
+
+            _dropdown(
+              label: "Urgency",
+
+              value: urgency,
+
+              items: const ["Elective", "Emergency"],
+
+              onChanged: (v) {
+                setState(() {
+                  urgency = v;
+                });
+              },
+            ),
+
+            _dropdown(
+              label: "Operative Role",
+
+              value: operativeRole,
+
+              items: const ["Observer", "Assistant", "Primary Surgeon"],
+
+              onChanged: (v) {
+                setState(() {
+                  operativeRole = v;
+                });
+              },
+            ),
+
+            DropdownButtonFormField<String>(
+              initialValue: outcome,
+
+              decoration: const InputDecoration(
+                labelText: "Outcome (optional)",
               ),
 
-              DropdownButtonFormField<String>(
-                initialValue: surgeryType,
+              items: const [
+                DropdownMenuItem(
+                  value: "Successful",
+                  child: Text("Successful"),
+                ),
 
-                decoration: const InputDecoration(labelText: "Surgery Type"),
+                DropdownMenuItem(
+                  value: "Reintervention",
+                  child: Text("Reintervention"),
+                ),
 
-                items: const [
-                  DropdownMenuItem(value: "Primary", child: Text("Primary")),
+                DropdownMenuItem(value: "Mortality", child: Text("Mortality")),
 
-                  DropdownMenuItem(value: "Redo", child: Text("Redo")),
-                ],
+                DropdownMenuItem(
+                  value: "Lost to Follow-up",
+                  child: Text("Lost to Follow-up"),
+                ),
+              ],
 
-                onChanged: (v) {
-                  setState(() {
-                    surgeryType = v!;
-                  });
-                },
-              ),
+              onChanged: (v) {
+                setState(() {
+                  outcome = v;
+                });
+              },
+            ),
 
-              DropdownButtonFormField<String>(
-                initialValue: urgency,
+            TextFormField(
+              controller: notesController,
 
-                decoration: const InputDecoration(labelText: "Urgency"),
+              maxLines: 3,
 
-                items: const [
-                  DropdownMenuItem(value: "Elective", child: Text("Elective")),
+              decoration: const InputDecoration(labelText: "Notes"),
+            ),
 
-                  DropdownMenuItem(
-                    value: "Emergency",
-                    child: Text("Emergency"),
-                  ),
-                ],
+            const SizedBox(height: 24),
 
-                onChanged: (v) {
-                  setState(() {
-                    urgency = v!;
-                  });
-                },
-              ),
+            ElevatedButton(
+              onPressed: updateCase,
 
-              DropdownButtonFormField<String>(
-                initialValue: operativeRole,
-
-                decoration: const InputDecoration(labelText: "Operative Role"),
-
-                items: const [
-                  DropdownMenuItem(value: "Observer", child: Text("Observer")),
-
-                  DropdownMenuItem(
-                    value: "Assistant",
-
-                    child: Text("Assistant"),
-                  ),
-
-                  DropdownMenuItem(
-                    value: "Primary Surgeon",
-
-                    child: Text("Primary Surgeon"),
-                  ),
-                ],
-
-                onChanged: (v) {
-                  setState(() {
-                    operativeRole = v!;
-                  });
-                },
-              ),
-
-              const SizedBox(height: 24),
-
-              ElevatedButton(
-                onPressed: () async {
-                  if (!_formKey.currentState!.validate()) {
-                    return;
-                  }
-
-                  final updated = SurgicalCase(
-                    id: widget.surgicalCase.id,
-
-                    patientId: widget.surgicalCase.patientId,
-
-                    caseId: widget.surgicalCase.caseId,
-
-                    surgeryDate: widget.surgicalCase.surgeryDate,
-
-                    diagnosis: diagnosisController.text,
-
-                    urgency: urgency,
-
-                    surgeryType: surgeryType,
-
-                    specialty: specialty,
-
-                    surgicalApproach: widget.surgicalCase.surgicalApproach,
-
-                    operativeRole: operativeRole,
-
-                    technicalSteps: widget.surgicalCase.technicalSteps,
-
-                    graftConduitImplant:
-                        widget.surgicalCase.graftConduitImplant,
-
-                    outcome: widget.surgicalCase.outcome,
-
-                    notes: widget.surgicalCase.notes,
-
-                    createdAt: widget.surgicalCase.createdAt,
-
-                    updatedAt: DateTime.now(),
-                  );
-
-                  await ref
-                      .read(surgicalCaseRepositoryProvider)
-                      .updateCase(updated);
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-
-                child: const Text("Update Case"),
-              ),
-            ],
-          ),
+              child: const Text("Update Case"),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Widget _dropdown({
+    required String label,
+
+    required String value,
+
+    required List<String> items,
+
+    required Function(String) onChanged,
+  }) {
+    return DropdownButtonFormField<String>(
+      initialValue: value,
+
+      decoration: InputDecoration(labelText: label),
+
+      items: items
+          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+          .toList(),
+
+      onChanged: (v) {
+        if (v != null) {
+          onChanged(v);
+        }
+      },
+    );
+  }
+
+  Future<void> updateCase() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final c = widget.surgicalCase;
+
+    final updated = SurgicalCase(
+      id: c.id,
+
+      patientId: c.patientId,
+
+      caseId: c.caseId,
+
+      surgeryDate: surgeryDate,
+
+      diagnosis: diagnosisController.text.trim(),
+
+      urgency: urgency,
+
+      surgeryType: surgeryType,
+
+      specialty: specialty,
+
+      surgicalApproach: c.surgicalApproach,
+
+      operativeRole: operativeRole,
+
+      technicalSteps: c.technicalSteps,
+
+      graftConduitImplant: c.graftConduitImplant,
+
+      outcome: outcome ?? "",
+
+      notes: notesController.text.trim().isEmpty
+          ? null
+          : notesController.text.trim(),
+
+      createdAt: c.createdAt,
+
+      updatedAt: DateTime.now(),
+    );
+
+    await ref.read(surgicalCaseRepositoryProvider).updateCase(updated);
+
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 }

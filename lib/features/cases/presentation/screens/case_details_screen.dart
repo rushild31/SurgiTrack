@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/cases/domain/surgical_case.dart';
-
 import 'package:surgitrack/features/cases/providers/case_procedure_provider.dart';
-
 import 'package:surgitrack/features/cases/presentation/widgets/case_actions.dart';
 
 import 'edit_case_screen.dart';
@@ -51,55 +49,101 @@ class CaseDetailsScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
 
         children: [
-          _field("Diagnosis", surgicalCase.diagnosis),
+          _section("Case Information", [
+            _field("Case ID", surgicalCase.caseId),
 
-          _field("Specialty", surgicalCase.specialty),
+            _field("Patient ID", surgicalCase.patientId.toString()),
 
-          _field("Surgery Type", surgicalCase.surgeryType),
+            _field("Date", _date(surgicalCase.surgeryDate)),
+          ]),
 
-          _field("Role", surgicalCase.operativeRole),
+          _section("Clinical Details", [
+            _field("Diagnosis", surgicalCase.diagnosis),
 
-          _field("Outcome", surgicalCase.outcome),
+            _field("Specialty", surgicalCase.specialty),
 
-          const SizedBox(height: 20),
+            _field("Surgery Type", surgicalCase.surgeryType),
 
-          const Text(
-            "Procedures",
+            _field("Operative Role", surgicalCase.operativeRole),
 
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
+            _field("Outcome", surgicalCase.outcome),
+          ]),
 
-          procedures.when(
-            data: (items) {
-              if (items.isEmpty) {
-                return const Text("No procedure linked");
-              }
+          _section("Linked Procedures", [
+            procedures.when(
+              data: (items) {
+                if (items.isEmpty) {
+                  return const Text("No procedure linked");
+                }
 
-              return Column(
-                children: items.map((item) {
-                  return ListTile(
-                    leading: const Icon(Icons.medical_services),
+                return Column(
+                  children: items
+                      .map(
+                        (item) => ListTile(
+                          contentPadding: EdgeInsets.zero,
 
-                    title: Text(item.procedure.name),
+                          leading: const Icon(Icons.medical_services),
 
-                    subtitle: Text(item.caseProcedure.type),
-                  );
-                }).toList(),
-              );
-            },
+                          title: Text(item.procedure.name),
 
-            loading: () => const CircularProgressIndicator(),
+                          subtitle: Text(
+                            item.caseProcedure.type == "PRIMARY"
+                                ? "Primary Procedure"
+                                : "Additional Procedure",
+                          ),
+                        ),
+                      )
+                      .toList(),
+                );
+              },
 
-            error: (_, _) => const Text("Unable to load procedures"),
-          ),
+              loading: () => const CircularProgressIndicator(),
+
+              error: (_, _) => const Text("Unable to load procedures"),
+            ),
+          ]),
         ],
       ),
     );
   }
 
-  Widget _field(String title, String value) {
+  Widget _section(String title, List<Widget> children) {
     return Card(
-      child: ListTile(title: Text(title), subtitle: Text(value)),
+      margin: const EdgeInsets.only(bottom: 16),
+
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+            Text(
+              title,
+
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 12),
+
+            ...children,
+          ],
+        ),
+      ),
     );
+  }
+
+  Widget _field(String label, String value) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+
+      title: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+
+      subtitle: Text(value.isEmpty ? "-" : value),
+    );
+  }
+
+  String _date(DateTime date) {
+    return "${date.day}-${date.month}-${date.year}";
   }
 }

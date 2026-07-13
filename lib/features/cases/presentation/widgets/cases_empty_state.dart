@@ -6,24 +6,37 @@ class CasesEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Padding(
+        padding: const EdgeInsets.all(24),
 
-        children: [
-          const Icon(Icons.medical_services_outlined, size: 60),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
 
-          const SizedBox(height: 16),
+          children: [
+            const Icon(Icons.medical_services_outlined, size: 70),
 
-          Text(
-            "No surgical cases logged yet",
+            const SizedBox(height: 20),
 
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+            Text(
+              "No surgical cases logged yet",
 
-          const SizedBox(height: 8),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
 
-          const Text("Start building your surgical portfolio"),
-        ],
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 12),
+
+            const Text(
+              "Cases are added from an individual patient profile.\n\n"
+              "Open a patient → Add Case → Select procedure",
+
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
