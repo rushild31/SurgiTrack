@@ -17,6 +17,7 @@ class SurgicalCases extends Table {
 
   DateTimeColumn get surgeryDate => dateTime()();
 
+  /// Preoperative diagnosis
   TextColumn get diagnosis => text()();
 
   /// Planned / Emergency
@@ -27,9 +28,6 @@ class SurgicalCases extends Table {
 
   /// Cardiac / Thoracic / Vascular
   TextColumn get specialty => text()();
-
-  /// Selected procedure name
-  TextColumn get procedure => text()();
 
   /// Surgical approach
   TextColumn get surgicalApproach => text().nullable()();
@@ -42,8 +40,19 @@ class SurgicalCases extends Table {
   /// Supervised / Independent
   TextColumn get operativeRole => text()();
 
-  /// JSON encoded list of technical step participation
+  /// JSON encoded list of technical steps
   TextColumn get technicalSteps => text().nullable()();
+
+  // =========================
+  // Perfusion Details
+  // =========================
+
+  BoolColumn get cardiopulmonaryBypassUsed =>
+      boolean().withDefault(const Constant(false))();
+
+  IntColumn get bypassTimeMinutes => integer().nullable()();
+
+  IntColumn get crossClampTimeMinutes => integer().nullable()();
 
   // =========================
   // Graft / Implant
@@ -57,13 +66,15 @@ class SurgicalCases extends Table {
 
   TextColumn get outcome => text()();
 
+  TextColumn get complications => text().nullable()();
+
   TextColumn get notes => text().nullable()();
 
   // =========================
   // Metadata
   // =========================
 
-  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
-  DateTimeColumn get updatedAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }
