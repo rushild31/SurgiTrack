@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import 'package:surgitrack/core/database/app_database.dart';
+
 import 'package:surgitrack/core/database/tables/procedures.dart';
 
 part 'procedure_dao.g.dart';
@@ -10,22 +11,34 @@ class ProcedureDao extends DatabaseAccessor<AppDatabase>
     with _$ProcedureDaoMixin {
   ProcedureDao(super.db);
 
-  Future<List<Procedure>> getAllProcedures() {
+  Future<List<ProcedureData>> getAllProcedures() {
     return (select(
       procedures,
     )..orderBy([(tbl) => OrderingTerm.asc(tbl.name)])).get();
   }
 
-  Stream<List<Procedure>> watchProcedures() {
+  Stream<List<ProcedureData>> watchProcedures() {
     return (select(
       procedures,
     )..orderBy([(tbl) => OrderingTerm.asc(tbl.name)])).watch();
   }
 
-  Future<Procedure?> getProcedureById(int id) {
+  Future<ProcedureData?> getProcedureById(int id) {
     return (select(
       procedures,
     )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+  }
+
+  Future<List<ProcedureData>> searchProcedures(String query) {
+    return (select(
+      procedures,
+    )..where((tbl) => tbl.name.like("%$query%"))).get();
+  }
+
+  Future<List<ProcedureData>> getBySpecialty(String specialty) {
+    return (select(
+      procedures,
+    )..where((tbl) => tbl.specialty.equals(specialty))).get();
   }
 
   Future<int> insertProcedure(ProceduresCompanion procedure) {

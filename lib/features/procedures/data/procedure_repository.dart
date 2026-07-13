@@ -1,27 +1,28 @@
 import 'package:surgitrack/core/database/app_database.dart';
 
 import 'package:surgitrack/features/procedures/domain/procedure.dart';
+
 import 'procedure_mapper.dart';
 
 class ProcedureRepository {
-  final AppDatabase db;
+  final AppDatabase database;
 
-  ProcedureRepository(this.db);
-
-  Future<List<ProcedureEntity>> getProcedures() async {
-    final rows = await db.procedureDao.getAllProcedures();
-
-    return rows.map(ProcedureMapper.fromData).toList();
-  }
+  const ProcedureRepository(this.database);
 
   Stream<List<ProcedureEntity>> watchProcedures() {
-    return db.procedureDao.watchProcedures().map(
+    return database.procedureDao.watchProcedures().map(
       (rows) => rows.map(ProcedureMapper.fromData).toList(),
     );
   }
 
+  Future<List<ProcedureEntity>> getProcedures() async {
+    final rows = await database.procedureDao.getAllProcedures();
+
+    return rows.map(ProcedureMapper.fromData).toList();
+  }
+
   Future<ProcedureEntity?> getProcedureById(int id) async {
-    final row = await db.procedureDao.getProcedureById(id);
+    final row = await database.procedureDao.getProcedureById(id);
 
     if (row == null) {
       return null;
@@ -30,19 +31,25 @@ class ProcedureRepository {
     return ProcedureMapper.fromData(row);
   }
 
+  Future<List<ProcedureEntity>> searchProcedures(String query) async {
+    final rows = await database.procedureDao.searchProcedures(query);
+
+    return rows.map(ProcedureMapper.fromData).toList();
+  }
+
   Future<void> addProcedure(ProcedureEntity procedure) async {
-    await db.procedureDao.insertProcedure(
+    await database.procedureDao.insertProcedure(
       ProcedureMapper.toCompanion(procedure),
     );
   }
 
   Future<void> updateProcedure(ProcedureEntity procedure) async {
-    await db.procedureDao.updateProcedure(
+    await database.procedureDao.updateProcedure(
       ProcedureMapper.toCompanion(procedure),
     );
   }
 
   Future<void> deleteProcedure(int id) async {
-    await db.procedureDao.deleteProcedure(id);
+    await database.procedureDao.deleteProcedure(id);
   }
 }

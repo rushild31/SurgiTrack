@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/procedure_provider.dart';
+import 'package:surgitrack/features/procedures/providers/procedure_provider.dart';
 
-import 'procedure_search.dart';
+import 'package:surgitrack/features/procedures/presentation/procedure_search_delegate.dart';
 
-import 'widgets/procedure_tile.dart';
-
-class ProcedureLibraryScreen extends ConsumerStatefulWidget {
+class ProcedureLibraryScreen extends ConsumerWidget {
   const ProcedureLibraryScreen({super.key});
 
   @override
-  ConsumerState<ProcedureLibraryScreen> createState() =>
-      _ProcedureLibraryScreenState();
-}
-
-class _ProcedureLibraryScreenState
-    extends ConsumerState<ProcedureLibraryScreen> {
-  String searchQuery = "";
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final proceduresAsync = ref.watch(procedureListProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Procedure Library")),
+      appBar: AppBar(
+        title: const Text("Procedure Library"),
+
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+
+            onPressed: () {
+              showSearch(
+                context: context,
+
+                delegate: ProcedureSearchDelegate(ref),
+              );
+            },
+          ),
+        ],
+      ),
 
       body: proceduresAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -32,46 +37,30 @@ class _ProcedureLibraryScreenState
         error: (error, stack) => Center(child: Text(error.toString())),
 
         data: (procedures) {
-          final filtered = procedures.where((procedure) {
-            if (searchQuery.isEmpty) {
-              return true;
-            }
+          if (procedures.isEmpty) {
+            return const Center(child: Text("No procedures added yet"));
+          }
 
-            final query = searchQuery.toLowerCase();
+          return ListView.builder(
+            padding: const EdgeInsets.all(12),
 
-            return procedure.name.toLowerCase().contains(query) ||
-                procedure.category.toLowerCase().contains(query) ||
-                procedure.specialty.toLowerCase().contains(query);
-          }).toList();
+            itemCount: procedures.length,
 
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12),
+            itemBuilder: (context, index) {
+              final procedure = procedures[index];
 
-                child: ProcedureSearch(
-                  procedures: procedures,
+              return Card(
+                child: ListTile(
+                  leading: const Icon(Icons.medical_services),
 
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
+                  title: Text(procedure.name),
+
+                  subtitle: Text(
+                    "${procedure.specialty} • ${procedure.category}",
+                  ),
                 ),
-              ),
-
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-
-                  itemCount: filtered.length,
-
-                  itemBuilder: (context, index) {
-                    return ProcedureTile(procedure: filtered[index]);
-                  },
-                ),
-              ),
-            ],
+              );
+            },
           );
         },
       ),

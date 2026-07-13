@@ -5,9 +5,7 @@ import 'package:surgitrack/features/cases/domain/surgical_case.dart';
 import 'package:surgitrack/features/cases/providers/surgical_case_provider.dart';
 
 import 'package:surgitrack/features/procedures/domain/procedure.dart';
-import 'package:surgitrack/features/procedures/providers/procedure_provider.dart';
-
-import '../widgets/procedure_selector.dart';
+import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
 
 class AddCaseScreen extends ConsumerStatefulWidget {
   const AddCaseScreen({super.key});
@@ -17,11 +15,9 @@ class AddCaseScreen extends ConsumerStatefulWidget {
 }
 
 class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   final diagnosisController = TextEditingController();
-
-  ProcedureEntity? selectedProcedure;
 
   String specialty = "Cardiac";
 
@@ -31,211 +27,106 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
   String operativeRole = "Assistant";
 
-  DateTime surgeryDate = DateTime.now();
+  ProcedureEntity? selectedProcedure;
 
   @override
   Widget build(BuildContext context) {
-    final proceduresAsync = ref.watch(procedureListProvider);
-
     return Scaffold(
       appBar: AppBar(title: const Text("Add Surgical Case")),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: Form(
+        key: _formKey,
 
-        child: Form(
-          key: formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
 
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: diagnosisController,
+          children: [
+            ProcedureSelector(
+              selected: selectedProcedure,
 
-                decoration: const InputDecoration(
-                  labelText: "Diagnosis",
-                  border: OutlineInputBorder(),
-                ),
+              onChanged: (value) {
+                setState(() {
+                  selectedProcedure = value;
+                });
+              },
+            ),
 
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return "Enter diagnosis";
-                  }
+            TextFormField(
+              controller: diagnosisController,
 
-                  return null;
-                },
-              ),
+              decoration: const InputDecoration(labelText: "Diagnosis"),
 
-              const SizedBox(height: 16),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Enter diagnosis";
+                }
 
-              proceduresAsync.when(
-                data: (procedures) {
-                  return ProcedureSelector(
-                    procedures: procedures,
-                    selected: selectedProcedure,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedProcedure = value;
-                      });
-                    },
-                  );
-                },
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) =>
-                    Text("Error loading procedures: $error"),
-              ),
+                return null;
+              },
+            ),
 
-              const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-              DropdownButtonFormField<String>(
-                initialValue: specialty,
-
-                decoration: const InputDecoration(labelText: "Specialty"),
-
-                items: const [
-                  DropdownMenuItem(value: "Cardiac", child: Text("Cardiac")),
-
-                  DropdownMenuItem(value: "Thoracic", child: Text("Thoracic")),
-
-                  DropdownMenuItem(value: "Vascular", child: Text("Vascular")),
-                ],
-
-                onChanged: (value) {
-                  setState(() {
-                    specialty = value!;
-                  });
-                },
-              ),
-
-              DropdownButtonFormField<String>(
-                initialValue: surgeryType,
-
-                decoration: const InputDecoration(labelText: "Surgery Type"),
-
-                items: const [
-                  DropdownMenuItem(value: "Primary", child: Text("Primary")),
-
-                  DropdownMenuItem(value: "Redo", child: Text("Redo")),
-                ],
-
-                onChanged: (value) {
-                  setState(() {
-                    surgeryType = value!;
-                  });
-                },
-              ),
-
-              DropdownButtonFormField<String>(
-                initialValue: urgency,
-
-                decoration: const InputDecoration(labelText: "Urgency"),
-
-                items: const [
-                  DropdownMenuItem(value: "Elective", child: Text("Elective")),
-
-                  DropdownMenuItem(
-                    value: "Emergency",
-                    child: Text("Emergency"),
-                  ),
-                ],
-
-                onChanged: (value) {
-                  setState(() {
-                    urgency = value!;
-                  });
-                },
-              ),
-
-              DropdownButtonFormField<String>(
-                initialValue: operativeRole,
-
-                decoration: const InputDecoration(labelText: "Operative Role"),
-
-                items: const [
-                  DropdownMenuItem(value: "Observer", child: Text("Observer")),
-
-                  DropdownMenuItem(
-                    value: "Assistant",
-                    child: Text("Assistant"),
-                  ),
-
-                  DropdownMenuItem(
-                    value: "Primary Surgeon",
-                    child: Text("Primary Surgeon"),
-                  ),
-                ],
-
-                onChanged: (value) {
-                  setState(() {
-                    operativeRole = value!;
-                  });
-                },
-              ),
-
-              const SizedBox(height: 24),
-
-              ElevatedButton(
-                onPressed: () async {
-                  if (!formKey.currentState!.validate()) {
-                    return;
-                  }
-
-                  if (selectedProcedure == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Select procedure")),
-                    );
-
-                    return;
-                  }
-
-                  final now = DateTime.now();
-
-                  final newCase = SurgicalCase(
-                    patientId: 1,
-
-                    caseId: "CTVS-${now.millisecondsSinceEpoch}",
-
-                    surgeryDate: surgeryDate,
-
-                    diagnosis: diagnosisController.text.trim(),
-
-                    urgency: urgency,
-
-                    surgeryType: surgeryType,
-
-                    specialty: specialty,
-
-                    surgicalApproach: null,
-
-                    operativeRole: operativeRole,
-
-                    technicalSteps: null,
-
-                    graftConduitImplant: null,
-
-                    outcome: "Ongoing",
-
-                    notes: null,
-
-                    createdAt: now,
-
-                    updatedAt: now,
-                  );
-
-                  await ref
-                      .read(surgicalCaseRepositoryProvider)
-                      .addCase(newCase);
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-
-                child: const Text("Save Case"),
-              ),
-            ],
-          ),
+            ElevatedButton(onPressed: saveCase, child: const Text("Save Case")),
+          ],
         ),
       ),
     );
+  }
+
+  Future<void> saveCase() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    if (selectedProcedure == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Select procedure")));
+
+      return;
+    }
+
+    final now = DateTime.now();
+
+    final newCase = SurgicalCase(
+      patientId: 1,
+
+      caseId: "CTVS-${now.millisecondsSinceEpoch}",
+
+      surgeryDate: now,
+
+      diagnosis: diagnosisController.text.trim(),
+
+      urgency: urgency,
+
+      surgeryType: surgeryType,
+
+      specialty: specialty,
+
+      surgicalApproach: null,
+
+      operativeRole: operativeRole,
+
+      technicalSteps: null,
+
+      graftConduitImplant: null,
+
+      outcome: "Ongoing",
+
+      notes: null,
+
+      createdAt: now,
+
+      updatedAt: now,
+    );
+
+    await ref
+        .read(surgicalCaseRepositoryProvider)
+        .addCase(newCase, selectedProcedure!.id!);
+
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 }

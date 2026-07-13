@@ -1,17 +1,34 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 
 import 'package:surgitrack/core/database/app_database.dart';
 
-import '../domain/procedure.dart';
+import 'package:surgitrack/features/procedures/domain/procedure.dart';
 
 class ProcedureMapper {
-  static ProcedureEntity fromData(Procedure data) {
+  static ProcedureEntity fromData(ProcedureData data) {
     return ProcedureEntity(
       id: data.id,
+
+      procedureId: data.procedureId,
+
       name: data.name,
-      category: data.category,
+
       specialty: data.specialty,
+
+      category: data.category,
+
+      parentId: data.parentId,
+
+      aliases: data.aliases == null
+          ? []
+          : List<String>.from(jsonDecode(data.aliases!)),
+
+      description: data.description,
+
       isActive: data.isActive,
+
       createdAt: data.createdAt,
     );
   }
@@ -20,11 +37,19 @@ class ProcedureMapper {
     return ProceduresCompanion(
       id: procedure.id == null ? const Value.absent() : Value(procedure.id!),
 
+      procedureId: Value(procedure.procedureId),
+
       name: Value(procedure.name),
+
+      specialty: Value(procedure.specialty),
 
       category: Value(procedure.category),
 
-      specialty: Value(procedure.specialty),
+      parentId: Value(procedure.parentId),
+
+      aliases: Value(jsonEncode(procedure.aliases)),
+
+      description: Value(procedure.description),
 
       isActive: Value(procedure.isActive),
 

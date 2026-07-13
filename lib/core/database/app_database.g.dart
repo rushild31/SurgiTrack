@@ -1499,7 +1499,7 @@ class PatientTagsCompanion extends UpdateCompanion<PatientTagData> {
 }
 
 class $ProceduresTable extends Procedures
-    with TableInfo<$ProceduresTable, Procedure> {
+    with TableInfo<$ProceduresTable, ProcedureData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1517,21 +1517,22 @@ class $ProceduresTable extends Procedures
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _procedureIdMeta = const VerificationMeta(
+    'procedureId',
+  );
   @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-    'name',
+  late final GeneratedColumn<String> procedureId = GeneratedColumn<String>(
+    'procedure_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
-  static const VerificationMeta _categoryMeta = const VerificationMeta(
-    'category',
-  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String> category = GeneratedColumn<String>(
-    'category',
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -1547,7 +1548,51 @@ class $ProceduresTable extends Procedures
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
-    defaultValue: const Constant("Cardiothoracic Surgery"),
+    defaultValue: const Constant("Cardiac"),
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentIdMeta = const VerificationMeta(
+    'parentId',
+  );
+  @override
+  late final GeneratedColumn<int> parentId = GeneratedColumn<int>(
+    'parent_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _aliasesMeta = const VerificationMeta(
+    'aliases',
+  );
+  @override
+  late final GeneratedColumn<String> aliases = GeneratedColumn<String>(
+    'aliases',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _isActiveMeta = const VerificationMeta(
     'isActive',
@@ -1579,9 +1624,13 @@ class $ProceduresTable extends Procedures
   @override
   List<GeneratedColumn> get $columns => [
     id,
+    procedureId,
     name,
-    category,
     specialty,
+    category,
+    parentId,
+    aliases,
+    description,
     isActive,
     createdAt,
   ];
@@ -1592,13 +1641,24 @@ class $ProceduresTable extends Procedures
   static const String $name = 'procedures';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Procedure> instance, {
+    Insertable<ProcedureData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('procedure_id')) {
+      context.handle(
+        _procedureIdMeta,
+        procedureId.isAcceptableOrUnknown(
+          data['procedure_id']!,
+          _procedureIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_procedureIdMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -1608,6 +1668,12 @@ class $ProceduresTable extends Procedures
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('specialty')) {
+      context.handle(
+        _specialtyMeta,
+        specialty.isAcceptableOrUnknown(data['specialty']!, _specialtyMeta),
+      );
+    }
     if (data.containsKey('category')) {
       context.handle(
         _categoryMeta,
@@ -1616,10 +1682,25 @@ class $ProceduresTable extends Procedures
     } else if (isInserting) {
       context.missing(_categoryMeta);
     }
-    if (data.containsKey('specialty')) {
+    if (data.containsKey('parent_id')) {
       context.handle(
-        _specialtyMeta,
-        specialty.isAcceptableOrUnknown(data['specialty']!, _specialtyMeta),
+        _parentIdMeta,
+        parentId.isAcceptableOrUnknown(data['parent_id']!, _parentIdMeta),
+      );
+    }
+    if (data.containsKey('aliases')) {
+      context.handle(
+        _aliasesMeta,
+        aliases.isAcceptableOrUnknown(data['aliases']!, _aliasesMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
       );
     }
     if (data.containsKey('is_active')) {
@@ -1640,25 +1721,41 @@ class $ProceduresTable extends Procedures
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Procedure map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ProcedureData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Procedure(
+    return ProcedureData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
+      )!,
+      procedureId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}procedure_id'],
       )!,
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
-      category: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}category'],
-      )!,
       specialty: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}specialty'],
       )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      )!,
+      parentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parent_id'],
+      ),
+      aliases: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}aliases'],
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
       isActive: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}is_active'],
@@ -1676,18 +1773,41 @@ class $ProceduresTable extends Procedures
   }
 }
 
-class Procedure extends DataClass implements Insertable<Procedure> {
+class ProcedureData extends DataClass implements Insertable<ProcedureData> {
   final int id;
+
+  /// Unique procedure identifier
+  final String procedureId;
+
+  /// Display name
   final String name;
-  final String category;
+
+  /// Cardiac / Thoracic / Vascular / Congenital
   final String specialty;
+
+  /// CABG, Valve, Aortic, etc.
+  final String category;
+
+  /// Parent procedure for hierarchy
+  /// Example:
+  /// Valve Surgery -> AVR
+  final int? parentId;
+
+  /// Additional search terms
+  /// Stored as JSON array
+  final String? aliases;
+  final String? description;
   final bool isActive;
   final DateTime createdAt;
-  const Procedure({
+  const ProcedureData({
     required this.id,
+    required this.procedureId,
     required this.name,
-    required this.category,
     required this.specialty,
+    required this.category,
+    this.parentId,
+    this.aliases,
+    this.description,
     required this.isActive,
     required this.createdAt,
   });
@@ -1695,9 +1815,19 @@ class Procedure extends DataClass implements Insertable<Procedure> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['procedure_id'] = Variable<String>(procedureId);
     map['name'] = Variable<String>(name);
-    map['category'] = Variable<String>(category);
     map['specialty'] = Variable<String>(specialty);
+    map['category'] = Variable<String>(category);
+    if (!nullToAbsent || parentId != null) {
+      map['parent_id'] = Variable<int>(parentId);
+    }
+    if (!nullToAbsent || aliases != null) {
+      map['aliases'] = Variable<String>(aliases);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
     map['is_active'] = Variable<bool>(isActive);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
@@ -1706,24 +1836,38 @@ class Procedure extends DataClass implements Insertable<Procedure> {
   ProceduresCompanion toCompanion(bool nullToAbsent) {
     return ProceduresCompanion(
       id: Value(id),
+      procedureId: Value(procedureId),
       name: Value(name),
-      category: Value(category),
       specialty: Value(specialty),
+      category: Value(category),
+      parentId: parentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(parentId),
+      aliases: aliases == null && nullToAbsent
+          ? const Value.absent()
+          : Value(aliases),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
       isActive: Value(isActive),
       createdAt: Value(createdAt),
     );
   }
 
-  factory Procedure.fromJson(
+  factory ProcedureData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Procedure(
+    return ProcedureData(
       id: serializer.fromJson<int>(json['id']),
+      procedureId: serializer.fromJson<String>(json['procedureId']),
       name: serializer.fromJson<String>(json['name']),
-      category: serializer.fromJson<String>(json['category']),
       specialty: serializer.fromJson<String>(json['specialty']),
+      category: serializer.fromJson<String>(json['category']),
+      parentId: serializer.fromJson<int?>(json['parentId']),
+      aliases: serializer.fromJson<String?>(json['aliases']),
+      description: serializer.fromJson<String?>(json['description']),
       isActive: serializer.fromJson<bool>(json['isActive']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
@@ -1733,35 +1877,55 @@ class Procedure extends DataClass implements Insertable<Procedure> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'procedureId': serializer.toJson<String>(procedureId),
       'name': serializer.toJson<String>(name),
-      'category': serializer.toJson<String>(category),
       'specialty': serializer.toJson<String>(specialty),
+      'category': serializer.toJson<String>(category),
+      'parentId': serializer.toJson<int?>(parentId),
+      'aliases': serializer.toJson<String?>(aliases),
+      'description': serializer.toJson<String?>(description),
       'isActive': serializer.toJson<bool>(isActive),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  Procedure copyWith({
+  ProcedureData copyWith({
     int? id,
+    String? procedureId,
     String? name,
-    String? category,
     String? specialty,
+    String? category,
+    Value<int?> parentId = const Value.absent(),
+    Value<String?> aliases = const Value.absent(),
+    Value<String?> description = const Value.absent(),
     bool? isActive,
     DateTime? createdAt,
-  }) => Procedure(
+  }) => ProcedureData(
     id: id ?? this.id,
+    procedureId: procedureId ?? this.procedureId,
     name: name ?? this.name,
-    category: category ?? this.category,
     specialty: specialty ?? this.specialty,
+    category: category ?? this.category,
+    parentId: parentId.present ? parentId.value : this.parentId,
+    aliases: aliases.present ? aliases.value : this.aliases,
+    description: description.present ? description.value : this.description,
     isActive: isActive ?? this.isActive,
     createdAt: createdAt ?? this.createdAt,
   );
-  Procedure copyWithCompanion(ProceduresCompanion data) {
-    return Procedure(
+  ProcedureData copyWithCompanion(ProceduresCompanion data) {
+    return ProcedureData(
       id: data.id.present ? data.id.value : this.id,
+      procedureId: data.procedureId.present
+          ? data.procedureId.value
+          : this.procedureId,
       name: data.name.present ? data.name.value : this.name,
-      category: data.category.present ? data.category.value : this.category,
       specialty: data.specialty.present ? data.specialty.value : this.specialty,
+      category: data.category.present ? data.category.value : this.category,
+      parentId: data.parentId.present ? data.parentId.value : this.parentId,
+      aliases: data.aliases.present ? data.aliases.value : this.aliases,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
@@ -1769,11 +1933,15 @@ class Procedure extends DataClass implements Insertable<Procedure> {
 
   @override
   String toString() {
-    return (StringBuffer('Procedure(')
+    return (StringBuffer('ProcedureData(')
           ..write('id: $id, ')
+          ..write('procedureId: $procedureId, ')
           ..write('name: $name, ')
-          ..write('category: $category, ')
           ..write('specialty: $specialty, ')
+          ..write('category: $category, ')
+          ..write('parentId: $parentId, ')
+          ..write('aliases: $aliases, ')
+          ..write('description: $description, ')
           ..write('isActive: $isActive, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -1781,57 +1949,92 @@ class Procedure extends DataClass implements Insertable<Procedure> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, name, category, specialty, isActive, createdAt);
+  int get hashCode => Object.hash(
+    id,
+    procedureId,
+    name,
+    specialty,
+    category,
+    parentId,
+    aliases,
+    description,
+    isActive,
+    createdAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Procedure &&
+      (other is ProcedureData &&
           other.id == this.id &&
+          other.procedureId == this.procedureId &&
           other.name == this.name &&
-          other.category == this.category &&
           other.specialty == this.specialty &&
+          other.category == this.category &&
+          other.parentId == this.parentId &&
+          other.aliases == this.aliases &&
+          other.description == this.description &&
           other.isActive == this.isActive &&
           other.createdAt == this.createdAt);
 }
 
-class ProceduresCompanion extends UpdateCompanion<Procedure> {
+class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
   final Value<int> id;
+  final Value<String> procedureId;
   final Value<String> name;
-  final Value<String> category;
   final Value<String> specialty;
+  final Value<String> category;
+  final Value<int?> parentId;
+  final Value<String?> aliases;
+  final Value<String?> description;
   final Value<bool> isActive;
   final Value<DateTime> createdAt;
   const ProceduresCompanion({
     this.id = const Value.absent(),
+    this.procedureId = const Value.absent(),
     this.name = const Value.absent(),
-    this.category = const Value.absent(),
     this.specialty = const Value.absent(),
+    this.category = const Value.absent(),
+    this.parentId = const Value.absent(),
+    this.aliases = const Value.absent(),
+    this.description = const Value.absent(),
     this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   ProceduresCompanion.insert({
     this.id = const Value.absent(),
+    required String procedureId,
     required String name,
-    required String category,
     this.specialty = const Value.absent(),
+    required String category,
+    this.parentId = const Value.absent(),
+    this.aliases = const Value.absent(),
+    this.description = const Value.absent(),
     this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
-  }) : name = Value(name),
+  }) : procedureId = Value(procedureId),
+       name = Value(name),
        category = Value(category);
-  static Insertable<Procedure> custom({
+  static Insertable<ProcedureData> custom({
     Expression<int>? id,
+    Expression<String>? procedureId,
     Expression<String>? name,
-    Expression<String>? category,
     Expression<String>? specialty,
+    Expression<String>? category,
+    Expression<int>? parentId,
+    Expression<String>? aliases,
+    Expression<String>? description,
     Expression<bool>? isActive,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (procedureId != null) 'procedure_id': procedureId,
       if (name != null) 'name': name,
-      if (category != null) 'category': category,
       if (specialty != null) 'specialty': specialty,
+      if (category != null) 'category': category,
+      if (parentId != null) 'parent_id': parentId,
+      if (aliases != null) 'aliases': aliases,
+      if (description != null) 'description': description,
       if (isActive != null) 'is_active': isActive,
       if (createdAt != null) 'created_at': createdAt,
     });
@@ -1839,17 +2042,25 @@ class ProceduresCompanion extends UpdateCompanion<Procedure> {
 
   ProceduresCompanion copyWith({
     Value<int>? id,
+    Value<String>? procedureId,
     Value<String>? name,
-    Value<String>? category,
     Value<String>? specialty,
+    Value<String>? category,
+    Value<int?>? parentId,
+    Value<String?>? aliases,
+    Value<String?>? description,
     Value<bool>? isActive,
     Value<DateTime>? createdAt,
   }) {
     return ProceduresCompanion(
       id: id ?? this.id,
+      procedureId: procedureId ?? this.procedureId,
       name: name ?? this.name,
-      category: category ?? this.category,
       specialty: specialty ?? this.specialty,
+      category: category ?? this.category,
+      parentId: parentId ?? this.parentId,
+      aliases: aliases ?? this.aliases,
+      description: description ?? this.description,
       isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -1861,14 +2072,26 @@ class ProceduresCompanion extends UpdateCompanion<Procedure> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
+    if (procedureId.present) {
+      map['procedure_id'] = Variable<String>(procedureId.value);
+    }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
+    }
+    if (specialty.present) {
+      map['specialty'] = Variable<String>(specialty.value);
     }
     if (category.present) {
       map['category'] = Variable<String>(category.value);
     }
-    if (specialty.present) {
-      map['specialty'] = Variable<String>(specialty.value);
+    if (parentId.present) {
+      map['parent_id'] = Variable<int>(parentId.value);
+    }
+    if (aliases.present) {
+      map['aliases'] = Variable<String>(aliases.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
     }
     if (isActive.present) {
       map['is_active'] = Variable<bool>(isActive.value);
@@ -1883,9 +2106,13 @@ class ProceduresCompanion extends UpdateCompanion<Procedure> {
   String toString() {
     return (StringBuffer('ProceduresCompanion(')
           ..write('id: $id, ')
+          ..write('procedureId: $procedureId, ')
           ..write('name: $name, ')
-          ..write('category: $category, ')
           ..write('specialty: $specialty, ')
+          ..write('category: $category, ')
+          ..write('parentId: $parentId, ')
+          ..write('aliases: $aliases, ')
+          ..write('description: $description, ')
           ..write('isActive: $isActive, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -4527,18 +4754,26 @@ typedef $$PatientTagsTableProcessedTableManager =
 typedef $$ProceduresTableCreateCompanionBuilder =
     ProceduresCompanion Function({
       Value<int> id,
+      required String procedureId,
       required String name,
-      required String category,
       Value<String> specialty,
+      required String category,
+      Value<int?> parentId,
+      Value<String?> aliases,
+      Value<String?> description,
       Value<bool> isActive,
       Value<DateTime> createdAt,
     });
 typedef $$ProceduresTableUpdateCompanionBuilder =
     ProceduresCompanion Function({
       Value<int> id,
+      Value<String> procedureId,
       Value<String> name,
-      Value<String> category,
       Value<String> specialty,
+      Value<String> category,
+      Value<int?> parentId,
+      Value<String?> aliases,
+      Value<String?> description,
       Value<bool> isActive,
       Value<DateTime> createdAt,
     });
@@ -4557,8 +4792,18 @@ class $$ProceduresTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get procedureId => $composableBuilder(
+    column: $table.procedureId,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get specialty => $composableBuilder(
+    column: $table.specialty,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4567,8 +4812,18 @@ class $$ProceduresTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get specialty => $composableBuilder(
-    column: $table.specialty,
+  ColumnFilters<int> get parentId => $composableBuilder(
+    column: $table.parentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get aliases => $composableBuilder(
+    column: $table.aliases,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4597,8 +4852,18 @@ class $$ProceduresTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get procedureId => $composableBuilder(
+    column: $table.procedureId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get name => $composableBuilder(
     column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get specialty => $composableBuilder(
+    column: $table.specialty,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4607,8 +4872,18 @@ class $$ProceduresTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get specialty => $composableBuilder(
-    column: $table.specialty,
+  ColumnOrderings<int> get parentId => $composableBuilder(
+    column: $table.parentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get aliases => $composableBuilder(
+    column: $table.aliases,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4635,14 +4910,30 @@ class $$ProceduresTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
+  GeneratedColumn<String> get procedureId => $composableBuilder(
+    column: $table.procedureId,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get specialty =>
+      $composableBuilder(column: $table.specialty, builder: (column) => column);
 
   GeneratedColumn<String> get category =>
       $composableBuilder(column: $table.category, builder: (column) => column);
 
-  GeneratedColumn<String> get specialty =>
-      $composableBuilder(column: $table.specialty, builder: (column) => column);
+  GeneratedColumn<int> get parentId =>
+      $composableBuilder(column: $table.parentId, builder: (column) => column);
+
+  GeneratedColumn<String> get aliases =>
+      $composableBuilder(column: $table.aliases, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<bool> get isActive =>
       $composableBuilder(column: $table.isActive, builder: (column) => column);
@@ -4656,17 +4947,17 @@ class $$ProceduresTableTableManager
         RootTableManager<
           _$AppDatabase,
           $ProceduresTable,
-          Procedure,
+          ProcedureData,
           $$ProceduresTableFilterComposer,
           $$ProceduresTableOrderingComposer,
           $$ProceduresTableAnnotationComposer,
           $$ProceduresTableCreateCompanionBuilder,
           $$ProceduresTableUpdateCompanionBuilder,
           (
-            Procedure,
-            BaseReferences<_$AppDatabase, $ProceduresTable, Procedure>,
+            ProcedureData,
+            BaseReferences<_$AppDatabase, $ProceduresTable, ProcedureData>,
           ),
-          Procedure,
+          ProcedureData,
           PrefetchHooks Function()
         > {
   $$ProceduresTableTableManager(_$AppDatabase db, $ProceduresTable table)
@@ -4683,32 +4974,48 @@ class $$ProceduresTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<String> procedureId = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> category = const Value.absent(),
                 Value<String> specialty = const Value.absent(),
+                Value<String> category = const Value.absent(),
+                Value<int?> parentId = const Value.absent(),
+                Value<String?> aliases = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
               }) => ProceduresCompanion(
                 id: id,
+                procedureId: procedureId,
                 name: name,
-                category: category,
                 specialty: specialty,
+                category: category,
+                parentId: parentId,
+                aliases: aliases,
+                description: description,
                 isActive: isActive,
                 createdAt: createdAt,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                required String procedureId,
                 required String name,
-                required String category,
                 Value<String> specialty = const Value.absent(),
+                required String category,
+                Value<int?> parentId = const Value.absent(),
+                Value<String?> aliases = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
               }) => ProceduresCompanion.insert(
                 id: id,
+                procedureId: procedureId,
                 name: name,
-                category: category,
                 specialty: specialty,
+                category: category,
+                parentId: parentId,
+                aliases: aliases,
+                description: description,
                 isActive: isActive,
                 createdAt: createdAt,
               ),
@@ -4724,14 +5031,17 @@ typedef $$ProceduresTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $ProceduresTable,
-      Procedure,
+      ProcedureData,
       $$ProceduresTableFilterComposer,
       $$ProceduresTableOrderingComposer,
       $$ProceduresTableAnnotationComposer,
       $$ProceduresTableCreateCompanionBuilder,
       $$ProceduresTableUpdateCompanionBuilder,
-      (Procedure, BaseReferences<_$AppDatabase, $ProceduresTable, Procedure>),
-      Procedure,
+      (
+        ProcedureData,
+        BaseReferences<_$AppDatabase, $ProceduresTable, ProcedureData>,
+      ),
+      ProcedureData,
       PrefetchHooks Function()
     >;
 typedef $$SurgicalCasesTableCreateCompanionBuilder =
