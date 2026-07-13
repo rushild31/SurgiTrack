@@ -1,72 +1,80 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:surgitrack/core/enums/case_priority.dart';
-import 'package:surgitrack/core/enums/case_type.dart';
-import 'package:surgitrack/core/enums/outcome.dart';
-import 'package:surgitrack/core/enums/specialty.dart';
-import 'package:surgitrack/core/enums/surgeon_role.dart';
-import 'package:surgitrack/core/enums/surgical_approach.dart';
-
 class SurgicalCase extends Equatable {
-  final String id;
+  final int? id;
 
-  /// FK → Patient.id
-  final String patientId;
+  /// Link to patient table
+  final int patientId;
 
-  /// Admission
-  final DateTime admissionDate;
+  /// Internal case identifier
+  final String caseId;
 
-  /// Operation
+  /// Surgery details
   final DateTime surgeryDate;
 
   final String diagnosis;
 
-  final CasePriority priority;
+  final String urgency;
 
-  final CaseType caseType;
+  final String surgeryType;
 
-  final Specialty specialty;
+  final String specialty;
 
-  final String procedure;
+  /// Linked procedures stored in CaseProcedures table
+  final List<int> procedureIds;
 
-  final SurgicalApproach surgicalApproach;
+  final String? surgicalApproach;
 
-  final String consultant;
+  /// Resident participation
+  final String operativeRole;
 
-  /// Overall resident participation
-  final SurgeonRole surgeonRole;
+  /// JSON encoded technical steps
+  final String? technicalSteps;
 
-  /// Percentage (0–100)
-  final int ejectionFraction;
-
+  /// Graft / conduit / implant details
   final String? graftConduitImplant;
 
-  final Outcome outcome;
+  final String outcome;
 
-  final String notes;
+  final String? notes;
 
   final DateTime createdAt;
 
   final DateTime updatedAt;
 
   const SurgicalCase({
-    required this.id,
+    this.id,
+
     required this.patientId,
-    required this.admissionDate,
+
+    required this.caseId,
+
     required this.surgeryDate,
+
     required this.diagnosis,
-    required this.priority,
-    required this.caseType,
+
+    required this.urgency,
+
+    required this.surgeryType,
+
     required this.specialty,
-    required this.procedure,
-    required this.surgicalApproach,
-    required this.consultant,
-    required this.surgeonRole,
-    required this.ejectionFraction,
+
+    this.procedureIds = const [],
+
+    this.surgicalApproach,
+
+    required this.operativeRole,
+
+    this.technicalSteps,
+
     this.graftConduitImplant,
+
     required this.outcome,
-    required this.notes,
+
+    this.notes,
+
     required this.createdAt,
+
     required this.updatedAt,
   });
 
@@ -74,17 +82,16 @@ class SurgicalCase extends Equatable {
   List<Object?> get props => [
     id,
     patientId,
-    admissionDate,
+    caseId,
     surgeryDate,
     diagnosis,
-    priority,
-    caseType,
+    urgency,
+    surgeryType,
     specialty,
-    procedure,
+    procedureIds,
     surgicalApproach,
-    consultant,
-    surgeonRole,
-    ejectionFraction,
+    operativeRole,
+    technicalSteps,
     graftConduitImplant,
     outcome,
     notes,

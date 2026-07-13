@@ -3743,6 +3743,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this as AppDatabase,
   );
   late final ProcedureDao procedureDao = ProcedureDao(this as AppDatabase);
+  late final SurgicalCaseDao surgicalCaseDao = SurgicalCaseDao(
+    this as AppDatabase,
+  );
+  late final CaseProcedureDao caseProcedureDao = CaseProcedureDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
