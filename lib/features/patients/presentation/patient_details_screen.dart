@@ -7,6 +7,7 @@ import 'package:surgitrack/features/patients/providers/patient_attachment_provid
 import 'package:surgitrack/features/patients/presentation/patient_form_screen.dart';
 import 'package:surgitrack/features/patients/presentation/widgets/add_attachment_button.dart';
 import 'package:surgitrack/features/patients/data/attachment_viewer_service.dart';
+import 'package:surgitrack/features/patients/presentation/widgets/patient_cases_section.dart';
 
 class PatientDetailsScreen extends ConsumerWidget {
   final Patient patient;
@@ -118,6 +119,8 @@ class PatientDetailsScreen extends ConsumerWidget {
                   : _date(patient.admissionDate!),
             ),
           ]),
+
+          PatientCasesSection(patientId: patient.id!),
 
           _section("Comorbidities", [
             patient.comorbidities.isEmpty

@@ -1,198 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:surgitrack/features/patients/domain/patient.dart';
 import 'package:surgitrack/features/patients/providers/patient_provider.dart';
+
+import 'package:surgitrack/features/patients/presentation/patient_details_screen.dart';
 import 'package:surgitrack/features/patients/presentation/patient_form_screen.dart';
 
-class PatientDetailsScreen extends ConsumerWidget {
-  final Patient patient;
+import 'package:surgitrack/features/patients/presentation/widgets/patient_card.dart';
+import 'package:surgitrack/features/patients/presentation/widgets/empty_patient_state.dart';
 
-  const PatientDetailsScreen({super.key, required this.patient});
+import 'package:surgitrack/features/patients/presentation/search/patient_search_delegate.dart';
+
+class PatientListScreen extends ConsumerWidget {
+  const PatientListScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final patientsAsync = ref.watch(patientListProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(patient.name),
+        title: const Text("Patients"),
 
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit),
+            icon: const Icon(Icons.search),
 
-            onPressed: () async {
-              final updated = await Navigator.push(
-                context,
-
-                MaterialPageRoute(
-                  builder: (_) => PatientFormScreen(patient: patient),
-                ),
-              );
-
-              if (updated == true) {
-                ref.invalidate(patientListProvider);
-              }
-            },
-          ),
-
-          IconButton(
-            icon: const Icon(Icons.delete),
-
-            onPressed: () async {
-              final confirm = await showDialog<bool>(
+            onPressed: () {
+              showSearch(
                 context: context,
-
-                builder: (context) => AlertDialog(
-                  title: const Text("Delete Patient"),
-
-                  content: const Text(
-                    "This will permanently remove this patient record.",
-                  ),
-
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-
-                      child: const Text("Cancel"),
-                    ),
-
-                    ElevatedButton(
-                      onPressed: () => Navigator.pop(context, true),
-
-                      child: const Text("Delete"),
-                    ),
-                  ],
-                ),
+                delegate: PatientSearchDelegate(ref),
               );
-
-              if (confirm != true) {
-                return;
-              }
-
-              await ref
-                  .read(patientRepositoryProvider)
-                  .deletePatient(patient.id!);
-
-              ref.invalidate(patientListProvider);
-
-              if (context.mounted) {
-                Navigator.pop(context, true);
-              }
             },
           ),
         ],
       ),
 
-      body: _PatientInformation(patient: patient),
-    );
-  }
-}
+      body: patientsAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
 
-class _PatientInformation extends StatelessWidget {
-  final Patient patient;
+        error: (error, stack) => Center(child: Text(error.toString())),
 
-  const _PatientInformation({required this.patient});
+        data: (patients) {
+          if (patients.isEmpty) {
+            return const EmptyPatientState();
+          }
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(patientListProvider);
+            },
 
-      children: [
-        _section("Basic Details", [
-          _row("MRD", patient.hospitalId),
+            child: ListView.builder(
+              padding: const EdgeInsets.all(12),
 
-          _row("Age", "${patient.age} years"),
+              itemCount: patients.length,
 
-          _row(
-            "DOB",
-            "${patient.dateOfBirth.day}-${patient.dateOfBirth.month}-${patient.dateOfBirth.year}",
-          ),
+              itemBuilder: (context, index) {
+                final patient = patients[index];
 
-          _row("Blood Group", patient.bloodGroup ?? "-"),
-        ]),
+                return PatientCard(
+                  patient: patient,
 
-        _section("Clinical Profile", [
-          _row(
-            "EF",
-            patient.ejectionFraction == null
-                ? "-"
-                : "${patient.ejectionFraction}%",
-          ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
 
-          _row("Address", patient.address ?? "-"),
-
-          _row(
-            "Admission",
-            patient.admissionDate == null
-                ? "-"
-                : "${patient.admissionDate!.day}-${patient.admissionDate!.month}-${patient.admissionDate!.year}",
-          ),
-        ]),
-
-        _section("Comorbidities", [
-          Wrap(
-            spacing: 8,
-
-            children: patient.comorbidities
-                .map((e) => Chip(label: Text(e)))
-                .toList(),
-          ),
-        ]),
-
-        _section("Past Operative History", [
-          Text(
-            patient.pastOperativeHistory?.isNotEmpty == true
-                ? patient.pastOperativeHistory!
-                : "No previous history",
-          ),
-        ]),
-      ],
-    );
-  }
-
-  Widget _section(String title, List<Widget> children) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      MaterialPageRoute(
+                        builder: (_) => PatientDetailsScreen(patient: patient),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-
-            const SizedBox(height: 12),
-
-            ...children,
-          ],
-        ),
+          );
+        },
       ),
-    );
-  }
 
-  Widget _row(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Add Patient",
 
-      child: Row(
-        children: [
-          SizedBox(
-            width: 120,
+        child: const Icon(Icons.person_add),
 
-            child: Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
 
-          Expanded(child: Text(value)),
-        ],
+            MaterialPageRoute(builder: (_) => const PatientFormScreen()),
+          );
+
+          if (result == true) {
+            ref.invalidate(patientListProvider);
+          }
+        },
       ),
     );
   }
