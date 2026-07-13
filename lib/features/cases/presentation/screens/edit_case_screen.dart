@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:surgitrack/features/cases/domain/surgical_case.dart';
 import 'package:surgitrack/features/cases/providers/surgical_case_provider.dart';
 
+import 'package:surgitrack/core/enums/surgeon_role.dart';
+
 class EditCaseScreen extends ConsumerStatefulWidget {
   final SurgicalCase surgicalCase;
 
@@ -28,7 +30,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
   late String urgency;
 
-  late String operativeRole;
+  late SurgeonRole operativeRole;
 
   String? outcome;
 
@@ -50,7 +52,11 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
     urgency = c.urgency;
 
-    operativeRole = c.operativeRole;
+    operativeRole = SurgeonRole.values.firstWhere(
+      (role) => role.label == c.operativeRole,
+
+      orElse: () => SurgeonRole.assisted,
+    );
 
     outcome = c.outcome.isEmpty ? null : c.outcome;
   }
@@ -126,57 +132,46 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
             _dropdown(
               label: "Specialty",
-
               value: specialty,
-
               items: const ["Cardiac", "Thoracic", "Vascular"],
-
               onChanged: (v) {
-                setState(() {
-                  specialty = v;
-                });
+                specialty = v;
               },
             ),
 
             _dropdown(
               label: "Surgery Type",
-
               value: surgeryType,
-
               items: const ["Primary", "Redo"],
-
               onChanged: (v) {
-                setState(() {
-                  surgeryType = v;
-                });
+                surgeryType = v;
               },
             ),
 
             _dropdown(
               label: "Urgency",
-
               value: urgency,
-
               items: const ["Elective", "Emergency"],
-
               onChanged: (v) {
-                setState(() {
-                  urgency = v;
-                });
+                urgency = v;
               },
             ),
 
-            _dropdown(
-              label: "Operative Role",
+            DropdownButtonFormField<SurgeonRole>(
+              initialValue: operativeRole,
 
-              value: operativeRole,
+              decoration: const InputDecoration(labelText: "Operative Role"),
 
-              items: const ["Observer", "Assistant", "Primary Surgeon"],
+              items: SurgeonRole.values.map((role) {
+                return DropdownMenuItem(value: role, child: Text(role.label));
+              }).toList(),
 
-              onChanged: (v) {
-                setState(() {
-                  operativeRole = v;
-                });
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    operativeRole = value;
+                  });
+                }
               },
             ),
 
@@ -206,9 +201,9 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
                 ),
               ],
 
-              onChanged: (v) {
+              onChanged: (value) {
                 setState(() {
-                  outcome = v;
+                  outcome = value;
                 });
               },
             ),
@@ -216,9 +211,9 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             TextFormField(
               controller: notesController,
 
-              maxLines: 3,
+              maxLines: 4,
 
-              decoration: const InputDecoration(labelText: "Notes"),
+              decoration: const InputDecoration(labelText: "Additional Notes"),
             ),
 
             const SizedBox(height: 24),
@@ -248,13 +243,15 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
       decoration: InputDecoration(labelText: label),
 
-      items: items
-          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-          .toList(),
+      items: items.map((e) {
+        return DropdownMenuItem(value: e, child: Text(e));
+      }).toList(),
 
       onChanged: (v) {
         if (v != null) {
-          onChanged(v);
+          setState(() {
+            onChanged(v);
+          });
         }
       },
     );
@@ -284,7 +281,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
       surgicalApproach: c.surgicalApproach,
 
-      operativeRole: operativeRole,
+      operativeRole: operativeRole.label,
 
       technicalSteps: c.technicalSteps,
 

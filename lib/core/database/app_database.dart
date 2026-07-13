@@ -15,6 +15,8 @@ import 'dao/patient_attachment_dao.dart';
 import 'dao/procedure_dao.dart';
 import 'dao/surgical_case_dao.dart';
 import 'dao/case_procedure_dao.dart';
+import 'dao/case_attachment_dao.dart';
+import 'dao/dashboard_dao.dart';
 
 part 'app_database.g.dart';
 
@@ -28,13 +30,14 @@ part 'app_database.g.dart';
     CaseProcedures,
     CaseAttachments,
   ],
-
   daos: [
     PatientDao,
     PatientAttachmentDao,
     ProcedureDao,
     SurgicalCaseDao,
     CaseProcedureDao,
+    CaseAttachmentDao,
+    DashboardDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

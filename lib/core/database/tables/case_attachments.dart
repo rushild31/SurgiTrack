@@ -1,16 +1,17 @@
 import 'package:drift/drift.dart';
 
-class CaseAttachments extends Table {
-  TextColumn get id => text()();
+import 'surgical_cases.dart';
 
-  TextColumn get caseId => text()();
+class CaseAttachments extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  IntColumn get caseId => integer().references(SurgicalCases, #id)();
+
+  TextColumn get displayName => text()();
 
   TextColumn get filePath => text()();
 
-  TextColumn get type => text()();
+  TextColumn get fileType => text()();
 
   DateTimeColumn get createdAt => dateTime()();
-
-  @override
-  Set<Column> get primaryKey => {id};
 }

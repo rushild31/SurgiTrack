@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:surgitrack/features/cases/domain/surgical_case.dart';
 import 'package:surgitrack/features/cases/providers/case_procedure_provider.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/case_actions.dart';
+import 'package:surgitrack/features/cases/presentation/widgets/case_attachments_section.dart';
 
 import 'edit_case_screen.dart';
 
@@ -49,13 +50,7 @@ class CaseDetailsScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
 
         children: [
-          _section("Case Information", [
-            _field("Case ID", surgicalCase.caseId),
-
-            _field("Patient ID", surgicalCase.patientId.toString()),
-
-            _field("Date", _date(surgicalCase.surgeryDate)),
-          ]),
+          _headerCard(),
 
           _section("Clinical Details", [
             _field("Diagnosis", surgicalCase.diagnosis),
@@ -64,45 +59,76 @@ class CaseDetailsScreen extends ConsumerWidget {
 
             _field("Surgery Type", surgicalCase.surgeryType),
 
+            _field("Urgency", surgicalCase.urgency),
+
             _field("Operative Role", surgicalCase.operativeRole),
 
             _field("Outcome", surgicalCase.outcome),
           ]),
 
-          _section("Linked Procedures", [
+          _section("Procedures", [
             procedures.when(
-              data: (items) {
-                if (items.isEmpty) {
-                  return const Text("No procedure linked");
-                }
-
-                return Column(
-                  children: items
-                      .map(
-                        (item) => ListTile(
-                          contentPadding: EdgeInsets.zero,
-
-                          leading: const Icon(Icons.medical_services),
-
-                          title: Text(item.procedure.name),
-
-                          subtitle: Text(
-                            item.caseProcedure.type == "PRIMARY"
-                                ? "Primary Procedure"
-                                : "Additional Procedure",
-                          ),
-                        ),
-                      )
-                      .toList(),
-                );
-              },
-
               loading: () => const CircularProgressIndicator(),
 
               error: (_, _) => const Text("Unable to load procedures"),
+
+              data: (items) {
+                if (items.isEmpty) {
+                  return const Text("No procedures linked");
+                }
+
+                return Column(
+                  children: items.map((item) {
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+
+                      leading: const Icon(Icons.medical_services),
+
+                      title: Text(item.procedure.name),
+
+                      subtitle: Text(
+                        item.caseProcedure.type == "PRIMARY"
+                            ? "Primary Procedure"
+                            : "Additional Procedure",
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
             ),
           ]),
+
+          if (surgicalCase.notes != null && surgicalCase.notes!.isNotEmpty)
+            _section("Additional Notes", [Text(surgicalCase.notes!)]),
+
+          CaseAttachmentsSection(caseId: surgicalCase.id!),
         ],
+      ),
+    );
+  }
+
+  Widget _headerCard() {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+            Text(
+              surgicalCase.caseId,
+
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(_date(surgicalCase.surgeryDate)),
+          ],
+        ),
       ),
     );
   }

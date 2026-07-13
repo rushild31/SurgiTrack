@@ -3593,17 +3593,32 @@ class $CaseAttachmentsTable extends CaseAttachments
   $CaseAttachmentsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
     'id',
     aliasedName,
     false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
   );
   static const VerificationMeta _caseIdMeta = const VerificationMeta('caseId');
   @override
-  late final GeneratedColumn<String> caseId = GeneratedColumn<String>(
+  late final GeneratedColumn<int> caseId = GeneratedColumn<int>(
     'case_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -3620,10 +3635,12 @@ class $CaseAttachmentsTable extends CaseAttachments
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  static const VerificationMeta _fileTypeMeta = const VerificationMeta(
+    'fileType',
+  );
   @override
-  late final GeneratedColumn<String> type = GeneratedColumn<String>(
-    'type',
+  late final GeneratedColumn<String> fileType = GeneratedColumn<String>(
+    'file_type',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -3641,7 +3658,14 @@ class $CaseAttachmentsTable extends CaseAttachments
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, caseId, filePath, type, createdAt];
+  List<GeneratedColumn> get $columns => [
+    id,
+    caseId,
+    displayName,
+    filePath,
+    fileType,
+    createdAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -3656,8 +3680,6 @@ class $CaseAttachmentsTable extends CaseAttachments
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('case_id')) {
       context.handle(
@@ -3667,6 +3689,17 @@ class $CaseAttachmentsTable extends CaseAttachments
     } else if (isInserting) {
       context.missing(_caseIdMeta);
     }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayNameMeta);
+    }
     if (data.containsKey('file_path')) {
       context.handle(
         _filePathMeta,
@@ -3675,13 +3708,13 @@ class $CaseAttachmentsTable extends CaseAttachments
     } else if (isInserting) {
       context.missing(_filePathMeta);
     }
-    if (data.containsKey('type')) {
+    if (data.containsKey('file_type')) {
       context.handle(
-        _typeMeta,
-        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+        _fileTypeMeta,
+        fileType.isAcceptableOrUnknown(data['file_type']!, _fileTypeMeta),
       );
     } else if (isInserting) {
-      context.missing(_typeMeta);
+      context.missing(_fileTypeMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -3701,20 +3734,24 @@ class $CaseAttachmentsTable extends CaseAttachments
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CaseAttachment(
       id: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
+        DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
       caseId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
+        DriftSqlType.int,
         data['${effectivePrefix}case_id'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
       )!,
       filePath: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}file_path'],
       )!,
-      type: attachedDatabase.typeMapping.read(
+      fileType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}type'],
+        data['${effectivePrefix}file_type'],
       )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
@@ -3730,25 +3767,28 @@ class $CaseAttachmentsTable extends CaseAttachments
 }
 
 class CaseAttachment extends DataClass implements Insertable<CaseAttachment> {
-  final String id;
-  final String caseId;
+  final int id;
+  final int caseId;
+  final String displayName;
   final String filePath;
-  final String type;
+  final String fileType;
   final DateTime createdAt;
   const CaseAttachment({
     required this.id,
     required this.caseId,
+    required this.displayName,
     required this.filePath,
-    required this.type,
+    required this.fileType,
     required this.createdAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['case_id'] = Variable<String>(caseId);
+    map['id'] = Variable<int>(id);
+    map['case_id'] = Variable<int>(caseId);
+    map['display_name'] = Variable<String>(displayName);
     map['file_path'] = Variable<String>(filePath);
-    map['type'] = Variable<String>(type);
+    map['file_type'] = Variable<String>(fileType);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
@@ -3757,8 +3797,9 @@ class CaseAttachment extends DataClass implements Insertable<CaseAttachment> {
     return CaseAttachmentsCompanion(
       id: Value(id),
       caseId: Value(caseId),
+      displayName: Value(displayName),
       filePath: Value(filePath),
-      type: Value(type),
+      fileType: Value(fileType),
       createdAt: Value(createdAt),
     );
   }
@@ -3769,10 +3810,11 @@ class CaseAttachment extends DataClass implements Insertable<CaseAttachment> {
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CaseAttachment(
-      id: serializer.fromJson<String>(json['id']),
-      caseId: serializer.fromJson<String>(json['caseId']),
+      id: serializer.fromJson<int>(json['id']),
+      caseId: serializer.fromJson<int>(json['caseId']),
+      displayName: serializer.fromJson<String>(json['displayName']),
       filePath: serializer.fromJson<String>(json['filePath']),
-      type: serializer.fromJson<String>(json['type']),
+      fileType: serializer.fromJson<String>(json['fileType']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -3780,33 +3822,39 @@ class CaseAttachment extends DataClass implements Insertable<CaseAttachment> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'caseId': serializer.toJson<String>(caseId),
+      'id': serializer.toJson<int>(id),
+      'caseId': serializer.toJson<int>(caseId),
+      'displayName': serializer.toJson<String>(displayName),
       'filePath': serializer.toJson<String>(filePath),
-      'type': serializer.toJson<String>(type),
+      'fileType': serializer.toJson<String>(fileType),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
   CaseAttachment copyWith({
-    String? id,
-    String? caseId,
+    int? id,
+    int? caseId,
+    String? displayName,
     String? filePath,
-    String? type,
+    String? fileType,
     DateTime? createdAt,
   }) => CaseAttachment(
     id: id ?? this.id,
     caseId: caseId ?? this.caseId,
+    displayName: displayName ?? this.displayName,
     filePath: filePath ?? this.filePath,
-    type: type ?? this.type,
+    fileType: fileType ?? this.fileType,
     createdAt: createdAt ?? this.createdAt,
   );
   CaseAttachment copyWithCompanion(CaseAttachmentsCompanion data) {
     return CaseAttachment(
       id: data.id.present ? data.id.value : this.id,
       caseId: data.caseId.present ? data.caseId.value : this.caseId,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
       filePath: data.filePath.present ? data.filePath.value : this.filePath,
-      type: data.type.present ? data.type.value : this.type,
+      fileType: data.fileType.present ? data.fileType.value : this.fileType,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -3816,86 +3864,89 @@ class CaseAttachment extends DataClass implements Insertable<CaseAttachment> {
     return (StringBuffer('CaseAttachment(')
           ..write('id: $id, ')
           ..write('caseId: $caseId, ')
+          ..write('displayName: $displayName, ')
           ..write('filePath: $filePath, ')
-          ..write('type: $type, ')
+          ..write('fileType: $fileType, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, caseId, filePath, type, createdAt);
+  int get hashCode =>
+      Object.hash(id, caseId, displayName, filePath, fileType, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CaseAttachment &&
           other.id == this.id &&
           other.caseId == this.caseId &&
+          other.displayName == this.displayName &&
           other.filePath == this.filePath &&
-          other.type == this.type &&
+          other.fileType == this.fileType &&
           other.createdAt == this.createdAt);
 }
 
 class CaseAttachmentsCompanion extends UpdateCompanion<CaseAttachment> {
-  final Value<String> id;
-  final Value<String> caseId;
+  final Value<int> id;
+  final Value<int> caseId;
+  final Value<String> displayName;
   final Value<String> filePath;
-  final Value<String> type;
+  final Value<String> fileType;
   final Value<DateTime> createdAt;
-  final Value<int> rowid;
   const CaseAttachmentsCompanion({
     this.id = const Value.absent(),
     this.caseId = const Value.absent(),
+    this.displayName = const Value.absent(),
     this.filePath = const Value.absent(),
-    this.type = const Value.absent(),
+    this.fileType = const Value.absent(),
     this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   CaseAttachmentsCompanion.insert({
-    required String id,
-    required String caseId,
+    this.id = const Value.absent(),
+    required int caseId,
+    required String displayName,
     required String filePath,
-    required String type,
+    required String fileType,
     required DateTime createdAt,
-    this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       caseId = Value(caseId),
+  }) : caseId = Value(caseId),
+       displayName = Value(displayName),
        filePath = Value(filePath),
-       type = Value(type),
+       fileType = Value(fileType),
        createdAt = Value(createdAt);
   static Insertable<CaseAttachment> custom({
-    Expression<String>? id,
-    Expression<String>? caseId,
+    Expression<int>? id,
+    Expression<int>? caseId,
+    Expression<String>? displayName,
     Expression<String>? filePath,
-    Expression<String>? type,
+    Expression<String>? fileType,
     Expression<DateTime>? createdAt,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (caseId != null) 'case_id': caseId,
+      if (displayName != null) 'display_name': displayName,
       if (filePath != null) 'file_path': filePath,
-      if (type != null) 'type': type,
+      if (fileType != null) 'file_type': fileType,
       if (createdAt != null) 'created_at': createdAt,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
   CaseAttachmentsCompanion copyWith({
-    Value<String>? id,
-    Value<String>? caseId,
+    Value<int>? id,
+    Value<int>? caseId,
+    Value<String>? displayName,
     Value<String>? filePath,
-    Value<String>? type,
+    Value<String>? fileType,
     Value<DateTime>? createdAt,
-    Value<int>? rowid,
   }) {
     return CaseAttachmentsCompanion(
       id: id ?? this.id,
       caseId: caseId ?? this.caseId,
+      displayName: displayName ?? this.displayName,
       filePath: filePath ?? this.filePath,
-      type: type ?? this.type,
+      fileType: fileType ?? this.fileType,
       createdAt: createdAt ?? this.createdAt,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -3903,22 +3954,22 @@ class CaseAttachmentsCompanion extends UpdateCompanion<CaseAttachment> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<String>(id.value);
+      map['id'] = Variable<int>(id.value);
     }
     if (caseId.present) {
-      map['case_id'] = Variable<String>(caseId.value);
+      map['case_id'] = Variable<int>(caseId.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
     }
     if (filePath.present) {
       map['file_path'] = Variable<String>(filePath.value);
     }
-    if (type.present) {
-      map['type'] = Variable<String>(type.value);
+    if (fileType.present) {
+      map['file_type'] = Variable<String>(fileType.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -3928,10 +3979,10 @@ class CaseAttachmentsCompanion extends UpdateCompanion<CaseAttachment> {
     return (StringBuffer('CaseAttachmentsCompanion(')
           ..write('id: $id, ')
           ..write('caseId: $caseId, ')
+          ..write('displayName: $displayName, ')
           ..write('filePath: $filePath, ')
-          ..write('type: $type, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('rowid: $rowid')
+          ..write('fileType: $fileType, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
@@ -3961,6 +4012,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final CaseProcedureDao caseProcedureDao = CaseProcedureDao(
     this as AppDatabase,
   );
+  late final CaseAttachmentDao caseAttachmentDao = CaseAttachmentDao(
+    this as AppDatabase,
+  );
+  late final DashboardDao dashboardDao = DashboardDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5709,21 +5764,21 @@ typedef $$CaseProceduresTableProcessedTableManager =
     >;
 typedef $$CaseAttachmentsTableCreateCompanionBuilder =
     CaseAttachmentsCompanion Function({
-      required String id,
-      required String caseId,
+      Value<int> id,
+      required int caseId,
+      required String displayName,
       required String filePath,
-      required String type,
+      required String fileType,
       required DateTime createdAt,
-      Value<int> rowid,
     });
 typedef $$CaseAttachmentsTableUpdateCompanionBuilder =
     CaseAttachmentsCompanion Function({
-      Value<String> id,
-      Value<String> caseId,
+      Value<int> id,
+      Value<int> caseId,
+      Value<String> displayName,
       Value<String> filePath,
-      Value<String> type,
+      Value<String> fileType,
       Value<DateTime> createdAt,
-      Value<int> rowid,
     });
 
 class $$CaseAttachmentsTableFilterComposer
@@ -5735,13 +5790,18 @@ class $$CaseAttachmentsTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(
+  ColumnFilters<int> get id => $composableBuilder(
     column: $table.id,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get caseId => $composableBuilder(
+  ColumnFilters<int> get caseId => $composableBuilder(
     column: $table.caseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5750,8 +5810,8 @@ class $$CaseAttachmentsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get type => $composableBuilder(
-    column: $table.type,
+  ColumnFilters<String> get fileType => $composableBuilder(
+    column: $table.fileType,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5770,13 +5830,18 @@ class $$CaseAttachmentsTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(
+  ColumnOrderings<int> get id => $composableBuilder(
     column: $table.id,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get caseId => $composableBuilder(
+  ColumnOrderings<int> get caseId => $composableBuilder(
     column: $table.caseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5785,8 +5850,8 @@ class $$CaseAttachmentsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get type => $composableBuilder(
-    column: $table.type,
+  ColumnOrderings<String> get fileType => $composableBuilder(
+    column: $table.fileType,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5805,17 +5870,22 @@ class $$CaseAttachmentsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id =>
+  GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get caseId =>
+  GeneratedColumn<int> get caseId =>
       $composableBuilder(column: $table.caseId, builder: (column) => column);
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get filePath =>
       $composableBuilder(column: $table.filePath, builder: (column) => column);
 
-  GeneratedColumn<String> get type =>
-      $composableBuilder(column: $table.type, builder: (column) => column);
+  GeneratedColumn<String> get fileType =>
+      $composableBuilder(column: $table.fileType, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -5858,35 +5928,35 @@ class $$CaseAttachmentsTableTableManager
               $$CaseAttachmentsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
-                Value<String> id = const Value.absent(),
-                Value<String> caseId = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<int> caseId = const Value.absent(),
+                Value<String> displayName = const Value.absent(),
                 Value<String> filePath = const Value.absent(),
-                Value<String> type = const Value.absent(),
+                Value<String> fileType = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
               }) => CaseAttachmentsCompanion(
                 id: id,
                 caseId: caseId,
+                displayName: displayName,
                 filePath: filePath,
-                type: type,
+                fileType: fileType,
                 createdAt: createdAt,
-                rowid: rowid,
               ),
           createCompanionCallback:
               ({
-                required String id,
-                required String caseId,
+                Value<int> id = const Value.absent(),
+                required int caseId,
+                required String displayName,
                 required String filePath,
-                required String type,
+                required String fileType,
                 required DateTime createdAt,
-                Value<int> rowid = const Value.absent(),
               }) => CaseAttachmentsCompanion.insert(
                 id: id,
                 caseId: caseId,
+                displayName: displayName,
                 filePath: filePath,
-                type: type,
+                fileType: fileType,
                 createdAt: createdAt,
-                rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

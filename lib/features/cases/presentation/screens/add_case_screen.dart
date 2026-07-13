@@ -9,6 +9,8 @@ import 'package:surgitrack/features/cases/providers/surgical_case_provider.dart'
 import 'package:surgitrack/features/procedures/domain/procedure.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
 
+import 'package:surgitrack/core/enums/surgeon_role.dart';
+
 class AddCaseScreen extends ConsumerStatefulWidget {
   final Patient patient;
 
@@ -22,14 +24,18 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final diagnosisController = TextEditingController();
+
   final notesController = TextEditingController();
 
   DateTime surgeryDate = DateTime.now();
 
   String specialty = "Cardiac";
+
   String surgeryType = "Primary";
+
   String urgency = "Elective";
-  String operativeRole = "Assistant";
+
+  SurgeonRole operativeRole = SurgeonRole.assisted;
 
   String? outcome;
 
@@ -38,7 +44,9 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
   @override
   void dispose() {
     diagnosisController.dispose();
+
     notesController.dispose();
+
     super.dispose();
   }
 
@@ -77,6 +85,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
             if (selectedProcedures.isNotEmpty)
               Wrap(
                 spacing: 8,
+
                 children: selectedProcedures.map((procedure) {
                   return Chip(
                     label: Text(procedure.name),
@@ -101,6 +110,26 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
                 }
 
                 return null;
+              },
+            ),
+
+            const SizedBox(height: 12),
+
+            DropdownButtonFormField<SurgeonRole>(
+              initialValue: operativeRole,
+
+              decoration: const InputDecoration(labelText: "Operative Role"),
+
+              items: SurgeonRole.values.map((role) {
+                return DropdownMenuItem(value: role, child: Text(role.label));
+              }).toList(),
+
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    operativeRole = value;
+                  });
+                }
               },
             ),
 
@@ -153,7 +182,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
       surgicalApproach: null,
 
-      operativeRole: operativeRole,
+      operativeRole: operativeRole.label,
 
       technicalSteps: null,
 
