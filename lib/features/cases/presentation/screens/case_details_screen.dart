@@ -66,6 +66,17 @@ class CaseDetailsScreen extends ConsumerWidget {
             _field("Outcome", surgicalCase.outcome),
           ]),
 
+          _section("Operative Details", [
+            _field("Surgical Approach", surgicalCase.surgicalApproach ?? ""),
+
+            _field("Technical Steps", surgicalCase.technicalSteps ?? ""),
+
+            _field(
+              "Graft / Conduit / Implant",
+              surgicalCase.graftConduitImplant ?? "",
+            ),
+          ]),
+
           _section("Procedures", [
             procedures.when(
               loading: () => const CircularProgressIndicator(),

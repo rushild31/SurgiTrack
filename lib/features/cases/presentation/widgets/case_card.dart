@@ -36,14 +36,7 @@ class CaseCard extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
 
-                  Text(
-                    surgicalCase.specialty,
-
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  _smallInfo(context, surgicalCase.specialty),
                 ],
               ),
 
@@ -73,17 +66,29 @@ class CaseCard extends StatelessWidget {
 
                   const Spacer(),
 
-                  Chip(label: Text(surgicalCase.operativeRole)),
+                  Flexible(
+                    child: Text(
+                      surgicalCase.operativeRole,
+
+                      textAlign: TextAlign.end,
+
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
                 ],
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
 
-              Row(
+              Wrap(
+                spacing: 8,
+
+                runSpacing: 6,
+
                 children: [
                   _smallInfo(context, surgicalCase.surgeryType),
 
-                  if (surgicalCase.outcome.isNotEmpty) const SizedBox(width: 8),
+                  _smallInfo(context, surgicalCase.urgency),
 
                   if (surgicalCase.outcome.isNotEmpty)
                     _smallInfo(context, surgicalCase.outcome),

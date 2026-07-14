@@ -10,6 +10,7 @@ import 'package:surgitrack/features/procedures/domain/procedure.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
 
 import 'package:surgitrack/core/enums/surgeon_role.dart';
+import 'package:surgitrack/features/cases/presentation/widgets/operative_role_selector.dart';
 
 class AddCaseScreen extends ConsumerStatefulWidget {
   final Patient patient;
@@ -115,21 +116,13 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
             const SizedBox(height: 12),
 
-            DropdownButtonFormField<SurgeonRole>(
-              initialValue: operativeRole,
-
-              decoration: const InputDecoration(labelText: "Operative Role"),
-
-              items: SurgeonRole.values.map((role) {
-                return DropdownMenuItem(value: role, child: Text(role.label));
-              }).toList(),
+            OperativeRoleSelector(
+              value: operativeRole,
 
               onChanged: (value) {
-                if (value != null) {
-                  setState(() {
-                    operativeRole = value;
-                  });
-                }
+                setState(() {
+                  operativeRole = value;
+                });
               },
             ),
 
