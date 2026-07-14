@@ -1,0 +1,197 @@
+{
+  "category": "Adult Cardiac Surgery",
+  "subcategory": "Cardiac Tumor Surgery",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "LEFT_ATRIAL_MYXOMA_EXCISION",
+      "name": "Left Atrial Myxoma Excision",
+      "shortName": "LA Myxoma",
+      "subcategory": "Cardiac Tumor Surgery",
+      "template": "la_myxoma",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Tumor Type",
+        "Tumor Size",
+        "Attachment Site",
+        "Septal Reconstruction Required"
+      ],
+
+      "technicalSteps": [
+        "Tumor Exposure",
+        "Tumor Excision",
+        "Septal Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "ASD Closure",
+        "Mitral Valve Repair",
+        "Mitral Valve Replacement"
+      ]
+    },
+
+    {
+      "id": "RIGHT_ATRIAL_MYXOMA_EXCISION",
+      "name": "Right Atrial Myxoma Excision",
+      "shortName": "RA Myxoma",
+      "subcategory": "Cardiac Tumor Surgery",
+      "template": "ra_myxoma",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Tumor Type",
+        "Tumor Size",
+        "Attachment Site",
+        "Septal Reconstruction Required"
+      ],
+
+      "technicalSteps": [
+        "Tumor Exposure",
+        "Tumor Excision",
+        "Septal Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "ASD Closure"
+      ]
+    },
+
+    {
+      "id": "LEFT_VENTRICULAR_TUMOR_EXCISION",
+      "name": "Left Ventricular Tumor Excision",
+      "shortName": "LV Tumor",
+      "subcategory": "Cardiac Tumor Surgery",
+      "template": "lv_tumor",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Tumor Type",
+        "Tumor Size",
+        "Tumor Location",
+        "Patch Reconstruction Required"
+      ],
+
+      "technicalSteps": [
+        "Tumor Exposure",
+        "Tumor Excision",
+        "Ventricular Reconstruction",
+        "Patch Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Mitral Valve Repair"
+      ]
+    },
+
+    {
+      "id": "RIGHT_VENTRICULAR_TUMOR_EXCISION",
+      "name": "Right Ventricular Tumor Excision",
+      "shortName": "RV Tumor",
+      "subcategory": "Cardiac Tumor Surgery",
+      "template": "rv_tumor",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Tumor Type",
+        "Tumor Size",
+        "Tumor Location",
+        "Patch Reconstruction Required"
+      ],
+
+      "technicalSteps": [
+        "Tumor Exposure",
+        "Tumor Excision",
+        "Ventricular Reconstruction",
+        "Patch Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "Pulmonary Valve Replacement"
+      ]
+    },
+
+    {
+      "id": "PERICARDIAL_TUMOR_EXCISION",
+      "name": "Pericardial Tumor Excision",
+      "shortName": "Pericardial Tumor",
+      "subcategory": "Cardiac Tumor Surgery",
+      "template": "pericardial_tumor",
+
+      "supportsCPB": false,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Tumor Type",
+        "Tumor Size",
+        "Tumor Location",
+        "Adjacent Structure Involvement"
+      ],
+
+      "technicalSteps": [
+        "Tumor Dissection",
+        "Tumor Excision",
+        "Adjacent Structure Reconstruction"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "CARDIAC_TUMOR_EXCISION_OTHER",
+      "name": "Other Cardiac Tumor Excision",
+      "shortName": "Other Cardiac Tumor",
+      "subcategory": "Cardiac Tumor Surgery",
+      "template": "cardiac_tumor_other",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Tumor Type",
+        "Tumor Size",
+        "Tumor Location",
+        "Reconstruction Required"
+      ],
+
+      "technicalSteps": [
+        "Tumor Exposure",
+        "Tumor Excision",
+        "Cardiac Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "Valve Repair",
+        "Valve Replacement",
+        "Patch Reconstruction"
+      ]
+    }
+  ]
+}

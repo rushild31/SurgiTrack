@@ -1,0 +1,116 @@
+{
+  "category": "Support Procedures",
+  "subcategory": "Surgical Access & Cannulation",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "FEMORAL_ARTERIAL_CUTDOWN",
+      "name": "Femoral Arterial Cutdown",
+      "shortName": "Femoral Artery",
+      "template": "femoral_arterial_cutdown",
+
+      "dynamicFields": [
+        "Side"
+      ],
+
+      "technicalSteps": [
+        "Arterial Exposure",
+        "Arterial Control"
+      ]
+    },
+
+    {
+      "id": "FEMORAL_VENOUS_CUTDOWN",
+      "name": "Femoral Venous Cutdown",
+      "shortName": "Femoral Vein",
+      "template": "femoral_venous_cutdown",
+
+      "dynamicFields": [
+        "Side"
+      ],
+
+      "technicalSteps": [
+        "Venous Exposure",
+        "Venous Control"
+      ]
+    },
+
+    {
+      "id": "AXILLARY_ARTERY_CANNULATION",
+      "name": "Axillary Artery Cannulation",
+      "shortName": "Axillary Cannulation",
+      "template": "axillary_cannulation",
+
+      "dynamicFields": [
+        "Side",
+        "Technique"
+      ],
+
+      "technicalSteps": [
+        "Axillary Artery Exposure",
+        "Cannulation"
+      ]
+    },
+
+    {
+      "id": "DIRECT_AORTIC_CANNULATION",
+      "name": "Direct Aortic Cannulation",
+      "shortName": "Aortic Cannulation",
+      "template": "direct_aortic_cannulation",
+
+      "dynamicFields": [
+        "Cannulation Site"
+      ],
+
+      "technicalSteps": [
+        "Cannulation"
+      ]
+    },
+
+    {
+      "id": "CENTRAL_CANNULATION",
+      "name": "Central Cannulation",
+      "shortName": "Central Cannulation",
+      "template": "central_cannulation",
+
+      "dynamicFields": [
+        "Configuration"
+      ],
+
+      "technicalSteps": [
+        "Cannulation"
+      ]
+    },
+
+    {
+      "id": "PERIPHERAL_CANNULATION",
+      "name": "Peripheral Cannulation",
+      "shortName": "Peripheral Cannulation",
+      "template": "peripheral_cannulation",
+
+      "dynamicFields": [
+        "Access Site"
+      ],
+
+      "technicalSteps": [
+        "Peripheral Cannulation"
+      ]
+    },
+
+    {
+      "id": "CAROTID_ARTERY_CANNULATION",
+      "name": "Carotid Artery Cannulation",
+      "shortName": "Carotid Cannulation",
+      "template": "carotid_cannulation",
+
+      "dynamicFields": [
+        "Side"
+      ],
+
+      "technicalSteps": [
+        "Carotid Exposure",
+        "Cannulation"
+      ]
+    }
+  ]
+}

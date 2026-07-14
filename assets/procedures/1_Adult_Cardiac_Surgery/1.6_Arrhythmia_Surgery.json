@@ -1,0 +1,151 @@
+{
+  "category": "Adult Cardiac Surgery",
+  "subcategory": "Arrhythmia Surgery",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "MAZE_PROCEDURE",
+      "name": "Maze Procedure",
+      "shortName": "Maze",
+      "subcategory": "Arrhythmia Surgery",
+      "template": "maze",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Maze Type",
+        "Energy Source",
+        "Left Atrial Appendage Management"
+      ],
+
+      "technicalSteps": [
+        "Pulmonary Vein Isolation",
+        "Left Atrial Lesion Set",
+        "Right Atrial Lesion Set",
+        "Left Atrial Appendage Exclusion"
+      ],
+
+      "associatedProcedures": [
+        "Mitral Valve Repair",
+        "Mitral Valve Replacement",
+        "Aortic Valve Replacement",
+        "Tricuspid Valve Repair",
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "LEFT_ATRIAL_APPENDAGE_EXCLUSION",
+      "name": "Left Atrial Appendage Exclusion",
+      "shortName": "LAA Exclusion",
+      "subcategory": "Arrhythmia Surgery",
+      "template": "laa_exclusion",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Technique"
+      ],
+
+      "technicalSteps": [
+        "Left Atrial Appendage Exclusion"
+      ],
+
+      "associatedProcedures": [
+        "Maze Procedure",
+        "Mitral Valve Repair",
+        "Mitral Valve Replacement",
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "SURGICAL_AF_ABLATION",
+      "name": "Surgical Atrial Fibrillation Ablation",
+      "shortName": "AF Ablation",
+      "subcategory": "Arrhythmia Surgery",
+      "template": "af_ablation",
+
+      "supportsCPB": false,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Energy Source",
+        "Approach"
+      ],
+
+      "technicalSteps": [
+        "Pulmonary Vein Isolation",
+        "Left Atrial Lesion Set"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "EPICARDIAL_PACEMAKER_LEAD_PLACEMENT",
+      "name": "Epicardial Pacemaker Lead Placement",
+      "shortName": "Epicardial Leads",
+      "subcategory": "Arrhythmia Surgery",
+      "template": "epicardial_pacing",
+
+      "supportsCPB": false,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Lead Chamber",
+        "Lead Type"
+      ],
+
+      "technicalSteps": [
+        "Epicardial Lead Placement",
+        "Lead Testing"
+      ],
+
+      "associatedProcedures": [
+        "Congenital Cardiac Procedure",
+        "Valve Surgery"
+      ]
+    },
+
+    {
+      "id": "EPICARDIAL_ICD_LEAD_PLACEMENT",
+      "name": "Epicardial ICD Lead Placement",
+      "shortName": "Epicardial ICD",
+      "subcategory": "Arrhythmia Surgery",
+      "template": "epicardial_icd",
+
+      "supportsCPB": false,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Lead Configuration"
+      ],
+
+      "technicalSteps": [
+        "Epicardial Lead Placement",
+        "Defibrillation Lead Placement",
+        "Lead Testing"
+      ],
+
+      "associatedProcedures": []
+    }
+  ]
+}

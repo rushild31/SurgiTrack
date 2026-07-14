@@ -1,0 +1,115 @@
+[
+  {
+    "id": "ROBOTIC_LOBECTOMY",
+    "name": "Robotic Lobectomy",
+    "specialty": "robotic",
+    "category": "robotic_thoracic",
+    "description": "Robot-assisted anatomical pulmonary lobectomy.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses"
+      }
+    ],
+    "skills": [
+      "ROBOT_DOCKING",
+      "HILAR_DISSECTION",
+      "ROBOTIC_STAPLING"
+    ],
+    "tags": [
+      "robotic",
+      "thoracic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_SEGMENTECTOMY",
+    "name": "Robotic Segmentectomy",
+    "specialty": "robotic",
+    "category": "robotic_thoracic",
+    "description": "Robot-assisted anatomical pulmonary segmentectomy.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses"
+      }
+    ],
+    "skills": [
+      "ROBOT_DOCKING",
+      "SEGMENTAL_DISSECTION"
+    ],
+    "tags": [
+      "robotic",
+      "thoracic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_THYMECTOMY",
+    "name": "Robotic Thymectomy",
+    "specialty": "robotic",
+    "category": "robotic_thoracic",
+    "description": "Robot-assisted thymectomy for thymoma or myasthenia gravis.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses"
+      }
+    ],
+    "skills": [
+      "ROBOT_DOCKING",
+      "MEDIASTINAL_DISSECTION"
+    ],
+    "tags": [
+      "robotic",
+      "mediastinum"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_MEDIASTINAL_MASS_RESECTION",
+    "name": "Robotic Mediastinal Mass Resection",
+    "specialty": "robotic",
+    "category": "robotic_thoracic",
+    "description": "Robot-assisted excision of anterior or posterior mediastinal masses.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses"
+      }
+    ],
+    "skills": [
+      "ROBOT_DOCKING",
+      "MEDIASTINAL_DISSECTION"
+    ],
+    "tags": [
+      "robotic",
+      "mediastinum"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

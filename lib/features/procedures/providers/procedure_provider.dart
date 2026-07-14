@@ -10,10 +10,35 @@ final procedureRepositoryProvider = Provider<ProcedureRepository>((ref) {
   return ProcedureRepository(ref.watch(databaseProvider));
 });
 
+//
+// Complete procedure library stream
+//
 final procedureListProvider = StreamProvider<List<ProcedureEntity>>((ref) {
   return ref.watch(procedureRepositoryProvider).watchProcedures();
 });
 
+//
+// Root level procedures
+//
+final rootProcedureProvider = FutureProvider<List<ProcedureEntity>>((
+  ref,
+) async {
+  return ref.watch(procedureRepositoryProvider).getRootProcedures();
+});
+
+//
+// Child procedures
+//
+final childProcedureProvider =
+    FutureProvider.family<List<ProcedureEntity>, int>((ref, parentId) async {
+      return ref
+          .watch(procedureRepositoryProvider)
+          .getChildProcedures(parentId);
+    });
+
+//
+// Single procedure lookup
+//
 final procedureByIdProvider = FutureProvider.family<ProcedureEntity?, int>((
   ref,
   id,
@@ -21,11 +46,16 @@ final procedureByIdProvider = FutureProvider.family<ProcedureEntity?, int>((
   return ref.watch(procedureRepositoryProvider).getProcedureById(id);
 });
 
+//
+// Search procedures
+//
 final procedureSearchProvider =
     FutureProvider.family<List<ProcedureEntity>, String>((ref, query) async {
+      final repository = ref.watch(procedureRepositoryProvider);
+
       if (query.trim().isEmpty) {
-        return [];
+        return repository.getProcedures();
       }
 
-      return ref.watch(procedureRepositoryProvider).searchProcedures(query);
+      return repository.searchProcedures(query.trim());
     });

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "COARCTATION_OF_AORTA_REPAIR",
+    "name": "Coarctation of Aorta Repair",
+    "specialty": "congenital_cardiac",
+    "category": "aortic_arch_and_great_vessel_anomalies",
+    "description": "Surgical correction of coarctation of the aorta.",
+    "aliases": [
+      "CoA Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "repair_technique",
+        "label": "Repair Technique",
+        "reference": "repair_techniques"
+      }
+    ],
+    "skills": [
+      "THORACIC_AORTIC_DISSECTION",
+      "COARCTATION_RESECTION",
+      "AORTIC_RECONSTRUCTION"
+    ],
+    "tags": [
+      "congenital",
+      "aortic_arch"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "DOUBLE_AORTIC_ARCH_DIVISION",
+    "name": "Double Aortic Arch Division",
+    "specialty": "congenital_cardiac",
+    "category": "aortic_arch_and_great_vessel_anomalies",
+    "description": "Division of the non-dominant arch to relieve a vascular ring.",
+    "aliases": [
+      "Double Aortic Arch Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "VASCULAR_RING_DISSECTION",
+      "AORTIC_ARCH_DIVISION"
+    ],
+    "tags": [
+      "congenital",
+      "vascular_ring"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ABERRANT_SUBCLAVIAN_ARTERY_REPAIR",
+    "name": "Aberrant Subclavian Artery Repair",
+    "specialty": "congenital_cardiac",
+    "category": "aortic_arch_and_great_vessel_anomalies",
+    "description": "Division and reimplantation of an aberrant subclavian artery when indicated.",
+    "aliases": [
+      "Arteria Lusoria Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "SUBCLAVIAN_ARTERY_DISSECTION",
+      "ARTERIAL_REIMPLANTATION"
+    ],
+    "tags": [
+      "congenital",
+      "vascular_ring",
+      "arch_anomaly"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

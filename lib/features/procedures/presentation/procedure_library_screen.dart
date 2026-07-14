@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:surgitrack/features/procedures/data/procedure_tree_builder.dart';
 import 'package:surgitrack/features/procedures/providers/procedure_provider.dart';
 
+import 'package:surgitrack/features/procedures/presentation/procedure_details_screen.dart';
 import 'package:surgitrack/features/procedures/presentation/procedure_search_delegate.dart';
+
+import 'package:surgitrack/features/procedures/presentation/widgets/procedure_tree_tile.dart';
 
 class ProcedureLibraryScreen extends ConsumerWidget {
   const ProcedureLibraryScreen({super.key});
@@ -38,27 +42,32 @@ class ProcedureLibraryScreen extends ConsumerWidget {
 
         data: (procedures) {
           if (procedures.isEmpty) {
-            return const Center(child: Text("No procedures added yet"));
+            return const Center(child: Text("No procedures available"));
           }
+
+          final tree = ProcedureTreeBuilder.build(procedures);
 
           return ListView.builder(
             padding: const EdgeInsets.all(12),
 
-            itemCount: procedures.length,
+            itemCount: tree.length,
 
             itemBuilder: (context, index) {
-              final procedure = procedures[index];
+              final node = tree[index];
 
-              return Card(
-                child: ListTile(
-                  leading: const Icon(Icons.medical_services),
+              return ProcedureTreeTile(
+                node: node,
 
-                  title: Text(procedure.name),
+                onTap: () {
+                  Navigator.push(
+                    context,
 
-                  subtitle: Text(
-                    "${procedure.specialty} • ${procedure.category}",
-                  ),
-                ),
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          ProcedureDetailsScreen(procedure: node.procedure),
+                    ),
+                  );
+                },
               );
             },
           );

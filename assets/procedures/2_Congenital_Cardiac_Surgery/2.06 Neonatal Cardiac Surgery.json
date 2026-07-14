@@ -1,0 +1,110 @@
+[
+  {
+    "id": "NORWOOD_PROCEDURE",
+    "name": "Norwood Procedure",
+    "specialty": "congenital_cardiac",
+    "category": "neonatal_cardiac_surgery",
+    "description": "Stage I palliation for hypoplastic left heart syndrome.",
+    "aliases": [
+      "Norwood Stage I"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "shunt_type",
+        "label": "Shunt Type"
+      }
+    ],
+    "skills": [
+      "NEOAORTIC_RECONSTRUCTION",
+      "DAMUS_KAYE_STANSEL_ANASTOMOSIS",
+      "SYSTEMIC_TO_PULMONARY_SHUNT"
+    ],
+    "tags": [
+      "congenital",
+      "neonatal",
+      "hlhs"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "NEONATAL_COARCTATION_REPAIR",
+    "name": "Neonatal Coarctation Repair",
+    "specialty": "congenital_cardiac",
+    "category": "neonatal_cardiac_surgery",
+    "description": "Repair of neonatal coarctation of the aorta.",
+    "aliases": [
+      "Neonatal CoA Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "repair_technique",
+        "label": "Repair Technique",
+        "reference": "repair_techniques"
+      }
+    ],
+    "skills": [
+      "AORTIC_MOBILIZATION",
+      "COARCTATION_RESECTION",
+      "AORTIC_ANASTOMOSIS"
+    ],
+    "tags": [
+      "congenital",
+      "neonatal",
+      "coarctation"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "INTERRUPTED_AORTIC_ARCH_REPAIR",
+    "name": "Interrupted Aortic Arch Repair",
+    "specialty": "congenital_cardiac",
+    "category": "neonatal_cardiac_surgery",
+    "description": "Repair of interrupted aortic arch with arch reconstruction.",
+    "aliases": [
+      "IAA Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "ARCH_RECONSTRUCTION",
+      "END_TO_END_AORTIC_ANASTOMOSIS",
+      "CEREBRAL_PERFUSION"
+    ],
+    "tags": [
+      "congenital",
+      "neonatal",
+      "aortic_arch"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

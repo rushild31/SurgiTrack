@@ -1,0 +1,187 @@
+{
+  "category": "Adult Cardiac Surgery",
+  "subcategory": "Heart Failure & Mechanical Circulatory Support",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "LVAD_IMPLANTATION",
+      "name": "Left Ventricular Assist Device Implantation",
+      "shortName": "LVAD",
+      "subcategory": "Heart Failure & Mechanical Circulatory Support",
+      "template": "lvad",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Device",
+        "Implant Strategy",
+        "Cannulation Strategy"
+      ],
+
+      "technicalSteps": [
+        "LV Apex Preparation",
+        "Inflow Cannula Implantation",
+        "Outflow Graft Anastomosis",
+        "Pump Implantation",
+        "Driveline Tunneling"
+      ],
+
+      "associatedProcedures": [
+        "Aortic Valve Replacement",
+        "Tricuspid Valve Repair",
+        "ECMO Cannulation"
+      ]
+    },
+
+    {
+      "id": "RVAD_IMPLANTATION",
+      "name": "Right Ventricular Assist Device Implantation",
+      "shortName": "RVAD",
+      "subcategory": "Heart Failure & Mechanical Circulatory Support",
+      "template": "rvad",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Device",
+        "Cannulation Strategy"
+      ],
+
+      "technicalSteps": [
+        "Inflow Cannula Implantation",
+        "Outflow Graft Anastomosis",
+        "Pump Implantation"
+      ],
+
+      "associatedProcedures": [
+        "LVAD Implantation",
+        "ECMO Cannulation"
+      ]
+    },
+
+    {
+      "id": "BIVAD_IMPLANTATION",
+      "name": "Biventricular Assist Device Implantation",
+      "shortName": "BiVAD",
+      "subcategory": "Heart Failure & Mechanical Circulatory Support",
+      "template": "bivad",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Device",
+        "Cannulation Strategy"
+      ],
+
+      "technicalSteps": [
+        "LVAD Implantation",
+        "RVAD Implantation"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "HEART_TRANSPLANT",
+      "name": "Orthotopic Heart Transplantation",
+      "shortName": "Heart Transplant",
+      "subcategory": "Heart Failure & Mechanical Circulatory Support",
+      "template": "heart_transplant",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Recipient Diagnosis",
+        "Donor Retrieval Centre",
+        "Implant Technique"
+      ],
+
+      "technicalSteps": [
+        "Recipient Cardiectomy",
+        "Left Atrial Anastomosis",
+        "IVC Anastomosis",
+        "SVC Anastomosis",
+        "Pulmonary Artery Anastomosis",
+        "Aortic Anastomosis"
+      ],
+
+      "associatedProcedures": [
+        "ECMO Cannulation",
+        "LVAD Explantation"
+      ]
+    },
+
+    {
+      "id": "DONOR_HEART_RETRIEVAL",
+      "name": "Donor Heart Retrieval",
+      "shortName": "Heart Retrieval",
+      "subcategory": "Heart Failure & Mechanical Circulatory Support",
+      "template": "heart_retrieval",
+
+      "supportsCPB": false,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": false,
+
+      "dynamicFields": [
+        "Donor Hospital",
+        "Multi-Organ Retrieval"
+      ],
+
+      "technicalSteps": [
+        "Donor Heart Assessment",
+        "Aortic Cross Clamp",
+        "Cardioplegia Administration",
+        "Heart Explantation",
+        "Back Table Preparation"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "ECMO_CANNULATION",
+      "name": "ECMO Cannulation",
+      "shortName": "ECMO",
+      "subcategory": "Heart Failure & Mechanical Circulatory Support",
+      "template": "ecmo",
+
+      "supportsCPB": false,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": false,
+
+      "dynamicFields": [
+        "ECMO Type",
+        "Cannulation Strategy",
+        "Cannulation Site"
+      ],
+
+      "technicalSteps": [
+        "Arterial Cannulation",
+        "Venous Cannulation",
+        "ECMO Initiation"
+      ],
+
+      "associatedProcedures": []
+    }
+  ]
+}

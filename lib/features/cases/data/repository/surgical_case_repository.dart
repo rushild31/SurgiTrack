@@ -6,6 +6,8 @@ import 'package:surgitrack/features/cases/domain/surgical_case.dart' as domain;
 
 import 'package:surgitrack/features/cases/data/mapper/surgical_case_mapper.dart';
 
+import 'package:surgitrack/features/procedures/domain/procedure_selection.dart';
+
 class SurgicalCaseRepository {
   final AppDatabase database;
 
@@ -27,20 +29,34 @@ class SurgicalCaseRepository {
 
   Future<void> addCase(
     domain.SurgicalCase surgicalCase,
-    List<int> procedureIds,
+    ProcedureSelection selection,
   ) async {
     final caseId = await database.surgicalCaseDao.insertCase(
       SurgicalCaseMapper.toCompanion(surgicalCase),
     );
 
-    for (int i = 0; i < procedureIds.length; i++) {
+    final primary = selection.primaryProcedure;
+
+    if (primary != null) {
       await database.caseProcedureDao.insertCaseProcedure(
         CaseProceduresCompanion(
           caseId: Value(caseId),
 
-          procedureId: Value(procedureIds[i]),
+          procedureId: Value(primary.id!),
 
-          type: Value(i == 0 ? "PRIMARY" : "ADDITIONAL"),
+          type: const Value("PRIMARY"),
+        ),
+      );
+    }
+
+    for (final procedure in selection.associatedProcedures) {
+      await database.caseProcedureDao.insertCaseProcedure(
+        CaseProceduresCompanion(
+          caseId: Value(caseId),
+
+          procedureId: Value(procedure.id!),
+
+          type: const Value("ASSOCIATED"),
         ),
       );
     }

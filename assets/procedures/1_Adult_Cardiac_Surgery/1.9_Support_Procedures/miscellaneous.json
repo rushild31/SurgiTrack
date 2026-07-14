@@ -1,0 +1,100 @@
+{
+  "category": "Support Procedures",
+  "subcategory": "Miscellaneous Support Procedures",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "EPICARDIAL_PACING_WIRE_PLACEMENT",
+      "name": "Epicardial Pacing Wire Placement",
+      "shortName": "Epicardial Pacing",
+      "template": "epicardial_pacing",
+
+      "dynamicFields": [
+        "Lead Chamber"
+      ],
+
+      "technicalSteps": [
+        "Lead Placement",
+        "Lead Testing"
+      ]
+    },
+
+    {
+      "id": "EPICARDIAL_ICD_LEAD_PLACEMENT",
+      "name": "Epicardial ICD Lead Placement",
+      "shortName": "Epicardial ICD",
+      "template": "epicardial_icd",
+
+      "dynamicFields": [
+        "Lead Configuration"
+      ],
+
+      "technicalSteps": [
+        "ICD Lead Placement",
+        "Lead Testing"
+      ]
+    },
+
+    {
+      "id": "TEMPORARY_CHEST_CLOSURE",
+      "name": "Temporary Chest Closure",
+      "shortName": "Temporary Closure",
+      "template": "temporary_chest_closure",
+
+      "dynamicFields": [
+        "Closure Technique"
+      ],
+
+      "technicalSteps": [
+        "Temporary Chest Closure"
+      ]
+    },
+
+    {
+      "id": "VACUUM_DRESSING_APPLICATION",
+      "name": "Vacuum Dressing Application",
+      "shortName": "VAC Dressing",
+      "template": "vac_dressing",
+
+      "dynamicFields": [
+        "Indication"
+      ],
+
+      "technicalSteps": [
+        "Wound Preparation",
+        "VAC Application"
+      ]
+    },
+
+    {
+      "id": "STERNAL_RECONSTRUCTION",
+      "name": "Sternal Reconstruction",
+      "shortName": "Sternal Reconstruction",
+      "template": "sternal_reconstruction",
+
+      "dynamicFields": [
+        "Reconstruction Technique"
+      ],
+
+      "technicalSteps": [
+        "Sternal Debridement",
+        "Sternal Reconstruction"
+      ]
+    },
+
+    {
+      "id": "STERNAL_WIRE_REMOVAL",
+      "name": "Sternal Wire Removal",
+      "shortName": "Wire Removal",
+      "template": "sternal_wire_removal",
+
+      "dynamicFields": [
+        "Indication"
+      ],
+
+      "technicalSteps": [
+        "Wire Removal"
+      ]
+    }
+  ]
+}

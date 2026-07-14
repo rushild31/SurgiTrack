@@ -1,0 +1,93 @@
+[
+  {
+    "id": "VARICOSE_VEIN_SURGERY",
+    "name": "Varicose Vein Surgery",
+    "specialty": "vascular",
+    "category": "venous_surgery",
+    "description": "Open treatment of symptomatic varicose veins.",
+    "aliases": [
+      "High Ligation and Stripping"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "SAPHENOFEMORAL_DISSECTION",
+      "VEIN_STRIPPING"
+    ],
+    "tags": [
+      "vascular",
+      "venous"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VENOUS_THROMBECTOMY",
+    "name": "Venous Thrombectomy",
+    "specialty": "vascular",
+    "category": "venous_surgery",
+    "description": "Open thrombectomy for acute venous occlusion.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "VENOTOMY",
+      "FOGARTY_THROMBECTOMY",
+      "VENOUS_REPAIR"
+    ],
+    "tags": [
+      "vascular",
+      "venous"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "IVC_FILTER_REMOVAL",
+    "name": "Open IVC Filter Removal",
+    "specialty": "vascular",
+    "category": "venous_surgery",
+    "description": "Open retrieval of inferior vena cava filter when endovascular removal is not feasible.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "IVC_EXPOSURE",
+      "VENOTOMY",
+      "IVC_REPAIR"
+    ],
+    "tags": [
+      "vascular",
+      "ivc"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

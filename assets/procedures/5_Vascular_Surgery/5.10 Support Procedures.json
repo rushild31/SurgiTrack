@@ -1,0 +1,146 @@
+[
+  {
+    "id": "VASCULAR_REEXPLORATION",
+    "name": "Re-exploration for Bleeding",
+    "specialty": "vascular",
+    "category": "support_procedures",
+    "description": "Return to theatre for postoperative bleeding or haemostasis following vascular surgery.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "indication",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "SURGICAL_REENTRY",
+      "HEMOSTASIS",
+      "VASCULAR_REPAIR"
+    ],
+    "tags": [
+      "support",
+      "bleeding"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VASCULAR_EMBOLECTOMY",
+    "name": "Open Embolectomy",
+    "specialty": "vascular",
+    "category": "support_procedures",
+    "description": "Emergency open embolectomy using a Fogarty catheter for acute arterial occlusion.",
+    "aliases": [
+      "Fogarty Embolectomy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Indication",
+        "reference": "vascular_diagnoses"
+      }
+    ],
+    "skills": [
+      "ARTERIAL_EXPOSURE",
+      "FOGARTY_EMBOLECTOMY",
+      "ARTERIAL_CLOSURE"
+    ],
+    "tags": [
+      "support",
+      "embolectomy"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "FASCIOTOMY",
+    "name": "Limb Fasciotomy",
+    "specialty": "vascular",
+    "category": "support_procedures",
+    "description": "Decompressive fasciotomy for compartment syndrome associated with vascular injury or reperfusion.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "indication",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "COMPARTMENT_RELEASE",
+      "LIMB_DECOMPRESSION"
+    ],
+    "tags": [
+      "support",
+      "compartment_syndrome"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VASCULAR_GRAFT_THROMBECTOMY",
+    "name": "Vascular Graft Thrombectomy",
+    "specialty": "vascular",
+    "category": "support_procedures",
+    "description": "Open thrombectomy of an occluded prosthetic or vein graft.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "GRAFT_EXPOSURE",
+      "THROMBECTOMY",
+      "GRAFT_REVISION"
+    ],
+    "tags": [
+      "support",
+      "graft"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "OPEN_VASCULAR_ACCESS",
+    "name": "Open Vascular Access",
+    "specialty": "vascular",
+    "category": "support_procedures",
+    "description": "Open surgical exposure of an artery or vein to facilitate complex vascular procedures.",
+    "aliases": [
+      "Surgical Cutdown"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "vessel",
+        "label": "Target Vessel"
+      }
+    ],
+    "skills": [
+      "ARTERIAL_EXPOSURE",
+      "VENOUS_EXPOSURE"
+    ],
+    "tags": [
+      "support",
+      "vascular_access"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

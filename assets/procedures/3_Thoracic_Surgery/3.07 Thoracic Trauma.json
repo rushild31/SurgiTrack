@@ -1,0 +1,100 @@
+[
+  {
+    "id": "EMERGENCY_THORACOTOMY",
+    "name": "Emergency Thoracotomy",
+    "specialty": "thoracic",
+    "category": "thoracic_trauma",
+    "description": "Emergency thoracotomy for penetrating or blunt thoracic trauma.",
+    "aliases": [
+      "Resuscitative Thoracotomy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "EMERGENCY_THORACOTOMY",
+      "CARDIAC_EXPOSURE",
+      "HEMORRHAGE_CONTROL"
+    ],
+    "tags": [
+      "thoracic",
+      "trauma",
+      "emergency"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "LUNG_TRAUMA_REPAIR",
+    "name": "Lung Trauma Repair",
+    "specialty": "thoracic",
+    "category": "thoracic_trauma",
+    "description": "Repair or resection of traumatic pulmonary injuries.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "PULMONARY_HEMOSTASIS",
+      "TRACTOTOMY",
+      "LUNG_REPAIR"
+    ],
+    "tags": [
+      "thoracic",
+      "lung",
+      "trauma"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "DIAPHRAGM_TRAUMA_REPAIR",
+    "name": "Traumatic Diaphragm Repair",
+    "specialty": "thoracic",
+    "category": "thoracic_trauma",
+    "description": "Repair of traumatic diaphragmatic rupture.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "patch_material",
+        "label": "Patch Material",
+        "reference": "grafts_and_patch_materials"
+      }
+    ],
+    "skills": [
+      "DIAPHRAGM_REPAIR",
+      "PATCH_RECONSTRUCTION"
+    ],
+    "tags": [
+      "thoracic",
+      "trauma"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

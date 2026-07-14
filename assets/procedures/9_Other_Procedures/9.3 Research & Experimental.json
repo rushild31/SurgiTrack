@@ -1,0 +1,54 @@
+[
+  {
+    "id": "NOVEL_DEVICE_IMPLANTATION",
+    "name": "Novel Device Implantation",
+    "specialty": "other",
+    "category": "research_and_experimental",
+    "description": "Implantation of investigational or trial medical devices.",
+    "aliases": [],
+    "active": false,
+    "fields": [
+      {
+        "id": "study_name",
+        "label": "Clinical Trial"
+      }
+    ],
+    "skills": [
+      "DEVICE_IMPLANTATION"
+    ],
+    "tags": [
+      "research"
+    ],
+    "metadata": {
+      "version": 1,
+      "status": "future",
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "FIRST_IN_HUMAN_PROCEDURE",
+    "name": "First-in-Human Procedure",
+    "specialty": "other",
+    "category": "research_and_experimental",
+    "description": "Experimental procedure performed under approved research protocol.",
+    "aliases": [],
+    "active": false,
+    "fields": [
+      {
+        "id": "study_name",
+        "label": "Research Protocol"
+      }
+    ],
+    "skills": [
+      "EXPERIMENTAL_SURGERY"
+    ],
+    "tags": [
+      "research"
+    ],
+    "metadata": {
+      "version": 1,
+      "status": "future",
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

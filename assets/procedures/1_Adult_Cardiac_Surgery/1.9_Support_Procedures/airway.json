@@ -1,0 +1,70 @@
+{
+  "category": "Support Procedures",
+  "subcategory": "Airway & Drainage",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "SURGICAL_TRACHEOSTOMY",
+      "name": "Surgical Tracheostomy",
+      "shortName": "Tracheostomy",
+      "template": "tracheostomy",
+
+      "dynamicFields": [
+        "Indication"
+      ],
+
+      "technicalSteps": [
+        "Tracheal Exposure",
+        "Tracheostomy Creation",
+        "Tube Placement"
+      ]
+    },
+
+    {
+      "id": "BRONCHOSCOPY",
+      "name": "Bronchoscopy",
+      "shortName": "Bronchoscopy",
+      "template": "bronchoscopy",
+
+      "dynamicFields": [
+        "Indication"
+      ],
+
+      "technicalSteps": [
+        "Airway Inspection",
+        "Therapeutic Intervention"
+      ]
+    },
+
+    {
+      "id": "PLEURAL_DRAIN_INSERTION",
+      "name": "Pleural Drain Insertion",
+      "shortName": "Pleural Drain",
+      "template": "pleural_drain",
+
+      "dynamicFields": [
+        "Side",
+        "Indication"
+      ],
+
+      "technicalSteps": [
+        "Drain Placement"
+      ]
+    },
+
+    {
+      "id": "PERICARDIAL_DRAIN_INSERTION",
+      "name": "Pericardial Drain Insertion",
+      "shortName": "Pericardial Drain",
+      "template": "pericardial_drain",
+
+      "dynamicFields": [
+        "Indication"
+      ],
+
+      "technicalSteps": [
+        "Drain Placement"
+      ]
+    }
+  ]
+}

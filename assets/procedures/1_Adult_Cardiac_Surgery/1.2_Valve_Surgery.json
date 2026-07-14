@@ -1,0 +1,310 @@
+{
+  "category": "Adult Cardiac Surgery",
+  "subcategory": "Valve Surgery",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "AVR",
+      "name": "Aortic Valve Replacement",
+      "shortName": "AVR",
+      "subcategory": "Valve Surgery",
+      "template": "avr",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Valve Pathology",
+        "Prosthesis Type",
+        "Valve Manufacturer",
+        "Valve Size",
+        "Root Enlargement"
+      ],
+
+      "technicalSteps": [
+        "Aortic Cannulation",
+        "Venous Cannulation",
+        "Aortotomy",
+        "Native Valve Excision",
+        "Annular Debridement",
+        "Valve Implantation",
+        "Aortotomy Closure"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Ascending Aortic Replacement",
+        "Bentall Procedure",
+        "Aortic Root Enlargement",
+        "Maze Procedure",
+        "Left Atrial Appendage Closure",
+        "PFO Closure",
+        "ASD Closure",
+        "IABP Insertion",
+        "ECMO Cannulation"
+      ]
+    },
+
+    {
+      "id": "MVR",
+      "name": "Mitral Valve Replacement",
+      "shortName": "MVR",
+      "subcategory": "Valve Surgery",
+      "template": "mvr",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Valve Pathology",
+        "Prosthesis Type",
+        "Valve Manufacturer",
+        "Valve Size",
+        "Chordal Preservation"
+      ],
+
+      "technicalSteps": [
+        "Aortic Cannulation",
+        "Venous Cannulation",
+        "Left Atriotomy",
+        "Native Valve Excision",
+        "Annular Sutures",
+        "Valve Implantation",
+        "Left Atriotomy Closure"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Tricuspid Valve Repair",
+        "Maze Procedure",
+        "Left Atrial Appendage Closure",
+        "PFO Closure",
+        "ASD Closure",
+        "IABP Insertion",
+        "ECMO Cannulation"
+      ]
+    },
+
+    {
+      "id": "MV_REPAIR",
+      "name": "Mitral Valve Repair",
+      "shortName": "MV Repair",
+      "subcategory": "Valve Surgery",
+      "template": "mitral_repair",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Valve Pathology",
+        "Repair Technique",
+        "Annuloplasty Ring",
+        "Ring Size",
+        "Artificial Chordae",
+        "Leaflet Resection",
+        "Edge-to-Edge Repair"
+      ],
+
+      "technicalSteps": [
+        "Aortic Cannulation",
+        "Venous Cannulation",
+        "Left Atriotomy",
+        "Valve Assessment",
+        "Leaflet Repair",
+        "Chordal Repair",
+        "Ring Implantation",
+        "Left Atriotomy Closure"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Tricuspid Valve Repair",
+        "Maze Procedure",
+        "Left Atrial Appendage Closure",
+        "PFO Closure",
+        "ASD Closure",
+        "ECMO Cannulation"
+      ]
+    },
+
+    {
+      "id": "TV_REPAIR",
+      "name": "Tricuspid Valve Repair",
+      "shortName": "TV Repair",
+      "subcategory": "Valve Surgery",
+      "template": "tv_repair",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Valve Pathology",
+        "Repair Technique",
+        "Annuloplasty Ring",
+        "Ring Size",
+        "Beating Heart Repair"
+      ],
+
+      "technicalSteps": [
+        "Right Atriotomy",
+        "Valve Assessment",
+        "Annuloplasty",
+        "Valve Repair",
+        "Right Atriotomy Closure"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Mitral Valve Repair",
+        "Mitral Valve Replacement",
+        "Maze Procedure"
+      ]
+    },
+
+    {
+      "id": "TV_REPLACEMENT",
+      "name": "Tricuspid Valve Replacement",
+      "shortName": "TV Replacement",
+      "subcategory": "Valve Surgery",
+      "template": "tvr",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Valve Pathology",
+        "Prosthesis Type",
+        "Valve Manufacturer",
+        "Valve Size"
+      ],
+
+      "technicalSteps": [
+        "Right Atriotomy",
+        "Native Valve Excision",
+        "Annular Sutures",
+        "Valve Implantation",
+        "Right Atriotomy Closure"
+      ],
+
+      "associatedProcedures": [
+        "Mitral Valve Surgery",
+        "CABG",
+        "Maze Procedure"
+      ]
+    },
+
+    {
+      "id": "PVR",
+      "name": "Pulmonary Valve Replacement",
+      "shortName": "PVR",
+      "subcategory": "Valve Surgery",
+      "template": "pvr",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Valve Pathology",
+        "Prosthesis Type",
+        "Valve Size"
+      ],
+
+      "technicalSteps": [
+        "Pulmonary Arteriotomy",
+        "Native Valve Excision",
+        "Valve Implantation",
+        "Pulmonary Arteriotomy Closure"
+      ],
+
+      "associatedProcedures": [
+        "RVOT Reconstruction",
+        "Pulmonary Artery Augmentation"
+      ]
+    },
+
+    {
+      "id": "DVR",
+      "name": "Double Valve Replacement",
+      "shortName": "DVR",
+      "subcategory": "Valve Surgery",
+      "template": "dvr",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Aortic Prosthesis Type",
+        "Mitral Prosthesis Type",
+        "Aortic Valve Size",
+        "Mitral Valve Size"
+      ],
+
+      "technicalSteps": [
+        "Aortotomy",
+        "Aortic Valve Replacement",
+        "Left Atriotomy",
+        "Mitral Valve Replacement"
+      ],
+
+      "associatedProcedures": [
+        "Tricuspid Valve Repair",
+        "Maze Procedure",
+        "Left Atrial Appendage Closure",
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "MULTIPLE_VALVE_SURGERY",
+      "name": "Multiple Valve Surgery",
+      "shortName": "Multiple Valve",
+      "subcategory": "Valve Surgery",
+      "template": "multiple_valve",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Valves Operated",
+        "Repair/Replacement Details"
+      ],
+
+      "technicalSteps": [
+        "Valve 1 Procedure",
+        "Valve 2 Procedure",
+        "Valve 3 Procedure"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Maze Procedure",
+        "Left Atrial Appendage Closure",
+        "Aortic Root Enlargement"
+      ]
+    }
+  ]
+}

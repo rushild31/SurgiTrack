@@ -1,0 +1,61 @@
+[
+  {
+    "id": "MINI_ASCENDING_AORTIC_REPLACEMENT",
+    "name": "Minimally Invasive Ascending Aortic Replacement",
+    "specialty": "mics",
+    "category": "aortic_mics",
+    "description": "Ascending aortic replacement performed through an upper hemi-sternotomy.",
+    "aliases": [
+      "Mini Ascending Aortic Replacement"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "graft_configuration",
+        "label": "Graft Configuration",
+        "reference": "graft_configurations"
+      }
+    ],
+    "skills": [
+      "MINI_STERNOTOMY",
+      "AORTIC_REPLACEMENT"
+    ],
+    "tags": [
+      "mics",
+      "aortic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MINI_AORTIC_ROOT_REPLACEMENT",
+    "name": "Minimally Invasive Aortic Root Replacement",
+    "specialty": "mics",
+    "category": "aortic_mics",
+    "description": "Aortic root replacement using a minimally invasive approach.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "prosthesis_type",
+        "label": "Root Prosthesis",
+        "reference": "prosthesis_types"
+      }
+    ],
+    "skills": [
+      "ROOT_DISSECTION",
+      "CORONARY_BUTTON_REIMPLANTATION",
+      "ROOT_REPLACEMENT"
+    ],
+    "tags": [
+      "mics",
+      "aortic_root"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

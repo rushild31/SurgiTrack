@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ASD_CLOSURE",
+    "name": "Atrial Septal Defect Closure",
+    "specialty": "congenital_cardiac",
+    "category": "septal_defects",
+    "description": "Surgical closure of an atrial septal defect.",
+    "aliases": [
+      "ASD Closure"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "ATRIOTOMY",
+      "SEPTAL_PATCH_CLOSURE",
+      "ATRIOTOMY_CLOSURE",
+      "DEAIRING"
+    ],
+    "tags": [
+      "congenital",
+      "septal",
+      "atrial"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VSD_CLOSURE",
+    "name": "Ventricular Septal Defect Closure",
+    "specialty": "congenital_cardiac",
+    "category": "septal_defects",
+    "description": "Surgical closure of a ventricular septal defect.",
+    "aliases": [
+      "VSD Closure"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "RIGHT_ATRIOTOMY",
+      "PATCH_CLOSURE",
+      "TRICUSPID_VALVE_DETACHMENT",
+      "DEAIRING"
+    ],
+    "tags": [
+      "congenital",
+      "septal",
+      "ventricular"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "AVSD_REPAIR",
+    "name": "Atrioventricular Septal Defect Repair",
+    "specialty": "congenital_cardiac",
+    "category": "septal_defects",
+    "description": "Complete or partial atrioventricular septal defect repair.",
+    "aliases": [
+      "AV Canal Repair",
+      "AVSD Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "COMMON_AV_VALVE_REPAIR",
+      "PATCH_CLOSURE",
+      "LEFT_AV_VALVE_CLEFT_CLOSURE"
+    ],
+    "tags": [
+      "congenital",
+      "septal",
+      "atrioventricular"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

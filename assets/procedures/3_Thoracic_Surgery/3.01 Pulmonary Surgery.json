@@ -1,0 +1,149 @@
+[
+  {
+    "id": "WEDGE_RESECTION",
+    "name": "Pulmonary Wedge Resection",
+    "specialty": "thoracic",
+    "category": "pulmonary_surgery",
+    "description": "Non-anatomical resection of a pulmonary lesion.",
+    "aliases": [
+      "Lung Wedge Resection"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "HILAR_DISSECTION",
+      "PARANCHYMAL_DIVISION",
+      "STAPLED_LUNG_RESECTION"
+    ],
+    "tags": [
+      "thoracic",
+      "lung",
+      "resection"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "SEGMENTECTOMY",
+    "name": "Pulmonary Segmentectomy",
+    "specialty": "thoracic",
+    "category": "pulmonary_surgery",
+    "description": "Anatomical resection of one or more pulmonary segments.",
+    "aliases": [
+      "Lung Segmentectomy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "SEGMENTAL_ARTERY_DISSECTION",
+      "SEGMENTAL_BRONCHUS_DIVISION",
+      "SEGMENTAL_VEIN_DIVISION",
+      "INTERSEGMENTAL_PLANE_DIVISION"
+    ],
+    "tags": [
+      "thoracic",
+      "lung",
+      "segmentectomy"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "LOBECTOMY",
+    "name": "Pulmonary Lobectomy",
+    "specialty": "thoracic",
+    "category": "pulmonary_surgery",
+    "description": "Anatomical resection of a pulmonary lobe.",
+    "aliases": [
+      "Lobectomy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "HILAR_DISSECTION",
+      "LOBAR_ARTERY_DIVISION",
+      "LOBAR_VEIN_DIVISION",
+      "LOBAR_BRONCHUS_DIVISION",
+      "FISSURE_COMPLETION"
+    ],
+    "tags": [
+      "thoracic",
+      "lobectomy",
+      "lung"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PNEUMONECTOMY",
+    "name": "Pneumonectomy",
+    "specialty": "thoracic",
+    "category": "pulmonary_surgery",
+    "description": "Complete removal of one lung.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "MAIN_PULMONARY_ARTERY_DIVISION",
+      "MAIN_BRONCHUS_DIVISION",
+      "PULMONARY_VEIN_DIVISION"
+    ],
+    "tags": [
+      "thoracic",
+      "pneumonectomy"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

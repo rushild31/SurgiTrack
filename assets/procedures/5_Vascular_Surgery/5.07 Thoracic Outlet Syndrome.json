@@ -1,0 +1,94 @@
+[
+  {
+    "id": "FIRST_RIB_RESECTION",
+    "name": "First Rib Resection",
+    "specialty": "vascular",
+    "category": "thoracic_outlet_syndrome",
+    "description": "Resection of the first rib for thoracic outlet syndrome.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "SUPRACLAVICULAR_EXPOSURE",
+      "FIRST_RIB_RESECTION",
+      "NEUROVASCULAR_DECOMPRESSION"
+    ],
+    "tags": [
+      "vascular",
+      "thoracic_outlet"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "SCALENECTOMY",
+    "name": "Scalenectomy",
+    "specialty": "vascular",
+    "category": "thoracic_outlet_syndrome",
+    "description": "Division or excision of the anterior and/or middle scalene muscles.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "SCALENE_DISSECTION",
+      "SCALENECTOMY"
+    ],
+    "tags": [
+      "vascular",
+      "thoracic_outlet"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "SUBCLAVIAN_ARTERY_RECONSTRUCTION",
+    "name": "Subclavian Artery Reconstruction",
+    "specialty": "vascular",
+    "category": "thoracic_outlet_syndrome",
+    "description": "Reconstruction of the subclavian artery following decompression.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "SUBCLAVIAN_ARTERY_EXPOSURE",
+      "ARTERIAL_RECONSTRUCTION"
+    ],
+    "tags": [
+      "vascular",
+      "thoracic_outlet"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

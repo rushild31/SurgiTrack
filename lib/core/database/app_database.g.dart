@@ -1538,6 +1538,17 @@ class $ProceduresTable extends Procedures
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _shortNameMeta = const VerificationMeta(
+    'shortName',
+  );
+  @override
+  late final GeneratedColumn<String> shortName = GeneratedColumn<String>(
+    'short_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _categoryMeta = const VerificationMeta(
     'category',
   );
@@ -1559,7 +1570,7 @@ class $ProceduresTable extends Procedures
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
-    defaultValue: const Constant("Cardiothoracic Surgery"),
+    defaultValue: const Constant('Cardiac'),
   );
   static const VerificationMeta _parentIdMeta = const VerificationMeta(
     'parentId',
@@ -1571,6 +1582,18 @@ class $ProceduresTable extends Procedures
     true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nodeTypeMeta = const VerificationMeta(
+    'nodeType',
+  );
+  @override
+  late final GeneratedColumn<String> nodeType = GeneratedColumn<String>(
+    'node_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('procedure'),
   );
   static const VerificationMeta _aliasesMeta = const VerificationMeta(
     'aliases',
@@ -1594,6 +1617,128 @@ class $ProceduresTable extends Procedures
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _templateMeta = const VerificationMeta(
+    'template',
+  );
+  @override
+  late final GeneratedColumn<String> template = GeneratedColumn<String>(
+    'template',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _supportsCPBMeta = const VerificationMeta(
+    'supportsCPB',
+  );
+  @override
+  late final GeneratedColumn<bool> supportsCPB = GeneratedColumn<bool>(
+    'supports_c_p_b',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("supports_c_p_b" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _supportsRedoMeta = const VerificationMeta(
+    'supportsRedo',
+  );
+  @override
+  late final GeneratedColumn<bool> supportsRedo = GeneratedColumn<bool>(
+    'supports_redo',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("supports_redo" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _supportsEmergencyMeta = const VerificationMeta(
+    'supportsEmergency',
+  );
+  @override
+  late final GeneratedColumn<bool> supportsEmergency = GeneratedColumn<bool>(
+    'supports_emergency',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("supports_emergency" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _supportsTechnicalStepsMeta =
+      const VerificationMeta('supportsTechnicalSteps');
+  @override
+  late final GeneratedColumn<bool> supportsTechnicalSteps =
+      GeneratedColumn<bool>(
+        'supports_technical_steps',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("supports_technical_steps" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
+  static const VerificationMeta _supportsAssociatedProceduresMeta =
+      const VerificationMeta('supportsAssociatedProcedures');
+  @override
+  late final GeneratedColumn<bool> supportsAssociatedProcedures =
+      GeneratedColumn<bool>(
+        'supports_associated_procedures',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("supports_associated_procedures" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
+  static const VerificationMeta _dynamicFieldsMeta = const VerificationMeta(
+    'dynamicFields',
+  );
+  @override
+  late final GeneratedColumn<String> dynamicFields = GeneratedColumn<String>(
+    'dynamic_fields',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _technicalStepsMeta = const VerificationMeta(
+    'technicalSteps',
+  );
+  @override
+  late final GeneratedColumn<String> technicalSteps = GeneratedColumn<String>(
+    'technical_steps',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _associatedProceduresMeta =
+      const VerificationMeta('associatedProcedures');
+  @override
+  late final GeneratedColumn<String> associatedProcedures =
+      GeneratedColumn<String>(
+        'associated_procedures',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('[]'),
+      );
   static const VerificationMeta _isActiveMeta = const VerificationMeta(
     'isActive',
   );
@@ -1626,11 +1771,22 @@ class $ProceduresTable extends Procedures
     id,
     procedureId,
     name,
+    shortName,
     category,
     specialty,
     parentId,
+    nodeType,
     aliases,
     description,
+    template,
+    supportsCPB,
+    supportsRedo,
+    supportsEmergency,
+    supportsTechnicalSteps,
+    supportsAssociatedProcedures,
+    dynamicFields,
+    technicalSteps,
+    associatedProcedures,
     isActive,
     createdAt,
   ];
@@ -1668,6 +1824,12 @@ class $ProceduresTable extends Procedures
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('short_name')) {
+      context.handle(
+        _shortNameMeta,
+        shortName.isAcceptableOrUnknown(data['short_name']!, _shortNameMeta),
+      );
+    }
     if (data.containsKey('category')) {
       context.handle(
         _categoryMeta,
@@ -1688,6 +1850,12 @@ class $ProceduresTable extends Procedures
         parentId.isAcceptableOrUnknown(data['parent_id']!, _parentIdMeta),
       );
     }
+    if (data.containsKey('node_type')) {
+      context.handle(
+        _nodeTypeMeta,
+        nodeType.isAcceptableOrUnknown(data['node_type']!, _nodeTypeMeta),
+      );
+    }
     if (data.containsKey('aliases')) {
       context.handle(
         _aliasesMeta,
@@ -1700,6 +1868,84 @@ class $ProceduresTable extends Procedures
         description.isAcceptableOrUnknown(
           data['description']!,
           _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('template')) {
+      context.handle(
+        _templateMeta,
+        template.isAcceptableOrUnknown(data['template']!, _templateMeta),
+      );
+    }
+    if (data.containsKey('supports_c_p_b')) {
+      context.handle(
+        _supportsCPBMeta,
+        supportsCPB.isAcceptableOrUnknown(
+          data['supports_c_p_b']!,
+          _supportsCPBMeta,
+        ),
+      );
+    }
+    if (data.containsKey('supports_redo')) {
+      context.handle(
+        _supportsRedoMeta,
+        supportsRedo.isAcceptableOrUnknown(
+          data['supports_redo']!,
+          _supportsRedoMeta,
+        ),
+      );
+    }
+    if (data.containsKey('supports_emergency')) {
+      context.handle(
+        _supportsEmergencyMeta,
+        supportsEmergency.isAcceptableOrUnknown(
+          data['supports_emergency']!,
+          _supportsEmergencyMeta,
+        ),
+      );
+    }
+    if (data.containsKey('supports_technical_steps')) {
+      context.handle(
+        _supportsTechnicalStepsMeta,
+        supportsTechnicalSteps.isAcceptableOrUnknown(
+          data['supports_technical_steps']!,
+          _supportsTechnicalStepsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('supports_associated_procedures')) {
+      context.handle(
+        _supportsAssociatedProceduresMeta,
+        supportsAssociatedProcedures.isAcceptableOrUnknown(
+          data['supports_associated_procedures']!,
+          _supportsAssociatedProceduresMeta,
+        ),
+      );
+    }
+    if (data.containsKey('dynamic_fields')) {
+      context.handle(
+        _dynamicFieldsMeta,
+        dynamicFields.isAcceptableOrUnknown(
+          data['dynamic_fields']!,
+          _dynamicFieldsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('technical_steps')) {
+      context.handle(
+        _technicalStepsMeta,
+        technicalSteps.isAcceptableOrUnknown(
+          data['technical_steps']!,
+          _technicalStepsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('associated_procedures')) {
+      context.handle(
+        _associatedProceduresMeta,
+        associatedProcedures.isAcceptableOrUnknown(
+          data['associated_procedures']!,
+          _associatedProceduresMeta,
         ),
       );
     }
@@ -1736,6 +1982,10 @@ class $ProceduresTable extends Procedures
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
+      shortName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}short_name'],
+      ),
       category: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}category'],
@@ -1748,6 +1998,10 @@ class $ProceduresTable extends Procedures
         DriftSqlType.int,
         data['${effectivePrefix}parent_id'],
       ),
+      nodeType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}node_type'],
+      )!,
       aliases: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}aliases'],
@@ -1756,6 +2010,42 @@ class $ProceduresTable extends Procedures
         DriftSqlType.string,
         data['${effectivePrefix}description'],
       ),
+      template: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}template'],
+      ),
+      supportsCPB: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}supports_c_p_b'],
+      )!,
+      supportsRedo: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}supports_redo'],
+      )!,
+      supportsEmergency: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}supports_emergency'],
+      )!,
+      supportsTechnicalSteps: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}supports_technical_steps'],
+      )!,
+      supportsAssociatedProcedures: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}supports_associated_procedures'],
+      )!,
+      dynamicFields: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dynamic_fields'],
+      )!,
+      technicalSteps: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}technical_steps'],
+      )!,
+      associatedProcedures: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}associated_procedures'],
+      )!,
       isActive: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}is_active'],
@@ -1777,22 +2067,48 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
   final int id;
   final String procedureId;
   final String name;
+  final String? shortName;
   final String category;
   final String specialty;
   final int? parentId;
+  final String nodeType;
   final String? aliases;
   final String? description;
+
+  /// JSON template id
+  final String? template;
+  final bool supportsCPB;
+  final bool supportsRedo;
+  final bool supportsEmergency;
+  final bool supportsTechnicalSteps;
+  final bool supportsAssociatedProcedures;
+
+  /// Stored as JSON arrays
+  final String dynamicFields;
+  final String technicalSteps;
+  final String associatedProcedures;
   final bool isActive;
   final DateTime createdAt;
   const ProcedureData({
     required this.id,
     required this.procedureId,
     required this.name,
+    this.shortName,
     required this.category,
     required this.specialty,
     this.parentId,
+    required this.nodeType,
     this.aliases,
     this.description,
+    this.template,
+    required this.supportsCPB,
+    required this.supportsRedo,
+    required this.supportsEmergency,
+    required this.supportsTechnicalSteps,
+    required this.supportsAssociatedProcedures,
+    required this.dynamicFields,
+    required this.technicalSteps,
+    required this.associatedProcedures,
     required this.isActive,
     required this.createdAt,
   });
@@ -1802,17 +2118,34 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
     map['id'] = Variable<int>(id);
     map['procedure_id'] = Variable<String>(procedureId);
     map['name'] = Variable<String>(name);
+    if (!nullToAbsent || shortName != null) {
+      map['short_name'] = Variable<String>(shortName);
+    }
     map['category'] = Variable<String>(category);
     map['specialty'] = Variable<String>(specialty);
     if (!nullToAbsent || parentId != null) {
       map['parent_id'] = Variable<int>(parentId);
     }
+    map['node_type'] = Variable<String>(nodeType);
     if (!nullToAbsent || aliases != null) {
       map['aliases'] = Variable<String>(aliases);
     }
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
+    if (!nullToAbsent || template != null) {
+      map['template'] = Variable<String>(template);
+    }
+    map['supports_c_p_b'] = Variable<bool>(supportsCPB);
+    map['supports_redo'] = Variable<bool>(supportsRedo);
+    map['supports_emergency'] = Variable<bool>(supportsEmergency);
+    map['supports_technical_steps'] = Variable<bool>(supportsTechnicalSteps);
+    map['supports_associated_procedures'] = Variable<bool>(
+      supportsAssociatedProcedures,
+    );
+    map['dynamic_fields'] = Variable<String>(dynamicFields);
+    map['technical_steps'] = Variable<String>(technicalSteps);
+    map['associated_procedures'] = Variable<String>(associatedProcedures);
     map['is_active'] = Variable<bool>(isActive);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
@@ -1823,17 +2156,32 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
       id: Value(id),
       procedureId: Value(procedureId),
       name: Value(name),
+      shortName: shortName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(shortName),
       category: Value(category),
       specialty: Value(specialty),
       parentId: parentId == null && nullToAbsent
           ? const Value.absent()
           : Value(parentId),
+      nodeType: Value(nodeType),
       aliases: aliases == null && nullToAbsent
           ? const Value.absent()
           : Value(aliases),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
+      template: template == null && nullToAbsent
+          ? const Value.absent()
+          : Value(template),
+      supportsCPB: Value(supportsCPB),
+      supportsRedo: Value(supportsRedo),
+      supportsEmergency: Value(supportsEmergency),
+      supportsTechnicalSteps: Value(supportsTechnicalSteps),
+      supportsAssociatedProcedures: Value(supportsAssociatedProcedures),
+      dynamicFields: Value(dynamicFields),
+      technicalSteps: Value(technicalSteps),
+      associatedProcedures: Value(associatedProcedures),
       isActive: Value(isActive),
       createdAt: Value(createdAt),
     );
@@ -1848,11 +2196,28 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
       id: serializer.fromJson<int>(json['id']),
       procedureId: serializer.fromJson<String>(json['procedureId']),
       name: serializer.fromJson<String>(json['name']),
+      shortName: serializer.fromJson<String?>(json['shortName']),
       category: serializer.fromJson<String>(json['category']),
       specialty: serializer.fromJson<String>(json['specialty']),
       parentId: serializer.fromJson<int?>(json['parentId']),
+      nodeType: serializer.fromJson<String>(json['nodeType']),
       aliases: serializer.fromJson<String?>(json['aliases']),
       description: serializer.fromJson<String?>(json['description']),
+      template: serializer.fromJson<String?>(json['template']),
+      supportsCPB: serializer.fromJson<bool>(json['supportsCPB']),
+      supportsRedo: serializer.fromJson<bool>(json['supportsRedo']),
+      supportsEmergency: serializer.fromJson<bool>(json['supportsEmergency']),
+      supportsTechnicalSteps: serializer.fromJson<bool>(
+        json['supportsTechnicalSteps'],
+      ),
+      supportsAssociatedProcedures: serializer.fromJson<bool>(
+        json['supportsAssociatedProcedures'],
+      ),
+      dynamicFields: serializer.fromJson<String>(json['dynamicFields']),
+      technicalSteps: serializer.fromJson<String>(json['technicalSteps']),
+      associatedProcedures: serializer.fromJson<String>(
+        json['associatedProcedures'],
+      ),
       isActive: serializer.fromJson<bool>(json['isActive']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
@@ -1864,11 +2229,24 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
       'id': serializer.toJson<int>(id),
       'procedureId': serializer.toJson<String>(procedureId),
       'name': serializer.toJson<String>(name),
+      'shortName': serializer.toJson<String?>(shortName),
       'category': serializer.toJson<String>(category),
       'specialty': serializer.toJson<String>(specialty),
       'parentId': serializer.toJson<int?>(parentId),
+      'nodeType': serializer.toJson<String>(nodeType),
       'aliases': serializer.toJson<String?>(aliases),
       'description': serializer.toJson<String?>(description),
+      'template': serializer.toJson<String?>(template),
+      'supportsCPB': serializer.toJson<bool>(supportsCPB),
+      'supportsRedo': serializer.toJson<bool>(supportsRedo),
+      'supportsEmergency': serializer.toJson<bool>(supportsEmergency),
+      'supportsTechnicalSteps': serializer.toJson<bool>(supportsTechnicalSteps),
+      'supportsAssociatedProcedures': serializer.toJson<bool>(
+        supportsAssociatedProcedures,
+      ),
+      'dynamicFields': serializer.toJson<String>(dynamicFields),
+      'technicalSteps': serializer.toJson<String>(technicalSteps),
+      'associatedProcedures': serializer.toJson<String>(associatedProcedures),
       'isActive': serializer.toJson<bool>(isActive),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
@@ -1878,22 +2256,46 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
     int? id,
     String? procedureId,
     String? name,
+    Value<String?> shortName = const Value.absent(),
     String? category,
     String? specialty,
     Value<int?> parentId = const Value.absent(),
+    String? nodeType,
     Value<String?> aliases = const Value.absent(),
     Value<String?> description = const Value.absent(),
+    Value<String?> template = const Value.absent(),
+    bool? supportsCPB,
+    bool? supportsRedo,
+    bool? supportsEmergency,
+    bool? supportsTechnicalSteps,
+    bool? supportsAssociatedProcedures,
+    String? dynamicFields,
+    String? technicalSteps,
+    String? associatedProcedures,
     bool? isActive,
     DateTime? createdAt,
   }) => ProcedureData(
     id: id ?? this.id,
     procedureId: procedureId ?? this.procedureId,
     name: name ?? this.name,
+    shortName: shortName.present ? shortName.value : this.shortName,
     category: category ?? this.category,
     specialty: specialty ?? this.specialty,
     parentId: parentId.present ? parentId.value : this.parentId,
+    nodeType: nodeType ?? this.nodeType,
     aliases: aliases.present ? aliases.value : this.aliases,
     description: description.present ? description.value : this.description,
+    template: template.present ? template.value : this.template,
+    supportsCPB: supportsCPB ?? this.supportsCPB,
+    supportsRedo: supportsRedo ?? this.supportsRedo,
+    supportsEmergency: supportsEmergency ?? this.supportsEmergency,
+    supportsTechnicalSteps:
+        supportsTechnicalSteps ?? this.supportsTechnicalSteps,
+    supportsAssociatedProcedures:
+        supportsAssociatedProcedures ?? this.supportsAssociatedProcedures,
+    dynamicFields: dynamicFields ?? this.dynamicFields,
+    technicalSteps: technicalSteps ?? this.technicalSteps,
+    associatedProcedures: associatedProcedures ?? this.associatedProcedures,
     isActive: isActive ?? this.isActive,
     createdAt: createdAt ?? this.createdAt,
   );
@@ -1904,13 +2306,40 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
           ? data.procedureId.value
           : this.procedureId,
       name: data.name.present ? data.name.value : this.name,
+      shortName: data.shortName.present ? data.shortName.value : this.shortName,
       category: data.category.present ? data.category.value : this.category,
       specialty: data.specialty.present ? data.specialty.value : this.specialty,
       parentId: data.parentId.present ? data.parentId.value : this.parentId,
+      nodeType: data.nodeType.present ? data.nodeType.value : this.nodeType,
       aliases: data.aliases.present ? data.aliases.value : this.aliases,
       description: data.description.present
           ? data.description.value
           : this.description,
+      template: data.template.present ? data.template.value : this.template,
+      supportsCPB: data.supportsCPB.present
+          ? data.supportsCPB.value
+          : this.supportsCPB,
+      supportsRedo: data.supportsRedo.present
+          ? data.supportsRedo.value
+          : this.supportsRedo,
+      supportsEmergency: data.supportsEmergency.present
+          ? data.supportsEmergency.value
+          : this.supportsEmergency,
+      supportsTechnicalSteps: data.supportsTechnicalSteps.present
+          ? data.supportsTechnicalSteps.value
+          : this.supportsTechnicalSteps,
+      supportsAssociatedProcedures: data.supportsAssociatedProcedures.present
+          ? data.supportsAssociatedProcedures.value
+          : this.supportsAssociatedProcedures,
+      dynamicFields: data.dynamicFields.present
+          ? data.dynamicFields.value
+          : this.dynamicFields,
+      technicalSteps: data.technicalSteps.present
+          ? data.technicalSteps.value
+          : this.technicalSteps,
+      associatedProcedures: data.associatedProcedures.present
+          ? data.associatedProcedures.value
+          : this.associatedProcedures,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
@@ -1922,11 +2351,24 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
           ..write('id: $id, ')
           ..write('procedureId: $procedureId, ')
           ..write('name: $name, ')
+          ..write('shortName: $shortName, ')
           ..write('category: $category, ')
           ..write('specialty: $specialty, ')
           ..write('parentId: $parentId, ')
+          ..write('nodeType: $nodeType, ')
           ..write('aliases: $aliases, ')
           ..write('description: $description, ')
+          ..write('template: $template, ')
+          ..write('supportsCPB: $supportsCPB, ')
+          ..write('supportsRedo: $supportsRedo, ')
+          ..write('supportsEmergency: $supportsEmergency, ')
+          ..write('supportsTechnicalSteps: $supportsTechnicalSteps, ')
+          ..write(
+            'supportsAssociatedProcedures: $supportsAssociatedProcedures, ',
+          )
+          ..write('dynamicFields: $dynamicFields, ')
+          ..write('technicalSteps: $technicalSteps, ')
+          ..write('associatedProcedures: $associatedProcedures, ')
           ..write('isActive: $isActive, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -1934,18 +2376,29 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     id,
     procedureId,
     name,
+    shortName,
     category,
     specialty,
     parentId,
+    nodeType,
     aliases,
     description,
+    template,
+    supportsCPB,
+    supportsRedo,
+    supportsEmergency,
+    supportsTechnicalSteps,
+    supportsAssociatedProcedures,
+    dynamicFields,
+    technicalSteps,
+    associatedProcedures,
     isActive,
     createdAt,
-  );
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1953,11 +2406,23 @@ class ProcedureData extends DataClass implements Insertable<ProcedureData> {
           other.id == this.id &&
           other.procedureId == this.procedureId &&
           other.name == this.name &&
+          other.shortName == this.shortName &&
           other.category == this.category &&
           other.specialty == this.specialty &&
           other.parentId == this.parentId &&
+          other.nodeType == this.nodeType &&
           other.aliases == this.aliases &&
           other.description == this.description &&
+          other.template == this.template &&
+          other.supportsCPB == this.supportsCPB &&
+          other.supportsRedo == this.supportsRedo &&
+          other.supportsEmergency == this.supportsEmergency &&
+          other.supportsTechnicalSteps == this.supportsTechnicalSteps &&
+          other.supportsAssociatedProcedures ==
+              this.supportsAssociatedProcedures &&
+          other.dynamicFields == this.dynamicFields &&
+          other.technicalSteps == this.technicalSteps &&
+          other.associatedProcedures == this.associatedProcedures &&
           other.isActive == this.isActive &&
           other.createdAt == this.createdAt);
 }
@@ -1966,22 +2431,44 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
   final Value<int> id;
   final Value<String> procedureId;
   final Value<String> name;
+  final Value<String?> shortName;
   final Value<String> category;
   final Value<String> specialty;
   final Value<int?> parentId;
+  final Value<String> nodeType;
   final Value<String?> aliases;
   final Value<String?> description;
+  final Value<String?> template;
+  final Value<bool> supportsCPB;
+  final Value<bool> supportsRedo;
+  final Value<bool> supportsEmergency;
+  final Value<bool> supportsTechnicalSteps;
+  final Value<bool> supportsAssociatedProcedures;
+  final Value<String> dynamicFields;
+  final Value<String> technicalSteps;
+  final Value<String> associatedProcedures;
   final Value<bool> isActive;
   final Value<DateTime> createdAt;
   const ProceduresCompanion({
     this.id = const Value.absent(),
     this.procedureId = const Value.absent(),
     this.name = const Value.absent(),
+    this.shortName = const Value.absent(),
     this.category = const Value.absent(),
     this.specialty = const Value.absent(),
     this.parentId = const Value.absent(),
+    this.nodeType = const Value.absent(),
     this.aliases = const Value.absent(),
     this.description = const Value.absent(),
+    this.template = const Value.absent(),
+    this.supportsCPB = const Value.absent(),
+    this.supportsRedo = const Value.absent(),
+    this.supportsEmergency = const Value.absent(),
+    this.supportsTechnicalSteps = const Value.absent(),
+    this.supportsAssociatedProcedures = const Value.absent(),
+    this.dynamicFields = const Value.absent(),
+    this.technicalSteps = const Value.absent(),
+    this.associatedProcedures = const Value.absent(),
     this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
@@ -1989,11 +2476,22 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     this.id = const Value.absent(),
     required String procedureId,
     required String name,
+    this.shortName = const Value.absent(),
     required String category,
     this.specialty = const Value.absent(),
     this.parentId = const Value.absent(),
+    this.nodeType = const Value.absent(),
     this.aliases = const Value.absent(),
     this.description = const Value.absent(),
+    this.template = const Value.absent(),
+    this.supportsCPB = const Value.absent(),
+    this.supportsRedo = const Value.absent(),
+    this.supportsEmergency = const Value.absent(),
+    this.supportsTechnicalSteps = const Value.absent(),
+    this.supportsAssociatedProcedures = const Value.absent(),
+    this.dynamicFields = const Value.absent(),
+    this.technicalSteps = const Value.absent(),
+    this.associatedProcedures = const Value.absent(),
     this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
   }) : procedureId = Value(procedureId),
@@ -2003,11 +2501,22 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     Expression<int>? id,
     Expression<String>? procedureId,
     Expression<String>? name,
+    Expression<String>? shortName,
     Expression<String>? category,
     Expression<String>? specialty,
     Expression<int>? parentId,
+    Expression<String>? nodeType,
     Expression<String>? aliases,
     Expression<String>? description,
+    Expression<String>? template,
+    Expression<bool>? supportsCPB,
+    Expression<bool>? supportsRedo,
+    Expression<bool>? supportsEmergency,
+    Expression<bool>? supportsTechnicalSteps,
+    Expression<bool>? supportsAssociatedProcedures,
+    Expression<String>? dynamicFields,
+    Expression<String>? technicalSteps,
+    Expression<String>? associatedProcedures,
     Expression<bool>? isActive,
     Expression<DateTime>? createdAt,
   }) {
@@ -2015,11 +2524,25 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
       if (id != null) 'id': id,
       if (procedureId != null) 'procedure_id': procedureId,
       if (name != null) 'name': name,
+      if (shortName != null) 'short_name': shortName,
       if (category != null) 'category': category,
       if (specialty != null) 'specialty': specialty,
       if (parentId != null) 'parent_id': parentId,
+      if (nodeType != null) 'node_type': nodeType,
       if (aliases != null) 'aliases': aliases,
       if (description != null) 'description': description,
+      if (template != null) 'template': template,
+      if (supportsCPB != null) 'supports_c_p_b': supportsCPB,
+      if (supportsRedo != null) 'supports_redo': supportsRedo,
+      if (supportsEmergency != null) 'supports_emergency': supportsEmergency,
+      if (supportsTechnicalSteps != null)
+        'supports_technical_steps': supportsTechnicalSteps,
+      if (supportsAssociatedProcedures != null)
+        'supports_associated_procedures': supportsAssociatedProcedures,
+      if (dynamicFields != null) 'dynamic_fields': dynamicFields,
+      if (technicalSteps != null) 'technical_steps': technicalSteps,
+      if (associatedProcedures != null)
+        'associated_procedures': associatedProcedures,
       if (isActive != null) 'is_active': isActive,
       if (createdAt != null) 'created_at': createdAt,
     });
@@ -2029,11 +2552,22 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     Value<int>? id,
     Value<String>? procedureId,
     Value<String>? name,
+    Value<String?>? shortName,
     Value<String>? category,
     Value<String>? specialty,
     Value<int?>? parentId,
+    Value<String>? nodeType,
     Value<String?>? aliases,
     Value<String?>? description,
+    Value<String?>? template,
+    Value<bool>? supportsCPB,
+    Value<bool>? supportsRedo,
+    Value<bool>? supportsEmergency,
+    Value<bool>? supportsTechnicalSteps,
+    Value<bool>? supportsAssociatedProcedures,
+    Value<String>? dynamicFields,
+    Value<String>? technicalSteps,
+    Value<String>? associatedProcedures,
     Value<bool>? isActive,
     Value<DateTime>? createdAt,
   }) {
@@ -2041,11 +2575,24 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
       id: id ?? this.id,
       procedureId: procedureId ?? this.procedureId,
       name: name ?? this.name,
+      shortName: shortName ?? this.shortName,
       category: category ?? this.category,
       specialty: specialty ?? this.specialty,
       parentId: parentId ?? this.parentId,
+      nodeType: nodeType ?? this.nodeType,
       aliases: aliases ?? this.aliases,
       description: description ?? this.description,
+      template: template ?? this.template,
+      supportsCPB: supportsCPB ?? this.supportsCPB,
+      supportsRedo: supportsRedo ?? this.supportsRedo,
+      supportsEmergency: supportsEmergency ?? this.supportsEmergency,
+      supportsTechnicalSteps:
+          supportsTechnicalSteps ?? this.supportsTechnicalSteps,
+      supportsAssociatedProcedures:
+          supportsAssociatedProcedures ?? this.supportsAssociatedProcedures,
+      dynamicFields: dynamicFields ?? this.dynamicFields,
+      technicalSteps: technicalSteps ?? this.technicalSteps,
+      associatedProcedures: associatedProcedures ?? this.associatedProcedures,
       isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -2063,6 +2610,9 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
+    if (shortName.present) {
+      map['short_name'] = Variable<String>(shortName.value);
+    }
     if (category.present) {
       map['category'] = Variable<String>(category.value);
     }
@@ -2072,11 +2622,47 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
     if (parentId.present) {
       map['parent_id'] = Variable<int>(parentId.value);
     }
+    if (nodeType.present) {
+      map['node_type'] = Variable<String>(nodeType.value);
+    }
     if (aliases.present) {
       map['aliases'] = Variable<String>(aliases.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
+    }
+    if (template.present) {
+      map['template'] = Variable<String>(template.value);
+    }
+    if (supportsCPB.present) {
+      map['supports_c_p_b'] = Variable<bool>(supportsCPB.value);
+    }
+    if (supportsRedo.present) {
+      map['supports_redo'] = Variable<bool>(supportsRedo.value);
+    }
+    if (supportsEmergency.present) {
+      map['supports_emergency'] = Variable<bool>(supportsEmergency.value);
+    }
+    if (supportsTechnicalSteps.present) {
+      map['supports_technical_steps'] = Variable<bool>(
+        supportsTechnicalSteps.value,
+      );
+    }
+    if (supportsAssociatedProcedures.present) {
+      map['supports_associated_procedures'] = Variable<bool>(
+        supportsAssociatedProcedures.value,
+      );
+    }
+    if (dynamicFields.present) {
+      map['dynamic_fields'] = Variable<String>(dynamicFields.value);
+    }
+    if (technicalSteps.present) {
+      map['technical_steps'] = Variable<String>(technicalSteps.value);
+    }
+    if (associatedProcedures.present) {
+      map['associated_procedures'] = Variable<String>(
+        associatedProcedures.value,
+      );
     }
     if (isActive.present) {
       map['is_active'] = Variable<bool>(isActive.value);
@@ -2093,11 +2679,24 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
           ..write('id: $id, ')
           ..write('procedureId: $procedureId, ')
           ..write('name: $name, ')
+          ..write('shortName: $shortName, ')
           ..write('category: $category, ')
           ..write('specialty: $specialty, ')
           ..write('parentId: $parentId, ')
+          ..write('nodeType: $nodeType, ')
           ..write('aliases: $aliases, ')
           ..write('description: $description, ')
+          ..write('template: $template, ')
+          ..write('supportsCPB: $supportsCPB, ')
+          ..write('supportsRedo: $supportsRedo, ')
+          ..write('supportsEmergency: $supportsEmergency, ')
+          ..write('supportsTechnicalSteps: $supportsTechnicalSteps, ')
+          ..write(
+            'supportsAssociatedProcedures: $supportsAssociatedProcedures, ',
+          )
+          ..write('dynamicFields: $dynamicFields, ')
+          ..write('technicalSteps: $technicalSteps, ')
+          ..write('associatedProcedures: $associatedProcedures, ')
           ..write('isActive: $isActive, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -3287,7 +3886,7 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCase> {
 }
 
 class $CaseProceduresTable extends CaseProcedures
-    with TableInfo<$CaseProceduresTable, CaseProcedure> {
+    with TableInfo<$CaseProceduresTable, CaseProcedureData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3335,8 +3934,26 @@ class $CaseProceduresTable extends CaseProcedures
     requiredDuringInsert: false,
     defaultValue: const Constant("PRIMARY"),
   );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, caseId, procedureId, type];
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    caseId,
+    procedureId,
+    type,
+    createdAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -3344,7 +3961,7 @@ class $CaseProceduresTable extends CaseProcedures
   static const String $name = 'case_procedures';
   @override
   VerificationContext validateIntegrity(
-    Insertable<CaseProcedure> instance, {
+    Insertable<CaseProcedureData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -3377,15 +3994,21 @@ class $CaseProceduresTable extends CaseProcedures
         type.isAcceptableOrUnknown(data['type']!, _typeMeta),
       );
     }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CaseProcedure map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CaseProcedureData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CaseProcedure(
+    return CaseProcedureData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
@@ -3402,6 +4025,10 @@ class $CaseProceduresTable extends CaseProcedures
         DriftSqlType.string,
         data['${effectivePrefix}type'],
       )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
@@ -3411,16 +4038,19 @@ class $CaseProceduresTable extends CaseProcedures
   }
 }
 
-class CaseProcedure extends DataClass implements Insertable<CaseProcedure> {
+class CaseProcedureData extends DataClass
+    implements Insertable<CaseProcedureData> {
   final int id;
   final int caseId;
   final int procedureId;
   final String type;
-  const CaseProcedure({
+  final DateTime createdAt;
+  const CaseProcedureData({
     required this.id,
     required this.caseId,
     required this.procedureId,
     required this.type,
+    required this.createdAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3429,6 +4059,7 @@ class CaseProcedure extends DataClass implements Insertable<CaseProcedure> {
     map['case_id'] = Variable<int>(caseId);
     map['procedure_id'] = Variable<int>(procedureId);
     map['type'] = Variable<String>(type);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
@@ -3438,19 +4069,21 @@ class CaseProcedure extends DataClass implements Insertable<CaseProcedure> {
       caseId: Value(caseId),
       procedureId: Value(procedureId),
       type: Value(type),
+      createdAt: Value(createdAt),
     );
   }
 
-  factory CaseProcedure.fromJson(
+  factory CaseProcedureData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return CaseProcedure(
+    return CaseProcedureData(
       id: serializer.fromJson<int>(json['id']),
       caseId: serializer.fromJson<int>(json['caseId']),
       procedureId: serializer.fromJson<int>(json['procedureId']),
       type: serializer.fromJson<String>(json['type']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -3461,83 +4094,94 @@ class CaseProcedure extends DataClass implements Insertable<CaseProcedure> {
       'caseId': serializer.toJson<int>(caseId),
       'procedureId': serializer.toJson<int>(procedureId),
       'type': serializer.toJson<String>(type),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  CaseProcedure copyWith({
+  CaseProcedureData copyWith({
     int? id,
     int? caseId,
     int? procedureId,
     String? type,
-  }) => CaseProcedure(
+    DateTime? createdAt,
+  }) => CaseProcedureData(
     id: id ?? this.id,
     caseId: caseId ?? this.caseId,
     procedureId: procedureId ?? this.procedureId,
     type: type ?? this.type,
+    createdAt: createdAt ?? this.createdAt,
   );
-  CaseProcedure copyWithCompanion(CaseProceduresCompanion data) {
-    return CaseProcedure(
+  CaseProcedureData copyWithCompanion(CaseProceduresCompanion data) {
+    return CaseProcedureData(
       id: data.id.present ? data.id.value : this.id,
       caseId: data.caseId.present ? data.caseId.value : this.caseId,
       procedureId: data.procedureId.present
           ? data.procedureId.value
           : this.procedureId,
       type: data.type.present ? data.type.value : this.type,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('CaseProcedure(')
+    return (StringBuffer('CaseProcedureData(')
           ..write('id: $id, ')
           ..write('caseId: $caseId, ')
           ..write('procedureId: $procedureId, ')
-          ..write('type: $type')
+          ..write('type: $type, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, caseId, procedureId, type);
+  int get hashCode => Object.hash(id, caseId, procedureId, type, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is CaseProcedure &&
+      (other is CaseProcedureData &&
           other.id == this.id &&
           other.caseId == this.caseId &&
           other.procedureId == this.procedureId &&
-          other.type == this.type);
+          other.type == this.type &&
+          other.createdAt == this.createdAt);
 }
 
-class CaseProceduresCompanion extends UpdateCompanion<CaseProcedure> {
+class CaseProceduresCompanion extends UpdateCompanion<CaseProcedureData> {
   final Value<int> id;
   final Value<int> caseId;
   final Value<int> procedureId;
   final Value<String> type;
+  final Value<DateTime> createdAt;
   const CaseProceduresCompanion({
     this.id = const Value.absent(),
     this.caseId = const Value.absent(),
     this.procedureId = const Value.absent(),
     this.type = const Value.absent(),
+    this.createdAt = const Value.absent(),
   });
   CaseProceduresCompanion.insert({
     this.id = const Value.absent(),
     required int caseId,
     required int procedureId,
     this.type = const Value.absent(),
+    this.createdAt = const Value.absent(),
   }) : caseId = Value(caseId),
        procedureId = Value(procedureId);
-  static Insertable<CaseProcedure> custom({
+  static Insertable<CaseProcedureData> custom({
     Expression<int>? id,
     Expression<int>? caseId,
     Expression<int>? procedureId,
     Expression<String>? type,
+    Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (caseId != null) 'case_id': caseId,
       if (procedureId != null) 'procedure_id': procedureId,
       if (type != null) 'type': type,
+      if (createdAt != null) 'created_at': createdAt,
     });
   }
 
@@ -3546,12 +4190,14 @@ class CaseProceduresCompanion extends UpdateCompanion<CaseProcedure> {
     Value<int>? caseId,
     Value<int>? procedureId,
     Value<String>? type,
+    Value<DateTime>? createdAt,
   }) {
     return CaseProceduresCompanion(
       id: id ?? this.id,
       caseId: caseId ?? this.caseId,
       procedureId: procedureId ?? this.procedureId,
       type: type ?? this.type,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -3570,6 +4216,9 @@ class CaseProceduresCompanion extends UpdateCompanion<CaseProcedure> {
     if (type.present) {
       map['type'] = Variable<String>(type.value);
     }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     return map;
   }
 
@@ -3579,7 +4228,8 @@ class CaseProceduresCompanion extends UpdateCompanion<CaseProcedure> {
           ..write('id: $id, ')
           ..write('caseId: $caseId, ')
           ..write('procedureId: $procedureId, ')
-          ..write('type: $type')
+          ..write('type: $type, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
@@ -4796,11 +5446,22 @@ typedef $$ProceduresTableCreateCompanionBuilder =
       Value<int> id,
       required String procedureId,
       required String name,
+      Value<String?> shortName,
       required String category,
       Value<String> specialty,
       Value<int?> parentId,
+      Value<String> nodeType,
       Value<String?> aliases,
       Value<String?> description,
+      Value<String?> template,
+      Value<bool> supportsCPB,
+      Value<bool> supportsRedo,
+      Value<bool> supportsEmergency,
+      Value<bool> supportsTechnicalSteps,
+      Value<bool> supportsAssociatedProcedures,
+      Value<String> dynamicFields,
+      Value<String> technicalSteps,
+      Value<String> associatedProcedures,
       Value<bool> isActive,
       Value<DateTime> createdAt,
     });
@@ -4809,11 +5470,22 @@ typedef $$ProceduresTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> procedureId,
       Value<String> name,
+      Value<String?> shortName,
       Value<String> category,
       Value<String> specialty,
       Value<int?> parentId,
+      Value<String> nodeType,
       Value<String?> aliases,
       Value<String?> description,
+      Value<String?> template,
+      Value<bool> supportsCPB,
+      Value<bool> supportsRedo,
+      Value<bool> supportsEmergency,
+      Value<bool> supportsTechnicalSteps,
+      Value<bool> supportsAssociatedProcedures,
+      Value<String> dynamicFields,
+      Value<String> technicalSteps,
+      Value<String> associatedProcedures,
       Value<bool> isActive,
       Value<DateTime> createdAt,
     });
@@ -4842,6 +5514,11 @@ class $$ProceduresTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get shortName => $composableBuilder(
+    column: $table.shortName,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get category => $composableBuilder(
     column: $table.category,
     builder: (column) => ColumnFilters(column),
@@ -4857,6 +5534,11 @@ class $$ProceduresTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get nodeType => $composableBuilder(
+    column: $table.nodeType,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get aliases => $composableBuilder(
     column: $table.aliases,
     builder: (column) => ColumnFilters(column),
@@ -4864,6 +5546,51 @@ class $$ProceduresTableFilterComposer
 
   ColumnFilters<String> get description => $composableBuilder(
     column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get template => $composableBuilder(
+    column: $table.template,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get supportsCPB => $composableBuilder(
+    column: $table.supportsCPB,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get supportsRedo => $composableBuilder(
+    column: $table.supportsRedo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get supportsEmergency => $composableBuilder(
+    column: $table.supportsEmergency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get supportsTechnicalSteps => $composableBuilder(
+    column: $table.supportsTechnicalSteps,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get supportsAssociatedProcedures => $composableBuilder(
+    column: $table.supportsAssociatedProcedures,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dynamicFields => $composableBuilder(
+    column: $table.dynamicFields,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get technicalSteps => $composableBuilder(
+    column: $table.technicalSteps,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get associatedProcedures => $composableBuilder(
+    column: $table.associatedProcedures,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4902,6 +5629,11 @@ class $$ProceduresTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get shortName => $composableBuilder(
+    column: $table.shortName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get category => $composableBuilder(
     column: $table.category,
     builder: (column) => ColumnOrderings(column),
@@ -4917,6 +5649,11 @@ class $$ProceduresTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get nodeType => $composableBuilder(
+    column: $table.nodeType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get aliases => $composableBuilder(
     column: $table.aliases,
     builder: (column) => ColumnOrderings(column),
@@ -4924,6 +5661,51 @@ class $$ProceduresTableOrderingComposer
 
   ColumnOrderings<String> get description => $composableBuilder(
     column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get template => $composableBuilder(
+    column: $table.template,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get supportsCPB => $composableBuilder(
+    column: $table.supportsCPB,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get supportsRedo => $composableBuilder(
+    column: $table.supportsRedo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get supportsEmergency => $composableBuilder(
+    column: $table.supportsEmergency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get supportsTechnicalSteps => $composableBuilder(
+    column: $table.supportsTechnicalSteps,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get supportsAssociatedProcedures => $composableBuilder(
+    column: $table.supportsAssociatedProcedures,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dynamicFields => $composableBuilder(
+    column: $table.dynamicFields,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get technicalSteps => $composableBuilder(
+    column: $table.technicalSteps,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get associatedProcedures => $composableBuilder(
+    column: $table.associatedProcedures,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4958,6 +5740,9 @@ class $$ProceduresTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
+  GeneratedColumn<String> get shortName =>
+      $composableBuilder(column: $table.shortName, builder: (column) => column);
+
   GeneratedColumn<String> get category =>
       $composableBuilder(column: $table.category, builder: (column) => column);
 
@@ -4967,11 +5752,57 @@ class $$ProceduresTableAnnotationComposer
   GeneratedColumn<int> get parentId =>
       $composableBuilder(column: $table.parentId, builder: (column) => column);
 
+  GeneratedColumn<String> get nodeType =>
+      $composableBuilder(column: $table.nodeType, builder: (column) => column);
+
   GeneratedColumn<String> get aliases =>
       $composableBuilder(column: $table.aliases, builder: (column) => column);
 
   GeneratedColumn<String> get description => $composableBuilder(
     column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get template =>
+      $composableBuilder(column: $table.template, builder: (column) => column);
+
+  GeneratedColumn<bool> get supportsCPB => $composableBuilder(
+    column: $table.supportsCPB,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get supportsRedo => $composableBuilder(
+    column: $table.supportsRedo,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get supportsEmergency => $composableBuilder(
+    column: $table.supportsEmergency,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get supportsTechnicalSteps => $composableBuilder(
+    column: $table.supportsTechnicalSteps,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get supportsAssociatedProcedures => $composableBuilder(
+    column: $table.supportsAssociatedProcedures,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get dynamicFields => $composableBuilder(
+    column: $table.dynamicFields,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get technicalSteps => $composableBuilder(
+    column: $table.technicalSteps,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get associatedProcedures => $composableBuilder(
+    column: $table.associatedProcedures,
     builder: (column) => column,
   );
 
@@ -5016,22 +5847,44 @@ class $$ProceduresTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> procedureId = const Value.absent(),
                 Value<String> name = const Value.absent(),
+                Value<String?> shortName = const Value.absent(),
                 Value<String> category = const Value.absent(),
                 Value<String> specialty = const Value.absent(),
                 Value<int?> parentId = const Value.absent(),
+                Value<String> nodeType = const Value.absent(),
                 Value<String?> aliases = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<String?> template = const Value.absent(),
+                Value<bool> supportsCPB = const Value.absent(),
+                Value<bool> supportsRedo = const Value.absent(),
+                Value<bool> supportsEmergency = const Value.absent(),
+                Value<bool> supportsTechnicalSteps = const Value.absent(),
+                Value<bool> supportsAssociatedProcedures = const Value.absent(),
+                Value<String> dynamicFields = const Value.absent(),
+                Value<String> technicalSteps = const Value.absent(),
+                Value<String> associatedProcedures = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
               }) => ProceduresCompanion(
                 id: id,
                 procedureId: procedureId,
                 name: name,
+                shortName: shortName,
                 category: category,
                 specialty: specialty,
                 parentId: parentId,
+                nodeType: nodeType,
                 aliases: aliases,
                 description: description,
+                template: template,
+                supportsCPB: supportsCPB,
+                supportsRedo: supportsRedo,
+                supportsEmergency: supportsEmergency,
+                supportsTechnicalSteps: supportsTechnicalSteps,
+                supportsAssociatedProcedures: supportsAssociatedProcedures,
+                dynamicFields: dynamicFields,
+                technicalSteps: technicalSteps,
+                associatedProcedures: associatedProcedures,
                 isActive: isActive,
                 createdAt: createdAt,
               ),
@@ -5040,22 +5893,44 @@ class $$ProceduresTableTableManager
                 Value<int> id = const Value.absent(),
                 required String procedureId,
                 required String name,
+                Value<String?> shortName = const Value.absent(),
                 required String category,
                 Value<String> specialty = const Value.absent(),
                 Value<int?> parentId = const Value.absent(),
+                Value<String> nodeType = const Value.absent(),
                 Value<String?> aliases = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<String?> template = const Value.absent(),
+                Value<bool> supportsCPB = const Value.absent(),
+                Value<bool> supportsRedo = const Value.absent(),
+                Value<bool> supportsEmergency = const Value.absent(),
+                Value<bool> supportsTechnicalSteps = const Value.absent(),
+                Value<bool> supportsAssociatedProcedures = const Value.absent(),
+                Value<String> dynamicFields = const Value.absent(),
+                Value<String> technicalSteps = const Value.absent(),
+                Value<String> associatedProcedures = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
               }) => ProceduresCompanion.insert(
                 id: id,
                 procedureId: procedureId,
                 name: name,
+                shortName: shortName,
                 category: category,
                 specialty: specialty,
                 parentId: parentId,
+                nodeType: nodeType,
                 aliases: aliases,
                 description: description,
+                template: template,
+                supportsCPB: supportsCPB,
+                supportsRedo: supportsRedo,
+                supportsEmergency: supportsEmergency,
+                supportsTechnicalSteps: supportsTechnicalSteps,
+                supportsAssociatedProcedures: supportsAssociatedProcedures,
+                dynamicFields: dynamicFields,
+                technicalSteps: technicalSteps,
+                associatedProcedures: associatedProcedures,
                 isActive: isActive,
                 createdAt: createdAt,
               ),
@@ -5589,6 +6464,7 @@ typedef $$CaseProceduresTableCreateCompanionBuilder =
       required int caseId,
       required int procedureId,
       Value<String> type,
+      Value<DateTime> createdAt,
     });
 typedef $$CaseProceduresTableUpdateCompanionBuilder =
     CaseProceduresCompanion Function({
@@ -5596,6 +6472,7 @@ typedef $$CaseProceduresTableUpdateCompanionBuilder =
       Value<int> caseId,
       Value<int> procedureId,
       Value<String> type,
+      Value<DateTime> createdAt,
     });
 
 class $$CaseProceduresTableFilterComposer
@@ -5624,6 +6501,11 @@ class $$CaseProceduresTableFilterComposer
 
   ColumnFilters<String> get type => $composableBuilder(
     column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -5656,6 +6538,11 @@ class $$CaseProceduresTableOrderingComposer
     column: $table.type,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CaseProceduresTableAnnotationComposer
@@ -5680,6 +6567,9 @@ class $$CaseProceduresTableAnnotationComposer
 
   GeneratedColumn<String> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
 class $$CaseProceduresTableTableManager
@@ -5687,17 +6577,21 @@ class $$CaseProceduresTableTableManager
         RootTableManager<
           _$AppDatabase,
           $CaseProceduresTable,
-          CaseProcedure,
+          CaseProcedureData,
           $$CaseProceduresTableFilterComposer,
           $$CaseProceduresTableOrderingComposer,
           $$CaseProceduresTableAnnotationComposer,
           $$CaseProceduresTableCreateCompanionBuilder,
           $$CaseProceduresTableUpdateCompanionBuilder,
           (
-            CaseProcedure,
-            BaseReferences<_$AppDatabase, $CaseProceduresTable, CaseProcedure>,
+            CaseProcedureData,
+            BaseReferences<
+              _$AppDatabase,
+              $CaseProceduresTable,
+              CaseProcedureData
+            >,
           ),
-          CaseProcedure,
+          CaseProcedureData,
           PrefetchHooks Function()
         > {
   $$CaseProceduresTableTableManager(
@@ -5719,11 +6613,13 @@ class $$CaseProceduresTableTableManager
                 Value<int> caseId = const Value.absent(),
                 Value<int> procedureId = const Value.absent(),
                 Value<String> type = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
               }) => CaseProceduresCompanion(
                 id: id,
                 caseId: caseId,
                 procedureId: procedureId,
                 type: type,
+                createdAt: createdAt,
               ),
           createCompanionCallback:
               ({
@@ -5731,11 +6627,13 @@ class $$CaseProceduresTableTableManager
                 required int caseId,
                 required int procedureId,
                 Value<String> type = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
               }) => CaseProceduresCompanion.insert(
                 id: id,
                 caseId: caseId,
                 procedureId: procedureId,
                 type: type,
+                createdAt: createdAt,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -5749,17 +6647,17 @@ typedef $$CaseProceduresTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $CaseProceduresTable,
-      CaseProcedure,
+      CaseProcedureData,
       $$CaseProceduresTableFilterComposer,
       $$CaseProceduresTableOrderingComposer,
       $$CaseProceduresTableAnnotationComposer,
       $$CaseProceduresTableCreateCompanionBuilder,
       $$CaseProceduresTableUpdateCompanionBuilder,
       (
-        CaseProcedure,
-        BaseReferences<_$AppDatabase, $CaseProceduresTable, CaseProcedure>,
+        CaseProcedureData,
+        BaseReferences<_$AppDatabase, $CaseProceduresTable, CaseProcedureData>,
       ),
-      CaseProcedure,
+      CaseProcedureData,
       PrefetchHooks Function()
     >;
 typedef $$CaseAttachmentsTableCreateCompanionBuilder =

@@ -1,0 +1,55 @@
+[
+  {
+    "id": "IJ_CENTRAL_LINE",
+    "name": "Internal Jugular Central Venous Catheter",
+    "specialty": "icu",
+    "category": "vascular_access",
+    "description": "Ultrasound-guided internal jugular central venous catheter insertion.",
+    "aliases": [
+      "CVC"
+    ],
+    "active": true,
+    "skills": [
+      "ULTRASOUND_GUIDANCE",
+      "CENTRAL_LINE_INSERTION"
+    ]
+  },
+  {
+    "id": "SUBCLAVIAN_CVC",
+    "name": "Subclavian Central Venous Catheter",
+    "specialty": "icu",
+    "category": "vascular_access",
+    "description": "Subclavian central venous catheter insertion.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "CENTRAL_LINE_INSERTION"
+    ]
+  },
+  {
+    "id": "FEMORAL_CVC",
+    "name": "Femoral Central Venous Catheter",
+    "specialty": "icu",
+    "category": "vascular_access",
+    "description": "Femoral venous catheter insertion.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "CENTRAL_LINE_INSERTION"
+    ]
+  },
+  {
+    "id": "ARTERIAL_LINE",
+    "name": "Arterial Line Insertion",
+    "specialty": "icu",
+    "category": "vascular_access",
+    "description": "Insertion of an arterial monitoring catheter.",
+    "aliases": [
+      "A-Line"
+    ],
+    "active": true,
+    "skills": [
+      "ARTERIAL_CANNULATION"
+    ]
+  }
+]

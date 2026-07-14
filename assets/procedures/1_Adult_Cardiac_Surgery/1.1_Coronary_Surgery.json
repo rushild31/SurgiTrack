@@ -1,0 +1,170 @@
+{
+  "category": "Adult Cardiac Surgery",
+  "subcategory": "Coronary Surgery",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "CABG",
+      "name": "Coronary Artery Bypass Grafting",
+      "shortName": "CABG",
+      "template": "cabg",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Number of Grafts",
+        "On Pump / Off Pump",
+        "Total Arterial Revascularization",
+        "Conduits Used",
+        "Sequential Grafts",
+        "Composite (Y/T) Grafts",
+        "Coronary Endarterectomy",
+        "Transit Time Flow Measurement"
+      ],
+
+      "technicalSteps": [
+        "LIMA Harvest",
+        "RIMA Harvest",
+        "Radial Artery Harvest",
+        "SVG Harvest",
+        "Aortic Cannulation",
+        "Venous Cannulation",
+        "Distal Anastomosis",
+        "Proximal Anastomosis",
+        "Coronary Endarterectomy"
+      ],
+
+      "associatedProcedures": [
+        "Mitral Valve Repair",
+        "Mitral Valve Replacement",
+        "Aortic Valve Replacement",
+        "Tricuspid Valve Repair",
+        "Bentall Procedure",
+        "Ascending Aortic Replacement",
+        "Maze Procedure",
+        "Left Atrial Appendage Closure",
+        "LV Aneurysm Repair",
+        "Post-MI VSD Repair",
+        "PFO Closure",
+        "ASD Closure",
+        "IABP Insertion",
+        "ECMO Cannulation"
+      ]
+    },
+
+    {
+      "id": "OPCAB",
+      "name": "Off-Pump Coronary Artery Bypass",
+      "shortName": "OPCAB",
+      "template": "cabg",
+
+      "supportsCPB": false,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Number of Grafts",
+        "Conduits Used",
+        "Sequential Grafts",
+        "Composite (Y/T) Grafts",
+        "Coronary Endarterectomy",
+        "Conversion to CPB",
+        "Transit Time Flow Measurement"
+      ],
+
+      "technicalSteps": [
+        "LIMA Harvest",
+        "RIMA Harvest",
+        "Radial Artery Harvest",
+        "SVG Harvest",
+        "Heart Positioning",
+        "Distal Anastomosis",
+        "Proximal Anastomosis",
+        "Coronary Endarterectomy"
+      ],
+
+      "associatedProcedures": [
+        "Mitral Valve Repair",
+        "Aortic Valve Replacement",
+        "IABP Insertion",
+        "ECMO Cannulation"
+      ]
+    },
+
+    {
+      "id": "MIDCAB",
+      "name": "Minimally Invasive Direct Coronary Artery Bypass",
+      "shortName": "MIDCAB",
+      "template": "midcab",
+
+      "supportsCPB": false,
+      "supportsRedo": false,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Target Vessel",
+        "Conduit Used",
+        "Conversion to Sternotomy"
+      ],
+
+      "technicalSteps": [
+        "LIMA Harvest",
+        "Target Vessel Exposure",
+        "Distal Anastomosis"
+      ],
+
+      "associatedProcedures": [
+        "Hybrid PCI"
+      ]
+    },
+
+    {
+      "id": "REDO_CABG",
+      "name": "Redo Coronary Artery Bypass Grafting",
+      "shortName": "Redo CABG",
+      "template": "cabg_redo",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Reason for Redo",
+        "Number of New Grafts",
+        "Patent Previous Grafts",
+        "Adhesiolysis",
+        "Conduits Used"
+      ],
+
+      "technicalSteps": [
+        "Redo Sternotomy",
+        "Adhesiolysis",
+        "LIMA Harvest",
+        "RIMA Harvest",
+        "Radial Artery Harvest",
+        "SVG Harvest",
+        "Cannulation",
+        "Distal Anastomosis",
+        "Proximal Anastomosis"
+      ],
+
+      "associatedProcedures": [
+        "Mitral Valve Repair",
+        "Aortic Valve Replacement",
+        "Bentall Procedure",
+        "IABP Insertion",
+        "ECMO Cannulation"
+      ]
+    }
+  ]
+}

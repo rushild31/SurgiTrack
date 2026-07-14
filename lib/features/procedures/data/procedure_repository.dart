@@ -21,6 +21,18 @@ class ProcedureRepository {
     return rows.map(ProcedureMapper.fromData).toList();
   }
 
+  Future<List<ProcedureEntity>> getRootProcedures() async {
+    final rows = await database.procedureDao.getRootProcedures();
+
+    return rows.map(ProcedureMapper.fromData).toList();
+  }
+
+  Future<List<ProcedureEntity>> getChildProcedures(int parentId) async {
+    final rows = await database.procedureDao.getChildProcedures(parentId);
+
+    return rows.map(ProcedureMapper.fromData).toList();
+  }
+
   Future<ProcedureEntity?> getProcedureById(int id) async {
     final row = await database.procedureDao.getProcedureById(id);
 
@@ -33,6 +45,12 @@ class ProcedureRepository {
 
   Future<List<ProcedureEntity>> searchProcedures(String query) async {
     final rows = await database.procedureDao.searchProcedures(query);
+
+    return rows.map(ProcedureMapper.fromData).toList();
+  }
+
+  Future<List<ProcedureEntity>> getBySpecialty(String specialty) async {
+    final rows = await database.procedureDao.getBySpecialty(specialty);
 
     return rows.map(ProcedureMapper.fromData).toList();
   }

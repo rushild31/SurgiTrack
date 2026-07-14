@@ -1,0 +1,38 @@
+[
+  {
+    "id": "EMERGENCY_RESTERNOTOMY",
+    "name": "Emergency Resternotomy",
+    "specialty": "icu",
+    "category": "emergency_procedures",
+    "description": "Emergency reopening of the sternotomy in ICU.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "EMERGENCY_RESTERNOTOMY"
+    ]
+  },
+  {
+    "id": "OPEN_CARDIAC_MASSAGE",
+    "name": "Open Cardiac Massage",
+    "specialty": "icu",
+    "category": "emergency_procedures",
+    "description": "Open cardiac massage during cardiac arrest.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "OPEN_CARDIAC_MASSAGE"
+    ]
+  },
+  {
+    "id": "EMERGENCY_THORACOTOMY",
+    "name": "Emergency Thoracotomy",
+    "specialty": "icu",
+    "category": "emergency_procedures",
+    "description": "Resuscitative thoracotomy.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "EMERGENCY_THORACOTOMY"
+    ]
+  }
+]

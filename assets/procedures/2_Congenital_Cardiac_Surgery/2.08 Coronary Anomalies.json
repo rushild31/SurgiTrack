@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ALCAPA_REPAIR",
+    "name": "Anomalous Left Coronary Artery from the Pulmonary Artery Repair",
+    "specialty": "congenital_cardiac",
+    "category": "coronary_anomalies",
+    "description": "Repair of anomalous origin of the left coronary artery from the pulmonary artery by coronary transfer or alternative reconstruction.",
+    "aliases": [
+      "ALCAPA Repair",
+      "Bland-White-Garland Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "CORONARY_BUTTON_HARVEST",
+      "CORONARY_REIMPLANTATION",
+      "PULMONARY_ARTERY_RECONSTRUCTION"
+    ],
+    "tags": [
+      "congenital",
+      "coronary"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ANOMALOUS_AORTIC_ORIGIN_CORONARY_REPAIR",
+    "name": "Repair of Anomalous Aortic Origin of a Coronary Artery",
+    "specialty": "congenital_cardiac",
+    "category": "coronary_anomalies",
+    "description": "Surgical correction of an anomalous coronary artery arising from the opposite sinus.",
+    "aliases": [
+      "AAOCA Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "repair_technique",
+        "label": "Repair Technique",
+        "reference": "repair_techniques"
+      }
+    ],
+    "skills": [
+      "AORTOTOMY",
+      "CORONARY_UNROOFING",
+      "CORONARY_REIMPLANTATION"
+    ],
+    "tags": [
+      "congenital",
+      "coronary",
+      "aaoca"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

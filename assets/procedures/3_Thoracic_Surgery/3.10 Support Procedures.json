@@ -1,0 +1,131 @@
+[
+  {
+    "id": "CHEST_REEXPLORATION",
+    "name": "Thoracic Re-exploration for Bleeding",
+    "specialty": "thoracic",
+    "category": "support_procedures",
+    "description": "Return to theatre for postoperative bleeding or haemostasis following thoracic surgery.",
+    "aliases": [
+      "Thoracic Re-exploration"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "indication",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "THORACOTOMY_REENTRY",
+      "HEMOSTASIS",
+      "CHEST_CLOSURE"
+    ],
+    "tags": [
+      "thoracic",
+      "support",
+      "bleeding"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "CHEST_WASHOUT",
+    "name": "Thoracic Washout",
+    "specialty": "thoracic",
+    "category": "support_procedures",
+    "description": "Operative washout of the pleural cavity for infection, retained haemothorax, or contamination.",
+    "aliases": [
+      "Pleural Washout"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "indication",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "PLEURAL_IRRIGATION",
+      "DEBRIDEMENT",
+      "CHEST_DRAIN_PLACEMENT"
+    ],
+    "tags": [
+      "thoracic",
+      "support",
+      "infection"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "OPEN_WINDOW_THORACOSTOMY",
+    "name": "Open Window Thoracostomy",
+    "specialty": "thoracic",
+    "category": "support_procedures",
+    "description": "Creation of an open thoracostomy window for chronic pleural space infection management.",
+    "aliases": [
+      "Eloesser Flap"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "CHEST_WALL_RESECTION",
+      "OPEN_WINDOW_CREATION"
+    ],
+    "tags": [
+      "thoracic",
+      "support",
+      "empyema"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ECMO_CANNULATION_THORACIC",
+    "name": "ECMO Cannulation",
+    "specialty": "thoracic",
+    "category": "support_procedures",
+    "description": "Central or peripheral ECMO cannulation performed during thoracic surgical care.",
+    "aliases": [
+      "ECMO Initiation"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "ecmo_mode",
+        "label": "ECMO Mode"
+      },
+      {
+        "id": "cannulation_strategy",
+        "label": "Cannulation Strategy"
+      }
+    ],
+    "skills": [
+      "ARTERIAL_CANNULATION",
+      "VENOUS_CANNULATION",
+      "ECMO_INITIATION"
+    ],
+    "tags": [
+      "thoracic",
+      "support",
+      "ecmo"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

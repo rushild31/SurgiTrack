@@ -1,0 +1,90 @@
+[
+  {
+    "id": "CONGENITAL_THORACIC_REEXPLORATION",
+    "name": "Re-exploration for Bleeding",
+    "specialty": "congenital_thoracic",
+    "category": "support_procedures",
+    "description": "Return to theatre for postoperative bleeding or haemostasis.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "indication",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "THORACOTOMY_REENTRY",
+      "HEMOSTASIS",
+      "CHEST_CLOSURE"
+    ],
+    "tags": [
+      "support",
+      "bleeding"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "CONGENITAL_THORACIC_WASHOUT",
+    "name": "Thoracic Washout",
+    "specialty": "congenital_thoracic",
+    "category": "support_procedures",
+    "description": "Pleural washout for empyema, contamination or retained collections.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "indication",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "PLEURAL_DEBRIDEMENT",
+      "IRRIGATION",
+      "CHEST_DRAIN_INSERTION"
+    ],
+    "tags": [
+      "support",
+      "washout"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ECMO_CANNULATION_CONGENITAL_THORACIC",
+    "name": "ECMO Cannulation",
+    "specialty": "congenital_thoracic",
+    "category": "support_procedures",
+    "description": "Central or peripheral ECMO cannulation during congenital thoracic surgery.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "ecmo_mode",
+        "label": "ECMO Mode"
+      },
+      {
+        "id": "cannulation_strategy",
+        "label": "Cannulation Strategy"
+      }
+    ],
+    "skills": [
+      "ARTERIAL_CANNULATION",
+      "VENOUS_CANNULATION",
+      "ECMO_INITIATION"
+    ],
+    "tags": [
+      "support",
+      "ecmo"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

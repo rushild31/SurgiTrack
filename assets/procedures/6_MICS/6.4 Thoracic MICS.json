@@ -1,0 +1,120 @@
+[
+  {
+    "id": "VATS_LOBECTOMY",
+    "name": "Video-Assisted Thoracoscopic Lobectomy",
+    "specialty": "mics",
+    "category": "thoracic_mics",
+    "description": "Anatomical pulmonary lobectomy performed using video-assisted thoracoscopic surgery.",
+    "aliases": [
+      "VATS Lobectomy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "operative_approach",
+        "label": "Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "VATS_PORT_PLACEMENT",
+      "HILAR_DISSECTION",
+      "VASCULAR_STAPLING",
+      "BRONCHIAL_DIVISION"
+    ],
+    "tags": [
+      "mics",
+      "vats",
+      "thoracic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VATS_SEGMENTECTOMY",
+    "name": "Video-Assisted Thoracoscopic Segmentectomy",
+    "specialty": "mics",
+    "category": "thoracic_mics",
+    "description": "Anatomical pulmonary segmentectomy performed thoracoscopically.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses"
+      }
+    ],
+    "skills": [
+      "VATS_PORT_PLACEMENT",
+      "SEGMENTAL_DISSECTION",
+      "STAPLED_RESECTION"
+    ],
+    "tags": [
+      "mics",
+      "segmentectomy"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VATS_WEDGE_RESECTION",
+    "name": "Video-Assisted Thoracoscopic Wedge Resection",
+    "specialty": "mics",
+    "category": "thoracic_mics",
+    "description": "Thoracoscopic wedge resection of pulmonary lesions.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses"
+      }
+    ],
+    "skills": [
+      "THORACOSCOPY",
+      "LUNG_STAPLING"
+    ],
+    "tags": [
+      "mics",
+      "thoracic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VATS_PERICARDIAL_WINDOW",
+    "name": "Thoracoscopic Pericardial Window",
+    "specialty": "mics",
+    "category": "thoracic_mics",
+    "description": "Video-assisted thoracoscopic creation of a pericardial window.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "THORACOSCOPY",
+      "PERICARDIOTOMY"
+    ],
+    "tags": [
+      "mics",
+      "pericardium"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

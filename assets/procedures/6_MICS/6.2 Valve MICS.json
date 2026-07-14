@@ -1,0 +1,127 @@
+[
+  {
+    "id": "MINI_AVR",
+    "name": "Minimally Invasive Aortic Valve Replacement",
+    "specialty": "mics",
+    "category": "valve_mics",
+    "description": "Aortic valve replacement performed through an upper hemi-sternotomy or right anterior thoracotomy.",
+    "aliases": [
+      "Mini AVR"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "prosthesis_type",
+        "label": "Prosthesis Type",
+        "reference": "prosthesis_types"
+      },
+      {
+        "id": "manufacturer",
+        "label": "Manufacturer",
+        "reference": "valve_manufacturers"
+      }
+    ],
+    "skills": [
+      "MINI_STERNOTOMY",
+      "AORTOTOMY",
+      "VALVE_IMPLANTATION"
+    ],
+    "tags": [
+      "mics",
+      "avr"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MINI_MITRAL_VALVE_REPAIR",
+    "name": "Minimally Invasive Mitral Valve Repair",
+    "specialty": "mics",
+    "category": "valve_mics",
+    "description": "Mitral valve repair performed through a right mini-thoracotomy.",
+    "aliases": [
+      "Mini Mitral Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "repair_technique",
+        "label": "Repair Technique",
+        "reference": "repair_techniques"
+      }
+    ],
+    "skills": [
+      "RIGHT_MINI_THORACOTOMY",
+      "LEFT_ATRIOTOMY",
+      "MITRAL_VALVE_REPAIR"
+    ],
+    "tags": [
+      "mics",
+      "mitral"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MINI_MITRAL_VALVE_REPLACEMENT",
+    "name": "Minimally Invasive Mitral Valve Replacement",
+    "specialty": "mics",
+    "category": "valve_mics",
+    "description": "Mitral valve replacement through a right mini-thoracotomy.",
+    "aliases": [
+      "Mini MVR"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "prosthesis_type",
+        "label": "Prosthesis Type",
+        "reference": "prosthesis_types"
+      }
+    ],
+    "skills": [
+      "RIGHT_MINI_THORACOTOMY",
+      "MITRAL_VALVE_REPLACEMENT"
+    ],
+    "tags": [
+      "mics",
+      "mitral"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MINI_TRICUSPID_REPAIR",
+    "name": "Minimally Invasive Tricuspid Valve Repair",
+    "specialty": "mics",
+    "category": "valve_mics",
+    "description": "Tricuspid valve repair performed through a right mini-thoracotomy.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "repair_technique",
+        "label": "Repair Technique",
+        "reference": "repair_techniques"
+      }
+    ],
+    "skills": [
+      "RIGHT_MINI_THORACOTOMY",
+      "TRICUSPID_VALVE_REPAIR"
+    ],
+    "tags": [
+      "mics",
+      "tricuspid"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

@@ -1,0 +1,117 @@
+[
+  {
+    "id": "CPAM_RESECTION",
+    "name": "Congenital Pulmonary Airway Malformation Resection",
+    "specialty": "congenital_thoracic",
+    "category": "congenital_lung_lesions",
+    "description": "Surgical resection of a congenital pulmonary airway malformation (CPAM).",
+    "aliases": [
+      "CPAM Resection",
+      "CCAM Resection"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      },
+      {
+        "id": "resection_type",
+        "label": "Resection Type"
+      }
+    ],
+    "skills": [
+      "THORACIC_ACCESS",
+      "LOBECTOMY",
+      "SEGMENTECTOMY",
+      "HILAR_DISSECTION"
+    ],
+    "tags": [
+      "congenital",
+      "lung",
+      "cpam"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PULMONARY_SEQUESTRATION_RESECTION",
+    "name": "Pulmonary Sequestration Resection",
+    "specialty": "congenital_thoracic",
+    "category": "congenital_lung_lesions",
+    "description": "Excision of intralobar or extralobar pulmonary sequestration.",
+    "aliases": [
+      "Sequestration Resection"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "ABERRANT_ARTERY_IDENTIFICATION",
+      "ABERRANT_ARTERY_DIVISION",
+      "LUNG_RESECTION"
+    ],
+    "tags": [
+      "congenital",
+      "lung",
+      "sequestration"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "CONGENITAL_LOBAR_EMPHYSEMA_LOBECTOMY",
+    "name": "Congenital Lobar Emphysema Lobectomy",
+    "specialty": "congenital_thoracic",
+    "category": "congenital_lung_lesions",
+    "description": "Lobectomy for congenital lobar emphysema.",
+    "aliases": [
+      "CLE Lobectomy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "HILAR_DISSECTION",
+      "LOBECTOMY",
+      "AIR_LEAK_TEST"
+    ],
+    "tags": [
+      "congenital",
+      "lung",
+      "cle"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

@@ -1,0 +1,276 @@
+{
+  "category": "Adult Cardiac Surgery",
+  "subcategory": "Aortic Surgery",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "ASCENDING_AORTIC_REPLACEMENT",
+      "name": "Ascending Aortic Replacement",
+      "shortName": "Ascending Aorta",
+      "subcategory": "Aortic Surgery",
+      "template": "ascending_aorta",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Indication",
+        "Graft Size",
+        "Circulatory Arrest"
+      ],
+
+      "technicalSteps": [
+        "Aortic Cannulation",
+        "Venous Cannulation",
+        "Aortic Resection",
+        "Proximal Graft Anastomosis",
+        "Distal Graft Anastomosis"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Aortic Valve Replacement",
+        "Aortic Root Enlargement",
+        "Maze Procedure"
+      ]
+    },
+
+    {
+      "id": "BENTALL_PROCEDURE",
+      "name": "Bentall Procedure",
+      "shortName": "Bentall",
+      "subcategory": "Aortic Surgery",
+      "template": "bentall",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Indication",
+        "Composite Graft Type",
+        "Composite Graft Size",
+        "Coronary Button Technique",
+        "Circulatory Arrest"
+      ],
+
+      "technicalSteps": [
+        "Aortic Root Dissection",
+        "Coronary Button Mobilization",
+        "Composite Graft Implantation",
+        "Left Coronary Button Reimplantation",
+        "Right Coronary Button Reimplantation",
+        "Distal Graft Anastomosis"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Hemiarch Replacement",
+        "Total Arch Replacement",
+        "Maze Procedure"
+      ]
+    },
+
+    {
+      "id": "DAVID_PROCEDURE",
+      "name": "Valve-Sparing Aortic Root Replacement",
+      "shortName": "David Procedure",
+      "subcategory": "Aortic Surgery",
+      "template": "david",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Indication",
+        "Graft Size",
+        "Valve Cusps Repaired"
+      ],
+
+      "technicalSteps": [
+        "Aortic Root Dissection",
+        "Coronary Button Mobilization",
+        "Valve Assessment",
+        "Root Reconstruction",
+        "Coronary Button Reimplantation"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Ascending Aortic Replacement",
+        "Hemiarch Replacement"
+      ]
+    },
+
+    {
+      "id": "WHEAT_PROCEDURE",
+      "name": "Wheat Procedure",
+      "shortName": "Wheat",
+      "subcategory": "Aortic Surgery",
+      "template": "wheat",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Valve Prosthesis Type",
+        "Valve Size",
+        "Graft Size"
+      ],
+
+      "technicalSteps": [
+        "Aortic Cannulation",
+        "Venous Cannulation",
+        "Aortic Valve Replacement",
+        "Ascending Aortic Replacement"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Maze Procedure"
+      ]
+    },
+
+    {
+      "id": "HEMIARCH_REPLACEMENT",
+      "name": "Hemiarch Replacement",
+      "shortName": "Hemiarch",
+      "subcategory": "Aortic Surgery",
+      "template": "hemiarch",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Indication",
+        "Circulatory Arrest",
+        "Cerebral Perfusion Strategy"
+      ],
+
+      "technicalSteps": [
+        "Arch Vessel Exposure",
+        "Circulatory Arrest",
+        "Arch Resection",
+        "Distal Anastomosis",
+        "Proximal Anastomosis"
+      ],
+
+      "associatedProcedures": [
+        "Bentall Procedure",
+        "Ascending Aortic Replacement",
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "TOTAL_ARCH_REPLACEMENT",
+      "name": "Total Arch Replacement",
+      "shortName": "Total Arch",
+      "subcategory": "Aortic Surgery",
+      "template": "total_arch",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Indication",
+        "Circulatory Arrest",
+        "Cerebral Perfusion Strategy",
+        "Number of Arch Vessels Reimplanted"
+      ],
+
+      "technicalSteps": [
+        "Arch Vessel Mobilization",
+        "Circulatory Arrest",
+        "Distal Arch Anastomosis",
+        "Arch Vessel Reimplantation",
+        "Proximal Anastomosis"
+      ],
+
+      "associatedProcedures": [
+        "Bentall Procedure",
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "TYPE_A_DISSECTION_REPAIR",
+      "name": "Repair of Acute Type A Aortic Dissection",
+      "shortName": "Type A Dissection",
+      "subcategory": "Aortic Surgery",
+      "template": "type_a_dissection",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Dissection Extent",
+        "Root Involvement",
+        "Arch Involvement"
+      ],
+
+      "technicalSteps": [
+        "Cannulation",
+        "Circulatory Arrest",
+        "Ascending Aortic Replacement",
+        "Root Repair",
+        "Arch Repair"
+      ],
+
+      "associatedProcedures": [
+        "Bentall Procedure",
+        "Hemiarch Replacement",
+        "Total Arch Replacement",
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "THORACOABDOMINAL_AORTIC_REPAIR",
+      "name": "Thoracoabdominal Aortic Aneurysm Repair",
+      "shortName": "TAAA Repair",
+      "subcategory": "Aortic Surgery",
+      "template": "taaa",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Extent (Crawford Classification)",
+        "Visceral Vessel Reconstruction"
+      ],
+
+      "technicalSteps": [
+        "Aortic Exposure",
+        "Proximal Anastomosis",
+        "Visceral Vessel Reimplantation",
+        "Distal Anastomosis"
+      ],
+
+      "associatedProcedures": []
+    }
+  ]
+}

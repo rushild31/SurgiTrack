@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ROBOTIC_MITRAL_VALVE_REPAIR",
+    "name": "Robotic Mitral Valve Repair",
+    "specialty": "robotic",
+    "category": "robotic_cardiac",
+    "description": "Robot-assisted mitral valve repair performed using totally endoscopic access.",
+    "aliases": [
+      "Robotic MV Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "repair_technique",
+        "label": "Repair Technique",
+        "reference": "repair_techniques"
+      }
+    ],
+    "skills": [
+      "ROBOT_DOCKING",
+      "PORT_PLACEMENT",
+      "ENDOSCOPIC_LEFT_ATRIOTOMY",
+      "ROBOTIC_MITRAL_REPAIR"
+    ],
+    "tags": [
+      "robotic",
+      "mitral"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_ASD_CLOSURE",
+    "name": "Robotic ASD Closure",
+    "specialty": "robotic",
+    "category": "robotic_cardiac",
+    "description": "Robot-assisted closure of an atrial septal defect.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses"
+      }
+    ],
+    "skills": [
+      "ROBOT_DOCKING",
+      "RIGHT_ATRIOTOMY",
+      "ASD_CLOSURE"
+    ],
+    "tags": [
+      "robotic",
+      "congenital"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "TECAB",
+    "name": "Totally Endoscopic Coronary Artery Bypass",
+    "specialty": "robotic",
+    "category": "robotic_cardiac",
+    "description": "Robot-assisted totally endoscopic coronary artery bypass.",
+    "aliases": [
+      "TECAB"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "ROBOT_DOCKING",
+      "ROBOTIC_LIMA_HARVEST",
+      "ENDOSCOPIC_CORONARY_ANASTOMOSIS"
+    ],
+    "tags": [
+      "robotic",
+      "cabg"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_CABG_ASSIST",
+    "name": "Robot-Assisted CABG",
+    "specialty": "robotic",
+    "category": "robotic_cardiac",
+    "description": "Robot-assisted internal mammary artery harvest with minimally invasive coronary bypass.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "ROBOT_DOCKING",
+      "IMA_HARVEST"
+    ],
+    "tags": [
+      "robotic",
+      "coronary"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

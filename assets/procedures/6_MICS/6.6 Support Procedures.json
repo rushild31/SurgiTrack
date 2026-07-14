@@ -1,0 +1,104 @@
+[
+  {
+    "id": "MICS_CONVERSION_TO_STERNOTOMY",
+    "name": "Conversion to Median Sternotomy",
+    "specialty": "mics",
+    "category": "support_procedures",
+    "description": "Emergency conversion from minimally invasive access to full median sternotomy.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "reason",
+        "label": "Reason for Conversion"
+      }
+    ],
+    "skills": [
+      "EMERGENCY_STERNOTOMY",
+      "HEMOSTASIS"
+    ],
+    "tags": [
+      "mics",
+      "conversion"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PERIPHERAL_CANNULATION",
+    "name": "Peripheral Cannulation",
+    "specialty": "mics",
+    "category": "support_procedures",
+    "description": "Peripheral arterial and venous cannulation for cardiopulmonary bypass.",
+    "aliases": [
+      "Femoral Cannulation"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "arterial_site",
+        "label": "Arterial Cannulation Site"
+      },
+      {
+        "id": "venous_site",
+        "label": "Venous Cannulation Site"
+      }
+    ],
+    "skills": [
+      "FEMORAL_ARTERY_EXPOSURE",
+      "FEMORAL_VEIN_CANNULATION"
+    ],
+    "tags": [
+      "mics",
+      "cpb"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ENDOAORTIC_BALLOON_OCCLUSION",
+    "name": "Endoaortic Balloon Occlusion",
+    "specialty": "mics",
+    "category": "support_procedures",
+    "description": "Endoaortic balloon placement for minimally invasive cardiac surgery.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "ENDOAORTIC_BALLOON_INSERTION"
+    ],
+    "tags": [
+      "mics",
+      "endoaortic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PORT_PLACEMENT",
+    "name": "Thoracoscopic Port Placement",
+    "specialty": "mics",
+    "category": "support_procedures",
+    "description": "Placement of thoracoscopic access ports for minimally invasive procedures.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "PORT_INSERTION"
+    ],
+    "tags": [
+      "mics",
+      "thoracoscopy"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

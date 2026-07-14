@@ -1,14 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:surgitrack/features/procedures/providers/procedure_provider.dart';
+import '../providers/procedure_provider.dart';
 
-import 'package:surgitrack/features/procedures/domain/procedure.dart';
+import 'procedure_details_screen.dart';
 
-class ProcedureSearchDelegate extends SearchDelegate<ProcedureEntity?> {
+class ProcedureSearchDelegate extends SearchDelegate {
   final WidgetRef ref;
 
   ProcedureSearchDelegate(this.ref);
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return _buildResults(context);
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return _buildResults(context);
+  }
+
+  Widget _buildResults(BuildContext context) {
+    if (query.trim().isEmpty) {
+      return const Center(child: Text("Search procedures"));
+    }
+
+    final result = ref.watch(procedureSearchProvider(query));
+
+    return result.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+
+      error: (e, _) => Center(child: Text(e.toString())),
+
+      data: (procedures) {
+        if (procedures.isEmpty) {
+          return const Center(child: Text("No procedures found"));
+        }
+
+        return ListView.builder(
+          itemCount: procedures.length,
+
+          itemBuilder: (context, index) {
+            final procedure = procedures[index];
+
+            return ListTile(
+              leading: const Icon(Icons.medical_services),
+
+              title: Text(procedure.name),
+
+              subtitle: Text("${procedure.specialty} • ${procedure.category}"),
+
+              onTap: () {
+                Navigator.push(
+                  context,
+
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        ProcedureDetailsScreen(procedure: procedure),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -30,46 +87,6 @@ class ProcedureSearchDelegate extends SearchDelegate<ProcedureEntity?> {
 
       onPressed: () {
         close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return _results();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return _results();
-  }
-
-  Widget _results() {
-    final result = ref.watch(procedureSearchProvider(query));
-
-    return result.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-
-      error: (e, s) => Center(child: Text(e.toString())),
-
-      data: (procedures) {
-        return ListView.builder(
-          itemCount: procedures.length,
-
-          itemBuilder: (context, index) {
-            final procedure = procedures[index];
-
-            return ListTile(
-              title: Text(procedure.name),
-
-              subtitle: Text(procedure.category),
-
-              onTap: () {
-                close(context, procedure);
-              },
-            );
-          },
-        );
       },
     );
   }

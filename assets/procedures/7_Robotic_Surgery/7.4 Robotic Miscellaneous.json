@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ROBOTIC_AORTIC_BYPASS",
+    "name": "Robot-Assisted Aortic Bypass",
+    "specialty": "robotic",
+    "category": "robotic_vascular",
+    "description": "Robot-assisted aorto-iliac reconstruction. Reserved for future implementation.",
+    "aliases": [],
+    "active": false,
+    "fields": [],
+    "skills": [
+      "ROBOT_DOCKING"
+    ],
+    "tags": [
+      "future",
+      "robotic",
+      "vascular"
+    ],
+    "metadata": {
+      "version": 1,
+      "status": "future",
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_FEMORAL_BYPASS",
+    "name": "Robot-Assisted Peripheral Bypass",
+    "specialty": "robotic",
+    "category": "robotic_vascular",
+    "description": "Placeholder for future robotic peripheral vascular procedures.",
+    "aliases": [],
+    "active": false,
+    "fields": [],
+    "skills": [
+      "ROBOT_DOCKING"
+    ],
+    "tags": [
+      "future",
+      "robotic"
+    ],
+    "metadata": {
+      "version": 1,
+      "status": "future",
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

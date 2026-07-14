@@ -1,0 +1,79 @@
+[
+  {
+    "id": "CARDIAC_TUMOR_EXCISION",
+    "name": "Congenital Cardiac Tumor Excision",
+    "specialty": "congenital_cardiac",
+    "category": "miscellaneous_congenital",
+    "description": "Excision of benign or malignant congenital cardiac tumors.",
+    "aliases": [
+      "Cardiac Tumor Excision"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "tumor_location",
+        "label": "Tumor Location"
+      }
+    ],
+    "skills": [
+      "CARDIAC_TUMOR_EXCISION",
+      "CARDIAC_RECONSTRUCTION"
+    ],
+    "tags": [
+      "congenital",
+      "tumor"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "CARDIAC_DIVERTICULUM_REPAIR",
+    "name": "Congenital Cardiac Diverticulum Repair",
+    "specialty": "congenital_cardiac",
+    "category": "miscellaneous_congenital",
+    "description": "Repair or excision of a congenital cardiac diverticulum.",
+    "aliases": [
+      "Cardiac Diverticulum Repair"
+    ],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "DIVERTICULUM_EXCISION",
+      "VENTRICULAR_RECONSTRUCTION"
+    ],
+    "tags": [
+      "congenital",
+      "rare"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PERICARDIAL_CYST_EXCISION",
+    "name": "Pericardial Cyst Excision",
+    "specialty": "congenital_cardiac",
+    "category": "miscellaneous_congenital",
+    "description": "Excision of a congenital pericardial cyst.",
+    "aliases": [
+      "Pericardial Cyst Removal"
+    ],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "PERICARDIAL_DISSECTION",
+      "CYST_EXCISION"
+    ],
+    "tags": [
+      "congenital",
+      "pericardium"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "id": "CAROTID_ENDARTERECTOMY",
+    "name": "Carotid Endarterectomy",
+    "specialty": "vascular",
+    "category": "carotid_supra_aortic_surgery",
+    "description": "Open carotid endarterectomy with primary or patch closure.",
+    "aliases": [
+      "CEA"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "patch_material",
+        "label": "Patch Material",
+        "reference": "grafts_and_patch_materials"
+      },
+      {
+        "id": "shunt_used",
+        "label": "Intraluminal Shunt Used"
+      }
+    ],
+    "skills": [
+      "CAROTID_EXPOSURE",
+      "ENDARTERECTOMY",
+      "PATCH_ANGIOPLASTY"
+    ],
+    "tags": [
+      "vascular",
+      "carotid"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "CAROTID_BYPASS",
+    "name": "Carotid Artery Bypass",
+    "specialty": "vascular",
+    "category": "carotid_supra_aortic_surgery",
+    "description": "Bypass of diseased carotid artery using prosthetic or vein conduit.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "CAROTID_DISSECTION",
+      "VASCULAR_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "carotid"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "SUBCLAVIAN_BYPASS",
+    "name": "Subclavian Artery Bypass",
+    "specialty": "vascular",
+    "category": "carotid_supra_aortic_surgery",
+    "description": "Open bypass for proximal subclavian artery disease.",
+    "aliases": [
+      "Carotid-Subclavian Bypass"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "SUPRA_AORTIC_DISSECTION",
+      "VASCULAR_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "subclavian"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

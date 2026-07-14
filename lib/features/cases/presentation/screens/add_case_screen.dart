@@ -7,8 +7,9 @@ import 'package:surgitrack/features/cases/domain/surgical_case.dart';
 import 'package:surgitrack/features/cases/providers/surgical_case_provider.dart';
 
 import 'package:surgitrack/features/procedures/domain/procedure.dart';
-import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
+import 'package:surgitrack/features/procedures/domain/procedure_selection.dart';
 
+import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
 import 'package:surgitrack/core/enums/surgeon_role.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/operative_role_selector.dart';
 
@@ -40,7 +41,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
   String? outcome;
 
-  final List<ProcedureEntity> selectedProcedures = [];
+  ProcedureSelection selection = const ProcedureSelection();
 
   @override
   void dispose() {
@@ -49,6 +50,60 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
     notesController.dispose();
 
     super.dispose();
+  }
+
+  void addProcedure(ProcedureEntity procedure) {
+    final currentPrimary = selection.primaryProcedure;
+
+    if (currentPrimary == null) {
+      setState(() {
+        selection = ProcedureSelection(
+          primaryProcedure: procedure,
+          associatedProcedures: [],
+        );
+      });
+
+      return;
+    }
+
+    final alreadyAdded = selection.associatedProcedures.any(
+      (item) => item.id == procedure.id,
+    );
+
+    if (!alreadyAdded && currentPrimary.id != procedure.id) {
+      setState(() {
+        selection = ProcedureSelection(
+          primaryProcedure: currentPrimary,
+          associatedProcedures: [...selection.associatedProcedures, procedure],
+        );
+      });
+    }
+  }
+
+  void removeProcedure(ProcedureEntity procedure) {
+    setState(() {
+      if (selection.primaryProcedure?.id == procedure.id) {
+        selection = ProcedureSelection(
+          primaryProcedure: null,
+          associatedProcedures: selection.associatedProcedures,
+        );
+      } else {
+        selection = ProcedureSelection(
+          primaryProcedure: selection.primaryProcedure,
+          associatedProcedures: selection.associatedProcedures
+              .where((item) => item.id != procedure.id)
+              .toList(),
+        );
+      }
+    });
+  }
+
+  List<ProcedureEntity> get selectedProcedures {
+    return [
+      if (selection.primaryProcedure != null) selection.primaryProcedure!,
+
+      ...selection.associatedProcedures,
+    ];
   }
 
   @override
@@ -67,16 +122,8 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
               selected: null,
 
               onChanged: (procedure) {
-                if (procedure == null) return;
-
-                final exists = selectedProcedures.any(
-                  (e) => e.id == procedure.id,
-                );
-
-                if (!exists) {
-                  setState(() {
-                    selectedProcedures.add(procedure);
-                  });
+                if (procedure != null) {
+                  addProcedure(procedure);
                 }
               },
             ),
@@ -88,13 +135,18 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
                 spacing: 8,
 
                 children: selectedProcedures.map((procedure) {
+                  final isPrimary =
+                      procedure.id == selection.primaryProcedure?.id;
+
                   return Chip(
-                    label: Text(procedure.name),
+                    label: Text(
+                      isPrimary
+                          ? "${procedure.name} (Primary)"
+                          : procedure.name,
+                    ),
 
                     onDeleted: () {
-                      setState(() {
-                        selectedProcedures.remove(procedure);
-                      });
+                      removeProcedure(procedure);
                     },
                   );
                 }).toList(),
@@ -146,11 +198,13 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
   }
 
   Future<void> saveCase() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
 
-    if (selectedProcedures.isEmpty) {
+    if (selection.primaryProcedure == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Select at least one procedure")),
+        const SnackBar(content: Text("Select at least one primary procedure")),
       );
 
       return;
@@ -192,9 +246,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
       updatedAt: now,
     );
 
-    await ref
-        .read(surgicalCaseRepositoryProvider)
-        .addCase(newCase, selectedProcedures.map((e) => e.id!).toList());
+    await ref.read(surgicalCaseRepositoryProvider).addCase(newCase, selection);
 
     if (mounted) {
       Navigator.pop(context);

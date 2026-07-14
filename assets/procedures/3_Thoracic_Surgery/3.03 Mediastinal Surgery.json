@@ -1,0 +1,104 @@
+[
+  {
+    "id": "THYMECTOMY",
+    "name": "Thymectomy",
+    "specialty": "thoracic",
+    "category": "mediastinal_surgery",
+    "description": "Complete or partial surgical excision of the thymus.",
+    "aliases": [
+      "Extended Thymectomy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "ANTERIOR_MEDIASTINAL_DISSECTION",
+      "THYMIC_VEIN_DIVISION",
+      "PHRENIC_NERVE_PRESERVATION"
+    ],
+    "tags": [
+      "thoracic",
+      "mediastinum",
+      "thymus"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MEDIASTINAL_MASS_EXCISION",
+    "name": "Mediastinal Mass Excision",
+    "specialty": "thoracic",
+    "category": "mediastinal_surgery",
+    "description": "Excision of a benign or malignant mediastinal mass.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "MEDIASTINAL_DISSECTION",
+      "VASCULAR_CONTROL",
+      "SPECIMEN_RETRIEVAL"
+    ],
+    "tags": [
+      "thoracic",
+      "mediastinum"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MEDIASTINAL_CYST_EXCISION",
+    "name": "Mediastinal Cyst Excision",
+    "specialty": "thoracic",
+    "category": "mediastinal_surgery",
+    "description": "Excision of congenital or acquired mediastinal cysts.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "MEDIASTINAL_DISSECTION",
+      "CYST_EXCISION"
+    ],
+    "tags": [
+      "thoracic",
+      "mediastinal_cyst"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

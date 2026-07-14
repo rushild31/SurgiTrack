@@ -1,0 +1,132 @@
+[
+  {
+    "id": "DOUBLE_AORTIC_ARCH_DIVISION",
+    "name": "Double Aortic Arch Division",
+    "specialty": "congenital_thoracic",
+    "category": "vascular_rings_and_slings",
+    "description": "Division of the non-dominant aortic arch to relieve a complete vascular ring.",
+    "aliases": [
+      "Double Aortic Arch Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "AORTIC_ARCH_DISSECTION",
+      "VASCULAR_RING_DIVISION"
+    ],
+    "tags": [
+      "congenital",
+      "vascular_ring"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PULMONARY_ARTERY_SLING_REPAIR",
+    "name": "Pulmonary Artery Sling Repair",
+    "specialty": "congenital_thoracic",
+    "category": "vascular_rings_and_slings",
+    "description": "Division and reimplantation of an anomalous left pulmonary artery causing airway compression.",
+    "aliases": [
+      "Pulmonary Sling Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "PULMONARY_ARTERY_DISSECTION",
+      "PULMONARY_ARTERY_REIMPLANTATION"
+    ],
+    "tags": [
+      "congenital",
+      "vascular_ring",
+      "airway"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ABERRANT_SUBCLAVIAN_ARTERY_DIVISION",
+    "name": "Aberrant Subclavian Artery Division and Reimplantation",
+    "specialty": "congenital_thoracic",
+    "category": "vascular_rings_and_slings",
+    "description": "Division and reimplantation of an aberrant subclavian artery causing symptomatic compression.",
+    "aliases": [
+      "Arteria Lusoria Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "SUBCLAVIAN_ARTERY_DISSECTION",
+      "ARTERIAL_REIMPLANTATION"
+    ],
+    "tags": [
+      "congenital",
+      "vascular_ring"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "LIGAMENTUM_ARTERIOSUM_DIVISION",
+    "name": "Division of Ligamentum Arteriosum",
+    "specialty": "congenital_thoracic",
+    "category": "vascular_rings_and_slings",
+    "description": "Division of the ligamentum arteriosum to relieve an incomplete vascular ring.",
+    "aliases": [
+      "Ligamentum Division"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "MEDIASTINAL_DISSECTION",
+      "LIGAMENTUM_DIVISION"
+    ],
+    "tags": [
+      "congenital",
+      "vascular_ring"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

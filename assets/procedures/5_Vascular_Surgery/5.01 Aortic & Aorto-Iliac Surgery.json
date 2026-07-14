@@ -1,0 +1,153 @@
+[
+  {
+    "id": "OPEN_ABDOMINAL_AORTIC_ANEURYSM_REPAIR",
+    "name": "Open Abdominal Aortic Aneurysm Repair",
+    "specialty": "vascular",
+    "category": "aortic_aorto_iliac_surgery",
+    "description": "Open repair of infrarenal or juxtarenal abdominal aortic aneurysm.",
+    "aliases": [
+      "Open AAA Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "graft_material",
+        "label": "Graft Material",
+        "reference": "grafts_and_patch_materials"
+      },
+      {
+        "id": "configuration",
+        "label": "Graft Configuration",
+        "reference": "graft_configurations"
+      }
+    ],
+    "skills": [
+      "AORTIC_EXPOSURE",
+      "AORTIC_CROSS_CLAMPING",
+      "PROXIMAL_ANASTOMOSIS",
+      "DISTAL_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "aorta",
+      "aneurysm"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "AORTO_BIFEMORAL_BYPASS",
+    "name": "Aorto-Bifemoral Bypass",
+    "specialty": "vascular",
+    "category": "aortic_aorto_iliac_surgery",
+    "description": "Open bypass for aorto-iliac occlusive disease.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "graft_material",
+        "label": "Graft Material",
+        "reference": "grafts_and_patch_materials"
+      }
+    ],
+    "skills": [
+      "AORTIC_DISSECTION",
+      "FEMORAL_EXPOSURE",
+      "TUNNEL_CREATION",
+      "VASCULAR_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "bypass"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "AORTO_UNIILIAC_BYPASS",
+    "name": "Aorto-Uniiliac Bypass",
+    "specialty": "vascular",
+    "category": "aortic_aorto_iliac_surgery",
+    "description": "Open unilateral bypass for complex aorto-iliac disease.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "graft_material",
+        "label": "Graft Material",
+        "reference": "grafts_and_patch_materials"
+      }
+    ],
+    "skills": [
+      "AORTIC_EXPOSURE",
+      "ILIAC_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "aorta"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "OPEN_THORACOABDOMINAL_AORTIC_REPAIR",
+    "name": "Open Thoracoabdominal Aortic Repair",
+    "specialty": "vascular",
+    "category": "aortic_aorto_iliac_surgery",
+    "description": "Open replacement of thoracoabdominal aortic aneurysm.",
+    "aliases": [
+      "TAAA Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "graft_material",
+        "label": "Graft Material",
+        "reference": "grafts_and_patch_materials"
+      }
+    ],
+    "skills": [
+      "THORACOABDOMINAL_EXPOSURE",
+      "VISCERAL_REIMPLANTATION",
+      "AORTIC_REPLACEMENT"
+    ],
+    "tags": [
+      "vascular",
+      "thoracoabdominal"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

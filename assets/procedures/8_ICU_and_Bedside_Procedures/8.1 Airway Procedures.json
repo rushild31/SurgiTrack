@@ -1,0 +1,42 @@
+[
+  {
+    "id": "OPEN_TRACHEOSTOMY",
+    "name": "Open Tracheostomy",
+    "specialty": "icu",
+    "category": "airway_procedures",
+    "description": "Open surgical tracheostomy.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "TRACHEAL_EXPOSURE",
+      "TRACHEOSTOMY"
+    ]
+  },
+  {
+    "id": "PERCUTANEOUS_TRACHEOSTOMY",
+    "name": "Percutaneous Dilatational Tracheostomy",
+    "specialty": "icu",
+    "category": "airway_procedures",
+    "description": "Percutaneous bedside tracheostomy.",
+    "aliases": [
+      "PDT"
+    ],
+    "active": true,
+    "skills": [
+      "BRONCHOSCOPIC_GUIDANCE",
+      "PERCUTANEOUS_TRACHEOSTOMY"
+    ]
+  },
+  {
+    "id": "FLEXIBLE_BRONCHOSCOPY",
+    "name": "Flexible Bronchoscopy",
+    "specialty": "icu",
+    "category": "airway_procedures",
+    "description": "Diagnostic or therapeutic flexible bronchoscopy.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "BRONCHOSCOPY"
+    ]
+  }
+]

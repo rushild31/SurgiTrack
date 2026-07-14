@@ -1,0 +1,80 @@
+[
+  {
+    "id": "EVAR",
+    "name": "Endovascular Aneurysm Repair",
+    "specialty": "vascular",
+    "category": "hybrid_endovascular_procedures",
+    "description": "Endovascular repair of abdominal aortic aneurysm.",
+    "aliases": [
+      "EVAR"
+    ],
+    "active": false,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses"
+      }
+    ],
+    "skills": [
+      "ENDOVASCULAR_ACCESS",
+      "DEVICE_DEPLOYMENT"
+    ],
+    "tags": [
+      "future",
+      "endovascular"
+    ],
+    "metadata": {
+      "version": 1,
+      "status": "future",
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "TEVAR",
+    "name": "Thoracic Endovascular Aortic Repair",
+    "specialty": "vascular",
+    "category": "hybrid_endovascular_procedures",
+    "description": "Endovascular repair of thoracic aortic pathology.",
+    "aliases": [
+      "TEVAR"
+    ],
+    "active": false,
+    "fields": [],
+    "skills": [
+      "ENDOVASCULAR_ACCESS",
+      "DEVICE_DEPLOYMENT"
+    ],
+    "tags": [
+      "future",
+      "endovascular"
+    ],
+    "metadata": {
+      "version": 1,
+      "status": "future",
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "HYBRID_AORTIC_PROCEDURE",
+    "name": "Hybrid Aortic Procedure",
+    "specialty": "vascular",
+    "category": "hybrid_endovascular_procedures",
+    "description": "Combined open and endovascular vascular procedure.",
+    "aliases": [],
+    "active": false,
+    "fields": [],
+    "skills": [
+      "HYBRID_OPERATING_ROOM_WORKFLOW"
+    ],
+    "tags": [
+      "future",
+      "hybrid"
+    ],
+    "metadata": {
+      "version": 1,
+      "status": "future",
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

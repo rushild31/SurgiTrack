@@ -1,0 +1,96 @@
+[
+  {
+    "id": "TRACHEAL_RESECTION_RECONSTRUCTION",
+    "name": "Tracheal Resection and Reconstruction",
+    "specialty": "thoracic",
+    "category": "airway_surgery",
+    "description": "Segmental tracheal resection with primary reconstruction.",
+    "aliases": [
+      "Tracheal Reconstruction"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "TRACHEAL_MOBILIZATION",
+      "TRACHEAL_RESECTION",
+      "TRACHEAL_ANASTOMOSIS"
+    ],
+    "tags": [
+      "thoracic",
+      "airway",
+      "trachea"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "CARINAL_RESECTION",
+    "name": "Carinal Resection and Reconstruction",
+    "specialty": "thoracic",
+    "category": "airway_surgery",
+    "description": "Complex airway reconstruction involving the carina.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "CARINAL_RESECTION",
+      "MAIN_BRONCHIAL_RECONSTRUCTION",
+      "AIRWAY_ANASTOMOSIS"
+    ],
+    "tags": [
+      "thoracic",
+      "carina"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "BRONCHOPLASTY",
+    "name": "Bronchoplasty",
+    "specialty": "thoracic",
+    "category": "airway_surgery",
+    "description": "Reconstruction of the bronchus with preservation of lung parenchyma.",
+    "aliases": [
+      "Sleeve Bronchoplasty"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "BRONCHIAL_RESECTION",
+      "BRONCHIAL_ANASTOMOSIS"
+    ],
+    "tags": [
+      "thoracic",
+      "bronchus"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

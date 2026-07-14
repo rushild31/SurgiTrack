@@ -1,0 +1,144 @@
+[
+  {
+    "id": "THORACIC_DUCT_LIGATION",
+    "name": "Thoracic Duct Ligation",
+    "specialty": "thoracic",
+    "category": "miscellaneous_thoracic",
+    "description": "Surgical ligation of the thoracic duct for persistent chylothorax.",
+    "aliases": [
+      "Thoracic Duct Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "THORACIC_DUCT_IDENTIFICATION",
+      "THORACIC_DUCT_LIGATION"
+    ],
+    "tags": [
+      "thoracic",
+      "chylothorax"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "SYMPATHECTOMY",
+    "name": "Thoracic Sympathectomy",
+    "specialty": "thoracic",
+    "category": "miscellaneous_thoracic",
+    "description": "Thoracoscopic or open sympathectomy for hyperhidrosis or other indications.",
+    "aliases": [
+      "Endoscopic Thoracic Sympathectomy",
+      "ETS"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "SYMPATHETIC_CHAIN_IDENTIFICATION",
+      "SYMPATHECTOMY"
+    ],
+    "tags": [
+      "thoracic",
+      "sympathectomy",
+      "hyperhidrosis"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PERICARDIAL_WINDOW",
+    "name": "Pericardial Window",
+    "specialty": "thoracic",
+    "category": "miscellaneous_thoracic",
+    "description": "Creation of a pericardial window for drainage of recurrent pericardial effusion.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "PERICARDIAL_EXPOSURE",
+      "PERICARDIOTOMY",
+      "PERICARDIAL_WINDOW_CREATION"
+    ],
+    "tags": [
+      "thoracic",
+      "pericardium"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "THORACOSCOPIC_BIOPSY",
+    "name": "Thoracoscopic Biopsy",
+    "specialty": "thoracic",
+    "category": "miscellaneous_thoracic",
+    "description": "Thoracoscopic biopsy of pleural, pulmonary, or mediastinal lesions.",
+    "aliases": [
+      "VATS Biopsy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "THORACOSCOPIC_ACCESS",
+      "TARGETED_BIOPSY",
+      "SPECIMEN_RETRIEVAL"
+    ],
+    "tags": [
+      "thoracic",
+      "biopsy",
+      "vats"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

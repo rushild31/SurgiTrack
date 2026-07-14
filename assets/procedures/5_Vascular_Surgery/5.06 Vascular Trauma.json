@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ARTERIAL_TRAUMA_REPAIR",
+    "name": "Arterial Trauma Repair",
+    "specialty": "vascular",
+    "category": "vascular_trauma",
+    "description": "Primary repair of traumatic arterial injury.",
+    "aliases": [
+      "Primary Arterial Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "repair_technique",
+        "label": "Repair Technique",
+        "reference": "repair_techniques"
+      }
+    ],
+    "skills": [
+      "VASCULAR_EXPOSURE",
+      "ARTERIAL_CONTROL",
+      "PRIMARY_ARTERIAL_REPAIR"
+    ],
+    "tags": [
+      "vascular",
+      "trauma"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "INTERPOSITION_GRAFT_REPAIR",
+    "name": "Interposition Graft Repair",
+    "specialty": "vascular",
+    "category": "vascular_trauma",
+    "description": "Replacement of a damaged arterial segment using vein or prosthetic graft.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "ARTERIAL_RESECTION",
+      "INTERPOSITION_GRAFTING",
+      "VASCULAR_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "trauma"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VASCULAR_SHUNT_INSERTION",
+    "name": "Temporary Vascular Shunt Insertion",
+    "specialty": "vascular",
+    "category": "vascular_trauma",
+    "description": "Insertion of a temporary intravascular shunt for damage control surgery.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "indication",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "VASCULAR_CONTROL",
+      "SHUNT_INSERTION"
+    ],
+    "tags": [
+      "vascular",
+      "damage_control"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

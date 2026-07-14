@@ -1,0 +1,116 @@
+[
+  {
+    "id": "MODIFIED_BT_SHUNT",
+    "name": "Modified Blalock-Taussig Shunt",
+    "specialty": "congenital_cardiac",
+    "category": "single_ventricle_palliation",
+    "description": "Systemic-to-pulmonary artery shunt using a prosthetic graft.",
+    "aliases": [
+      "Modified BT Shunt",
+      "mBTS"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "graft_size",
+        "label": "Shunt Graft Size"
+      }
+    ],
+    "skills": [
+      "SYSTEMIC_ARTERY_DISSECTION",
+      "PULMONARY_ARTERY_DISSECTION",
+      "PTFE_GRAFT_ANASTOMOSIS"
+    ],
+    "tags": [
+      "congenital",
+      "single_ventricle",
+      "stage_1"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "BIDIRECTIONAL_GLENN",
+    "name": "Bidirectional Glenn Shunt",
+    "specialty": "congenital_cardiac",
+    "category": "single_ventricle_palliation",
+    "description": "Superior vena cava to pulmonary artery connection.",
+    "aliases": [
+      "Glenn",
+      "BDG"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "SVC_MOBILIZATION",
+      "GLENN_ANASTOMOSIS"
+    ],
+    "tags": [
+      "congenital",
+      "single_ventricle",
+      "stage_2"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "FONTAN_PROCEDURE",
+    "name": "Fontan Procedure",
+    "specialty": "congenital_cardiac",
+    "category": "single_ventricle_palliation",
+    "description": "Completion of total cavopulmonary connection.",
+    "aliases": [
+      "Extracardiac Fontan",
+      "Lateral Tunnel Fontan"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      },
+      {
+        "id": "fenestration",
+        "label": "Fenestration Performed"
+      }
+    ],
+    "skills": [
+      "IVC_DISSECTION",
+      "EXTRACARDIAC_CONDUIT_IMPLANTATION",
+      "FONTAN_FENESTRATION"
+    ],
+    "tags": [
+      "congenital",
+      "single_ventricle",
+      "stage_3"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

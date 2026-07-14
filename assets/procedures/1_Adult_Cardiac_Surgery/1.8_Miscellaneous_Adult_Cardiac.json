@@ -1,0 +1,232 @@
+{
+  "category": "Adult Cardiac Surgery",
+  "subcategory": "Miscellaneous Adult Cardiac",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "PERICARDIECTOMY",
+      "name": "Pericardiectomy",
+      "shortName": "Pericardiectomy",
+      "subcategory": "Miscellaneous Adult Cardiac",
+      "template": "pericardiectomy",
+
+      "supportsCPB": false,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": false,
+
+      "dynamicFields": [
+        "Indication",
+        "Extent of Pericardiectomy"
+      ],
+
+      "technicalSteps": [
+        "Pericardial Dissection",
+        "Anterior Pericardiectomy",
+        "Posterior Pericardiectomy"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "VENTRICULAR_ANEURYSM_REPAIR",
+      "name": "Left Ventricular Aneurysm Repair",
+      "shortName": "LV Aneurysm Repair",
+      "subcategory": "Miscellaneous Adult Cardiac",
+      "template": "lv_aneurysm_repair",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Repair Technique",
+        "Patch Used"
+      ],
+
+      "technicalSteps": [
+        "Aneurysm Resection",
+        "Ventricular Reconstruction",
+        "Patch Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "CABG",
+        "Mitral Valve Repair"
+      ]
+    },
+
+    {
+      "id": "LEFT_VENTRICULAR_PSEUDOANEURYSM_REPAIR",
+      "name": "Left Ventricular Pseudoaneurysm Repair",
+      "shortName": "LV Pseudoaneurysm",
+      "subcategory": "Miscellaneous Adult Cardiac",
+      "template": "lv_pseudoaneurysm",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Location",
+        "Patch Used"
+      ],
+
+      "technicalSteps": [
+        "Pseudoaneurysm Excision",
+        "Patch Reconstruction",
+        "Ventricular Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "POST_MI_VSD_REPAIR",
+      "name": "Post-Myocardial Infarction Ventricular Septal Defect Repair",
+      "shortName": "Post-MI VSD Repair",
+      "subcategory": "Miscellaneous Adult Cardiac",
+      "template": "post_mi_vsd",
+
+      "supportsCPB": true,
+      "supportsRedo": true,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Defect Location",
+        "Patch Material"
+      ],
+
+      "technicalSteps": [
+        "VSD Exposure",
+        "Patch Closure",
+        "Ventricular Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "PAPILLARY_MUSCLE_RUPTURE_REPAIR",
+      "name": "Papillary Muscle Rupture Repair",
+      "shortName": "Papillary Muscle Repair",
+      "subcategory": "Miscellaneous Adult Cardiac",
+      "template": "papillary_muscle_rupture",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Papillary Muscle",
+        "Repair or Replacement"
+      ],
+
+      "technicalSteps": [
+        "Papillary Muscle Assessment",
+        "Papillary Muscle Repair",
+        "Mitral Valve Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "Mitral Valve Replacement",
+        "Mitral Valve Repair"
+      ]
+    },
+
+    {
+      "id": "CARDIAC_HYDATID_CYST_EXCISION",
+      "name": "Cardiac Hydatid Cyst Excision",
+      "shortName": "Cardiac Hydatid",
+      "subcategory": "Miscellaneous Adult Cardiac",
+      "template": "cardiac_hydatid",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": false,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": false,
+
+      "dynamicFields": [
+        "Cardiac Chamber",
+        "Number of Cysts"
+      ],
+
+      "technicalSteps": [
+        "Cyst Isolation",
+        "Cyst Excision",
+        "Cardiac Reconstruction"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "INTRACARDIAC_FOREIGN_BODY_REMOVAL",
+      "name": "Intracardiac Foreign Body Removal",
+      "shortName": "Foreign Body Removal",
+      "subcategory": "Miscellaneous Adult Cardiac",
+      "template": "foreign_body",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": false,
+
+      "dynamicFields": [
+        "Foreign Body Type",
+        "Location"
+      ],
+
+      "technicalSteps": [
+        "Foreign Body Localization",
+        "Foreign Body Extraction",
+        "Cardiac Reconstruction"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "SURGICAL_PULMONARY_EMBOLECTOMY",
+      "name": "Surgical Pulmonary Embolectomy",
+      "shortName": "Pulmonary Embolectomy",
+      "subcategory": "Miscellaneous Adult Cardiac",
+      "template": "pulmonary_embolectomy",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": false,
+
+      "dynamicFields": [
+        "Embolus Location",
+        "Acute or Chronic"
+      ],
+
+      "technicalSteps": [
+        "Pulmonary Arteriotomy",
+        "Thrombus Extraction",
+        "Pulmonary Artery Repair"
+      ],
+
+      "associatedProcedures": []
+    }
+  ]
+}

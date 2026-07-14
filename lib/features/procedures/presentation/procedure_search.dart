@@ -1,32 +1,49 @@
 import 'package:flutter/material.dart';
 
-import '../domain/procedure.dart';
-
-class ProcedureSearch extends StatelessWidget {
-  final List<ProcedureEntity> procedures;
-
+class ProcedureSearchBar extends StatefulWidget {
   final ValueChanged<String> onChanged;
 
-  const ProcedureSearch({
+  final String initialValue;
+
+  const ProcedureSearchBar({
     super.key,
-
-    required this.procedures,
-
     required this.onChanged,
+    this.initialValue = '',
   });
+
+  @override
+  State<ProcedureSearchBar> createState() => _ProcedureSearchBarState();
+}
+
+class _ProcedureSearchBarState extends State<ProcedureSearchBar> {
+  late final TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
+
       decoration: const InputDecoration(
-        labelText: "Search Procedure",
-
+        hintText: "Search procedures...",
         prefixIcon: Icon(Icons.search),
-
         border: OutlineInputBorder(),
       ),
 
-      onChanged: onChanged,
+      onChanged: widget.onChanged,
     );
   }
 }

@@ -1,0 +1,113 @@
+[
+  {
+    "id": "TETRALOGY_OF_FALLOT_REPAIR",
+    "name": "Tetralogy of Fallot Repair",
+    "specialty": "congenital_cardiac",
+    "category": "rvot_lesions",
+    "description": "Complete repair of Tetralogy of Fallot with ventricular septal defect closure and right ventricular outflow tract reconstruction.",
+    "aliases": [
+      "TOF Repair",
+      "Complete TOF Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "rvot_reconstruction",
+        "label": "RVOT Reconstruction",
+        "reference": "repair_techniques"
+      },
+      {
+        "id": "patch_material",
+        "label": "Patch Material"
+      }
+    ],
+    "skills": [
+      "VSD_PATCH_CLOSURE",
+      "RVOT_MUSCLE_RESECTION",
+      "TRANSANNULAR_PATCH",
+      "PULMONARY_VALVOTOMY",
+      "RVOT_RECONSTRUCTION"
+    ],
+    "tags": [
+      "congenital",
+      "cyanotic",
+      "rvot",
+      "tof"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PULMONARY_VALVOTOMY",
+    "name": "Pulmonary Valvotomy",
+    "specialty": "congenital_cardiac",
+    "category": "rvot_lesions",
+    "description": "Surgical relief of congenital pulmonary valve stenosis.",
+    "aliases": [
+      "Surgical Pulmonary Valvotomy"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "PULMONARY_ARTERIOTOMY",
+      "PULMONARY_VALVE_COMMISSUROTOMY"
+    ],
+    "tags": [
+      "congenital",
+      "pulmonary_stenosis",
+      "rvot"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "DOUBLE_CHAMBERED_RIGHT_VENTRICLE_REPAIR",
+    "name": "Double-Chambered Right Ventricle Repair",
+    "specialty": "congenital_cardiac",
+    "category": "rvot_lesions",
+    "description": "Resection of obstructing muscle bundles causing double-chambered right ventricle.",
+    "aliases": [
+      "DCRV Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "RIGHT_VENTRICULOTOMY",
+      "INFUNDIBULAR_MUSCLE_RESECTION",
+      "RVOT_ENLARGEMENT"
+    ],
+    "tags": [
+      "congenital",
+      "rvot",
+      "dcrv"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

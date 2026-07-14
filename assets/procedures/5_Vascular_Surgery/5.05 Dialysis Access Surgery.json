@@ -1,0 +1,119 @@
+[
+  {
+    "id": "RADIOCEPHALIC_AV_FISTULA",
+    "name": "Radiocephalic Arteriovenous Fistula",
+    "specialty": "vascular",
+    "category": "dialysis_access_surgery",
+    "description": "Creation of a distal radiocephalic AV fistula for haemodialysis access.",
+    "aliases": [
+      "Brescia-Cimino Fistula"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "RADIAL_ARTERY_EXPOSURE",
+      "CEPHALIC_VEIN_MOBILIZATION",
+      "AV_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "dialysis"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "BRACHIOCEPHALIC_AV_FISTULA",
+    "name": "Brachiocephalic Arteriovenous Fistula",
+    "specialty": "vascular",
+    "category": "dialysis_access_surgery",
+    "description": "Creation of an upper-arm AV fistula using the brachial artery and cephalic vein.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "BRACHIAL_ARTERY_EXPOSURE",
+      "AV_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "dialysis"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "AV_GRAFT_INSERTION",
+    "name": "Arteriovenous Graft Insertion",
+    "specialty": "vascular",
+    "category": "dialysis_access_surgery",
+    "description": "Insertion of a prosthetic AV graft for haemodialysis access.",
+    "aliases": [
+      "PTFE AV Graft"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "GRAFT_TUNNELLING",
+      "ARTERIAL_ANASTOMOSIS",
+      "VENOUS_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "dialysis"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "AV_FISTULA_REVISION",
+    "name": "Arteriovenous Fistula Revision",
+    "specialty": "vascular",
+    "category": "dialysis_access_surgery",
+    "description": "Revision, superficialization, or repair of an existing dialysis access fistula.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "FISTULA_DISSECTION",
+      "ACCESS_REVISION"
+    ],
+    "tags": [
+      "vascular",
+      "dialysis"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

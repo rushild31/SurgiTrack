@@ -1,0 +1,132 @@
+[
+  {
+    "id": "PLEURAL_DECORTICATION",
+    "name": "Pleural Decortication",
+    "specialty": "thoracic",
+    "category": "pleural_surgery",
+    "description": "Removal of fibrous pleural peel to allow lung re-expansion.",
+    "aliases": [
+      "Decortication"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "PLEURAL_DISSECTION",
+      "LUNG_DECORTICATION",
+      "HEMOSTASIS"
+    ],
+    "tags": [
+      "thoracic",
+      "pleura",
+      "empyema"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PLEURECTOMY",
+    "name": "Pleurectomy",
+    "specialty": "thoracic",
+    "category": "pleural_surgery",
+    "description": "Partial or complete excision of parietal pleura.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "PARIETAL_PLEURAL_DISSECTION",
+      "APICAL_PLEURECTOMY"
+    ],
+    "tags": [
+      "thoracic",
+      "pleura"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PLEURODESIS",
+    "name": "Pleurodesis",
+    "specialty": "thoracic",
+    "category": "pleural_surgery",
+    "description": "Chemical or mechanical pleurodesis to obliterate the pleural space.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "pleurodesis_type",
+        "label": "Pleurodesis Type"
+      }
+    ],
+    "skills": [
+      "MECHANICAL_PLEURODESIS",
+      "CHEMICAL_PLEURODESIS"
+    ],
+    "tags": [
+      "thoracic",
+      "pleurodesis"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "EMPYEMA_DRAINAGE",
+    "name": "Empyema Drainage",
+    "specialty": "thoracic",
+    "category": "pleural_surgery",
+    "description": "Operative drainage of pleural empyema.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "PLEURAL_DRAINAGE",
+      "EMPYEMA_DEBRIDEMENT",
+      "CHEST_TUBE_INSERTION"
+    ],
+    "tags": [
+      "thoracic",
+      "empyema"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

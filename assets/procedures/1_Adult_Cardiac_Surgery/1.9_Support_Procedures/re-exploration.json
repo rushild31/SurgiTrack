@@ -1,0 +1,103 @@
+{
+  "category": "Support Procedures",
+  "subcategory": "Re-exploration",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "RESTERNOTOMY",
+      "name": "Resternotomy",
+      "shortName": "Resternotomy",
+      "template": "resternotomy",
+
+      "dynamicFields": [
+        "Indication"
+      ],
+
+      "technicalSteps": [
+        "Sternal Re-entry",
+        "Adhesiolysis"
+      ]
+    },
+
+    {
+      "id": "CHEST_REEXPLORATION",
+      "name": "Chest Re-exploration",
+      "shortName": "Re-exploration",
+      "template": "chest_reexploration",
+
+      "dynamicFields": [
+        "Indication",
+        "Bleeding Source"
+      ],
+
+      "technicalSteps": [
+        "Source Identification",
+        "Bleeding Control"
+      ]
+    },
+
+    {
+      "id": "DELAYED_STERNAL_CLOSURE",
+      "name": "Delayed Sternal Closure",
+      "shortName": "Delayed Closure",
+      "template": "delayed_sternal_closure",
+
+      "dynamicFields": [
+        "Reason for Delayed Closure"
+      ],
+
+      "technicalSteps": [
+        "Sternal Approximation",
+        "Definitive Closure"
+      ]
+    },
+
+    {
+      "id": "MEDIASTINAL_WASHOUT",
+      "name": "Mediastinal Washout",
+      "shortName": "Washout",
+      "template": "mediastinal_washout",
+
+      "dynamicFields": [
+        "Indication"
+      ],
+
+      "technicalSteps": [
+        "Debridement",
+        "Irrigation"
+      ]
+    },
+
+    {
+      "id": "POSTOPERATIVE_BLEEDING_CONTROL",
+      "name": "Control of Postoperative Bleeding",
+      "shortName": "Bleeding Control",
+      "template": "bleeding_control",
+
+      "dynamicFields": [
+        "Bleeding Site"
+      ],
+
+      "technicalSteps": [
+        "Bleeding Identification",
+        "Hemostasis"
+      ]
+    },
+
+    {
+      "id": "PACK_REMOVAL",
+      "name": "Removal of Mediastinal Packing",
+      "shortName": "Pack Removal",
+      "template": "pack_removal",
+
+      "dynamicFields": [
+        "Reason for Packing"
+      ],
+
+      "technicalSteps": [
+        "Pack Removal",
+        "Hemostasis Assessment"
+      ]
+    }
+  ]
+}

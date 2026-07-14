@@ -1,0 +1,88 @@
+{
+  "category": "Support Procedures",
+  "subcategory": "Mechanical Circulatory Support",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "ECMO_CANNULATION",
+      "name": "ECMO Cannulation",
+      "shortName": "ECMO",
+      "template": "ecmo_cannulation",
+
+      "dynamicFields": [
+        "ECMO Type",
+        "Cannulation Strategy",
+        "Cannulation Site"
+      ],
+
+      "technicalSteps": [
+        "Arterial Cannulation",
+        "Venous Cannulation",
+        "ECMO Initiation"
+      ]
+    },
+
+    {
+      "id": "ECMO_DECANNULATION",
+      "name": "ECMO Decannulation",
+      "shortName": "ECMO Decannulation",
+      "template": "ecmo_decannulation",
+
+      "dynamicFields": [
+        "Cannulation Site"
+      ],
+
+      "technicalSteps": [
+        "ECMO Weaning",
+        "Cannula Removal",
+        "Vascular Repair"
+      ]
+    },
+
+    {
+      "id": "IABP_INSERTION",
+      "name": "Intra-Aortic Balloon Pump Insertion",
+      "shortName": "IABP",
+      "template": "iabp_insertion",
+
+      "dynamicFields": [
+        "Insertion Site"
+      ],
+
+      "technicalSteps": [
+        "Arterial Access",
+        "Balloon Positioning"
+      ]
+    },
+
+    {
+      "id": "IABP_REMOVAL",
+      "name": "Intra-Aortic Balloon Pump Removal",
+      "shortName": "IABP Removal",
+      "template": "iabp_removal",
+
+      "dynamicFields": [],
+
+      "technicalSteps": [
+        "Balloon Removal",
+        "Arterial Closure"
+      ]
+    },
+
+    {
+      "id": "IMPELLA_INSERTION",
+      "name": "Impella Insertion",
+      "shortName": "Impella",
+      "template": "impella",
+
+      "dynamicFields": [
+        "Device Type"
+      ],
+
+      "technicalSteps": [
+        "Arterial Access",
+        "Device Positioning"
+      ]
+    }
+  ]
+}

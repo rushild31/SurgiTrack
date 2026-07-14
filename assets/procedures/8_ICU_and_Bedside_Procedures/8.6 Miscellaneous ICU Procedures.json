@@ -1,0 +1,38 @@
+[
+  {
+    "id": "TEMPORARY_EPICARDIAL_PACING_WIRE_INSERTION",
+    "name": "Temporary Epicardial Pacing Wire Insertion",
+    "specialty": "icu",
+    "category": "miscellaneous_icu",
+    "description": "Insertion of temporary epicardial pacing wires.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "EPICARDIAL_PACING"
+    ]
+  },
+  {
+    "id": "TEMPORARY_TRANSVENOUS_PACING",
+    "name": "Temporary Transvenous Pacing",
+    "specialty": "icu",
+    "category": "miscellaneous_icu",
+    "description": "Insertion of a temporary transvenous pacing wire.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "TEMPORARY_PACING"
+    ]
+  },
+  {
+    "id": "SURGICAL_WOUND_DEBRIDEMENT",
+    "name": "Surgical Wound Debridement",
+    "specialty": "icu",
+    "category": "miscellaneous_icu",
+    "description": "Debridement of postoperative wounds performed in ICU or bedside setting.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "SURGICAL_DEBRIDEMENT"
+    ]
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "id": "CHEST_WALL_RESECTION",
+    "name": "Chest Wall Resection",
+    "specialty": "thoracic",
+    "category": "chest_wall_surgery",
+    "description": "Partial or complete resection of the chest wall for benign or malignant disease.",
+    "aliases": [
+      "Thoracic Wall Resection"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      },
+      {
+        "id": "reconstruction_material",
+        "label": "Reconstruction Material",
+        "reference": "grafts_and_patch_materials"
+      }
+    ],
+    "skills": [
+      "CHEST_WALL_RESECTION",
+      "RIB_RESECTION",
+      "CHEST_WALL_RECONSTRUCTION"
+    ],
+    "tags": [
+      "thoracic",
+      "chest_wall",
+      "oncology"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PECTUS_EXCAVATUM_REPAIR",
+    "name": "Pectus Excavatum Repair",
+    "specialty": "thoracic",
+    "category": "chest_wall_surgery",
+    "description": "Operative correction of pectus excavatum using minimally invasive or open techniques.",
+    "aliases": [
+      "Nuss Procedure",
+      "Ravitch Procedure"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "repair_technique",
+        "label": "Repair Technique",
+        "reference": "repair_techniques"
+      }
+    ],
+    "skills": [
+      "RETROSTERNAL_DISSECTION",
+      "PECTUS_BAR_INSERTION",
+      "CHEST_WALL_REMODELING"
+    ],
+    "tags": [
+      "thoracic",
+      "pectus"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PECTUS_CARINATUM_REPAIR",
+    "name": "Pectus Carinatum Repair",
+    "specialty": "thoracic",
+    "category": "chest_wall_surgery",
+    "description": "Surgical correction of pectus carinatum.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "COSTAL_CARTILAGE_RESECTION",
+      "STERNAL_REMODELING"
+    ],
+    "tags": [
+      "thoracic",
+      "pectus"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

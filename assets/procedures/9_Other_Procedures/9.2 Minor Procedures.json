@@ -1,0 +1,62 @@
+[
+  {
+    "id": "EPICARDIAL_LEAD_PLACEMENT",
+    "name": "Epicardial Lead Placement",
+    "specialty": "other",
+    "category": "minor_procedures",
+    "description": "Placement of permanent epicardial pacing leads.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "EPICARDIAL_LEAD_PLACEMENT"
+    ],
+    "tags": [
+      "pacing"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PACEMAKER_GENERATOR_CHANGE",
+    "name": "Pacemaker Generator Replacement",
+    "specialty": "other",
+    "category": "minor_procedures",
+    "description": "Replacement of pacemaker pulse generator.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "DEVICE_REPLACEMENT"
+    ],
+    "tags": [
+      "pacemaker"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ICD_GENERATOR_CHANGE",
+    "name": "ICD Generator Replacement",
+    "specialty": "other",
+    "category": "minor_procedures",
+    "description": "Replacement of implantable cardioverter-defibrillator generator.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "DEVICE_REPLACEMENT"
+    ],
+    "tags": [
+      "icd"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

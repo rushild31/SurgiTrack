@@ -1,0 +1,42 @@
+[
+  {
+    "id": "CHEST_DRAIN_INSERTION",
+    "name": "Chest Drain Insertion",
+    "specialty": "icu",
+    "category": "chest_procedures",
+    "description": "Insertion of an intercostal chest drain.",
+    "aliases": [
+      "ICD"
+    ],
+    "active": true,
+    "skills": [
+      "CHEST_DRAIN_INSERTION"
+    ]
+  },
+  {
+    "id": "PERICARDIOCENTESIS",
+    "name": "Pericardiocentesis",
+    "specialty": "icu",
+    "category": "chest_procedures",
+    "description": "Percutaneous drainage of pericardial effusion.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "PERICARDIOCENTESIS"
+    ]
+  },
+  {
+    "id": "PLEURAL_ASPIRATION",
+    "name": "Pleural Aspiration",
+    "specialty": "icu",
+    "category": "chest_procedures",
+    "description": "Thoracentesis for pleural effusion.",
+    "aliases": [
+      "Thoracentesis"
+    ],
+    "active": true,
+    "skills": [
+      "PLEURAL_ASPIRATION"
+    ]
+  }
+]

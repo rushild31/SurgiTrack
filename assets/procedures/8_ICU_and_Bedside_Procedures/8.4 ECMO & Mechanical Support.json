@@ -1,0 +1,52 @@
+[
+  {
+    "id": "VA_ECMO_CANNULATION",
+    "name": "VA ECMO Cannulation",
+    "specialty": "icu",
+    "category": "mechanical_support",
+    "description": "Peripheral or central VA ECMO cannulation.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "ECMO_CANNULATION"
+    ]
+  },
+  {
+    "id": "VV_ECMO_CANNULATION",
+    "name": "VV ECMO Cannulation",
+    "specialty": "icu",
+    "category": "mechanical_support",
+    "description": "Peripheral VV ECMO cannulation.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "ECMO_CANNULATION"
+    ]
+  },
+  {
+    "id": "IABP_INSERTION",
+    "name": "Intra-Aortic Balloon Pump Insertion",
+    "specialty": "icu",
+    "category": "mechanical_support",
+    "description": "Insertion of an intra-aortic balloon pump.",
+    "aliases": [
+      "IABP"
+    ],
+    "active": true,
+    "skills": [
+      "IABP_INSERTION"
+    ]
+  },
+  {
+    "id": "IMPELLA_INSERTION",
+    "name": "Impella Insertion",
+    "specialty": "icu",
+    "category": "mechanical_support",
+    "description": "Insertion of an Impella ventricular assist device.",
+    "aliases": [],
+    "active": true,
+    "skills": [
+      "IMPELLA_INSERTION"
+    ]
+  }
+]

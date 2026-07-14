@@ -1,0 +1,160 @@
+[
+  {
+    "id": "ARTERIAL_SWITCH_OPERATION",
+    "name": "Arterial Switch Operation",
+    "specialty": "congenital_cardiac",
+    "category": "cyanotic_congenital_heart_disease",
+    "description": "Anatomical correction of transposition of the great arteries with coronary transfer.",
+    "aliases": [
+      "ASO",
+      "Jatene Procedure"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "coronary_pattern",
+        "label": "Coronary Pattern"
+      }
+    ],
+    "skills": [
+      "AORTIC_TRANSECTION",
+      "PULMONARY_TRANSECTION",
+      "CORONARY_BUTTON_HARVEST",
+      "CORONARY_REIMPLANTATION",
+      "LECOMPTE_MANEUVER",
+      "GREAT_ARTERY_RECONSTRUCTION"
+    ],
+    "tags": [
+      "congenital",
+      "tga",
+      "neonatal",
+      "cyanotic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "TRUNCUS_ARTERIOSUS_REPAIR",
+    "name": "Truncus Arteriosus Repair",
+    "specialty": "congenital_cardiac",
+    "category": "cyanotic_congenital_heart_disease",
+    "description": "Complete repair of truncus arteriosus with VSD closure and RV-PA conduit placement.",
+    "aliases": [
+      "Truncus Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "conduit",
+        "label": "RV-PA Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "VSD_PATCH_CLOSURE",
+      "PULMONARY_ARTERY_MOBILIZATION",
+      "RV_PA_CONDUIT_IMPLANTATION",
+      "TRUNCAL_ROOT_RECONSTRUCTION"
+    ],
+    "tags": [
+      "congenital",
+      "truncus",
+      "cyanotic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "TAPVC_REPAIR",
+    "name": "Total Anomalous Pulmonary Venous Connection Repair",
+    "specialty": "congenital_cardiac",
+    "category": "cyanotic_congenital_heart_disease",
+    "description": "Repair of total anomalous pulmonary venous connection.",
+    "aliases": [
+      "TAPVC Repair",
+      "TAPVR Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "tapvc_type",
+        "label": "TAPVC Type"
+      }
+    ],
+    "skills": [
+      "PULMONARY_VENOUS_ANASTOMOSIS",
+      "VERTICAL_VEIN_LIGATION",
+      "LEFT_ATRIOTOMY",
+      "ATRIAL_SEPTAL_RECONSTRUCTION"
+    ],
+    "tags": [
+      "congenital",
+      "tapvc",
+      "cyanotic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "RASTELLI_PROCEDURE",
+    "name": "Rastelli Procedure",
+    "specialty": "congenital_cardiac",
+    "category": "cyanotic_congenital_heart_disease",
+    "description": "Repair for selected patients with transposition physiology using intraventricular rerouting and RV-PA conduit.",
+    "aliases": [
+      "Rastelli"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses",
+        "required": true
+      },
+      {
+        "id": "conduit",
+        "label": "RV-PA Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "INTRAVENTRICULAR_TUNNEL_CONSTRUCTION",
+      "VSD_BAFFLE",
+      "RV_PA_CONDUIT_IMPLANTATION"
+    ],
+    "tags": [
+      "congenital",
+      "rastelli",
+      "cyanotic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

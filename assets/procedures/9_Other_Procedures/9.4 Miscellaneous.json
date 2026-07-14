@@ -1,0 +1,92 @@
+[
+  {
+    "id": "SURGICAL_EXPOSURE_FOR_TAVI",
+    "name": "Surgical Exposure for TAVI",
+    "specialty": "other",
+    "category": "miscellaneous",
+    "description": "Surgical exposure of vascular access for transcatheter aortic valve implantation.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "VASCULAR_EXPOSURE"
+    ],
+    "tags": [
+      "hybrid",
+      "tavi"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "SURGICAL_EXPOSURE_FOR_ECMO",
+    "name": "Surgical Exposure for ECMO Cannulation",
+    "specialty": "other",
+    "category": "miscellaneous",
+    "description": "Open vascular exposure to facilitate ECMO cannulation.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "FEMORAL_EXPOSURE",
+      "ECMO_CANNULATION"
+    ],
+    "tags": [
+      "ecmo"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "HYBRID_CARDIAC_PROCEDURE",
+    "name": "Hybrid Cardiac Procedure",
+    "specialty": "other",
+    "category": "miscellaneous",
+    "description": "Combined surgical and transcatheter cardiac procedure not otherwise classified.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "HYBRID_SURGERY"
+    ],
+    "tags": [
+      "hybrid"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "OTHER_UNLISTED_PROCEDURE",
+    "name": "Other Unlisted Procedure",
+    "specialty": "other",
+    "category": "miscellaneous",
+    "description": "Procedure not currently represented in the procedure library.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "procedure_name",
+        "label": "Procedure Name",
+        "required": true
+      },
+      {
+        "id": "notes",
+        "label": "Description"
+      }
+    ],
+    "skills": [],
+    "tags": [
+      "other"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

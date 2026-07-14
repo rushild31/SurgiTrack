@@ -1,0 +1,108 @@
+[
+  {
+    "id": "DIAPHRAGM_PLICATION",
+    "name": "Diaphragm Plication",
+    "specialty": "thoracic",
+    "category": "diaphragm_surgery",
+    "description": "Plication of a paralysed or eventrated diaphragm.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "approach",
+        "label": "Operative Approach",
+        "reference": "operative_approaches"
+      }
+    ],
+    "skills": [
+      "DIAPHRAGM_MOBILIZATION",
+      "DIAPHRAGM_PLICATION"
+    ],
+    "tags": [
+      "thoracic",
+      "diaphragm"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "DIAPHRAGM_HERNIA_REPAIR",
+    "name": "Diaphragmatic Hernia Repair",
+    "specialty": "thoracic",
+    "category": "diaphragm_surgery",
+    "description": "Repair of congenital or acquired diaphragmatic hernias.",
+    "aliases": [
+      "Diaphragm Hernia Repair"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "patch_material",
+        "label": "Patch Material",
+        "reference": "grafts_and_patch_materials"
+      }
+    ],
+    "skills": [
+      "HERNIA_REDUCTION",
+      "DIAPHRAGM_REPAIR",
+      "PATCH_RECONSTRUCTION"
+    ],
+    "tags": [
+      "thoracic",
+      "diaphragm",
+      "hernia"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "DIAPHRAGM_RECONSTRUCTION",
+    "name": "Diaphragm Reconstruction",
+    "specialty": "thoracic",
+    "category": "diaphragm_surgery",
+    "description": "Reconstruction of the diaphragm following tumour resection or trauma.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      },
+      {
+        "id": "patch_material",
+        "label": "Patch Material",
+        "reference": "grafts_and_patch_materials"
+      }
+    ],
+    "skills": [
+      "DIAPHRAGM_RESECTION",
+      "PATCH_RECONSTRUCTION"
+    ],
+    "tags": [
+      "thoracic",
+      "reconstruction"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

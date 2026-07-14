@@ -1,0 +1,76 @@
+[
+  {
+    "id": "MINI_ASD_CLOSURE",
+    "name": "Minimally Invasive ASD Closure",
+    "specialty": "mics",
+    "category": "miscellaneous_mics",
+    "description": "Atrial septal defect closure through a right mini-thoracotomy.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "congenital_cardiac_diagnoses"
+      }
+    ],
+    "skills": [
+      "RIGHT_MINI_THORACOTOMY",
+      "RIGHT_ATRIOTOMY",
+      "ASD_CLOSURE"
+    ],
+    "tags": [
+      "mics",
+      "congenital"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MINI_LEFT_ATRIAL_MYXOMA_EXCISION",
+    "name": "Minimally Invasive Left Atrial Myxoma Excision",
+    "specialty": "mics",
+    "category": "miscellaneous_mics",
+    "description": "Excision of a left atrial myxoma through a minimally invasive approach.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "RIGHT_MINI_THORACOTOMY",
+      "LEFT_ATRIOTOMY",
+      "TUMOR_EXCISION"
+    ],
+    "tags": [
+      "mics",
+      "tumor"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MINI_PERICARDIECTOMY",
+    "name": "Minimally Invasive Pericardiectomy",
+    "specialty": "mics",
+    "category": "miscellaneous_mics",
+    "description": "Partial pericardiectomy using a minimally invasive thoracic approach.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "THORACOSCOPY",
+      "PERICARDIAL_RESECTION"
+    ],
+    "tags": [
+      "mics",
+      "pericardium"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

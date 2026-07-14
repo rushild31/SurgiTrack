@@ -1,0 +1,94 @@
+[
+  {
+    "id": "FLEXIBLE_BRONCHOSCOPY",
+    "name": "Flexible Bronchoscopy",
+    "specialty": "thoracic",
+    "category": "bronchoscopy",
+    "description": "Diagnostic flexible bronchoscopy with or without biopsy.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "BRONCHOSCOPE_INSERTION",
+      "AIRWAY_INSPECTION",
+      "ENDOBRONCHIAL_BIOPSY"
+    ],
+    "tags": [
+      "thoracic",
+      "bronchoscopy",
+      "diagnostic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "RIGID_BRONCHOSCOPY",
+    "name": "Rigid Bronchoscopy",
+    "specialty": "thoracic",
+    "category": "bronchoscopy",
+    "description": "Operative rigid bronchoscopy for airway intervention.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "RIGID_BRONCHOSCOPY",
+      "AIRWAY_FOREIGN_BODY_REMOVAL",
+      "AIRWAY_DILATATION"
+    ],
+    "tags": [
+      "thoracic",
+      "bronchoscopy",
+      "interventional"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ENDOBRONCHIAL_STENT_INSERTION",
+    "name": "Endobronchial Stent Insertion",
+    "specialty": "thoracic",
+    "category": "bronchoscopy",
+    "description": "Placement of an airway stent for malignant or benign airway obstruction.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "thoracic_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "AIRWAY_STENT_DEPLOYMENT",
+      "BRONCHOSCOPIC_GUIDANCE"
+    ],
+    "tags": [
+      "thoracic",
+      "bronchoscopy",
+      "airway"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

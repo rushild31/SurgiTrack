@@ -23,7 +23,7 @@ class CaseProcedureRepository {
         );
   }
 
-  Future<List<CaseProcedure>> getProceduresForCase(int caseId) {
+  Future<List<CaseProcedureData>> getProceduresForCase(int caseId) {
     return (database.select(
       database.caseProcedures,
     )..where((tbl) => tbl.caseId.equals(caseId))).get();

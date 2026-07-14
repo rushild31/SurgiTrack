@@ -7,7 +7,7 @@ import 'package:surgitrack/core/database/tables/procedures.dart';
 part 'case_procedure_dao.g.dart';
 
 class CaseProcedureWithProcedure {
-  final CaseProcedure caseProcedure;
+  final CaseProcedureData caseProcedure;
 
   final ProcedureData procedure;
 

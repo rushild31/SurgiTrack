@@ -1,0 +1,72 @@
+[
+  {
+    "id": "MIDCAB",
+    "name": "Minimally Invasive Direct Coronary Artery Bypass",
+    "specialty": "mics",
+    "category": "coronary_mics",
+    "description": "Direct LIMA-to-LAD bypass performed through a small left anterior thoracotomy without median sternotomy.",
+    "aliases": [
+      "MIDCAB"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "target_vessel",
+        "label": "Target Vessel"
+      },
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "MINI_THORACOTOMY",
+      "LIMA_HARVEST",
+      "OFF_PUMP_CORONARY_ANASTOMOSIS"
+    ],
+    "tags": [
+      "mics",
+      "coronary",
+      "off_pump"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "MICS_MULTIVESSEL_CABG",
+    "name": "Multi-vessel MICS CABG",
+    "specialty": "mics",
+    "category": "coronary_mics",
+    "description": "Multi-vessel coronary artery bypass performed through a minimally invasive thoracotomy.",
+    "aliases": [
+      "MICS CABG"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "number_of_grafts",
+        "label": "Number of Grafts"
+      },
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "MINI_THORACOTOMY",
+      "MULTIVESSEL_REVASCULARIZATION"
+    ],
+    "tags": [
+      "mics",
+      "cabg"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

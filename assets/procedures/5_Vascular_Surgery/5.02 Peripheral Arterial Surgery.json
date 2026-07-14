@@ -1,0 +1,141 @@
+[
+  {
+    "id": "FEMOROPOPLITEAL_BYPASS",
+    "name": "Femoropopliteal Bypass",
+    "specialty": "vascular",
+    "category": "peripheral_arterial_surgery",
+    "description": "Open bypass from the femoral to popliteal artery.",
+    "aliases": [
+      "Fem-Pop Bypass"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "FEMORAL_EXPOSURE",
+      "POPLITEAL_EXPOSURE",
+      "TUNNEL_CREATION",
+      "VASCULAR_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "bypass",
+      "limb_salvage"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "FEMORODISTAL_BYPASS",
+    "name": "Femorodistal Bypass",
+    "specialty": "vascular",
+    "category": "peripheral_arterial_surgery",
+    "description": "Bypass to tibial or pedal vessels for critical limb ischaemia.",
+    "aliases": [
+      "Distal Bypass"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "DISTAL_ARTERIAL_EXPOSURE",
+      "MICROVASCULAR_ANASTOMOSIS"
+    ],
+    "tags": [
+      "vascular",
+      "limb_salvage"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "FEMORAL_ENDARTERECTOMY",
+    "name": "Common Femoral Endarterectomy",
+    "specialty": "vascular",
+    "category": "peripheral_arterial_surgery",
+    "description": "Open endarterectomy of the common femoral artery with patch angioplasty.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "patch_material",
+        "label": "Patch Material",
+        "reference": "grafts_and_patch_materials"
+      }
+    ],
+    "skills": [
+      "FEMORAL_EXPOSURE",
+      "ENDARTERECTOMY",
+      "PATCH_ANGIOPLASTY"
+    ],
+    "tags": [
+      "vascular",
+      "endarterectomy"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PROFUNDA_FEMORIS_ENDARTERECTOMY",
+    "name": "Profunda Femoris Endarterectomy",
+    "specialty": "vascular",
+    "category": "peripheral_arterial_surgery",
+    "description": "Endarterectomy of the profunda femoris artery to improve lower limb perfusion.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "ARTERIAL_EXPOSURE",
+      "ENDARTERECTOMY",
+      "PATCH_CLOSURE"
+    ],
+    "tags": [
+      "vascular"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

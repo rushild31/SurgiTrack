@@ -1,0 +1,100 @@
+[
+  {
+    "id": "POPLITEAL_ARTERY_ENTRAPMENT_RELEASE",
+    "name": "Popliteal Artery Entrapment Release",
+    "specialty": "vascular",
+    "category": "miscellaneous_vascular",
+    "description": "Surgical decompression of the popliteal artery for popliteal artery entrapment syndrome.",
+    "aliases": [
+      "PAES Release"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "POPLITEAL_EXPOSURE",
+      "ARTERIAL_DECOMPRESSION"
+    ],
+    "tags": [
+      "vascular",
+      "paes"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "VASCULAR_TUMOR_RESECTION",
+    "name": "Vascular Tumor Resection",
+    "specialty": "vascular",
+    "category": "miscellaneous_vascular",
+    "description": "Resection of benign or malignant vascular tumors requiring vascular reconstruction.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      },
+      {
+        "id": "conduit",
+        "label": "Conduit",
+        "reference": "conduits"
+      }
+    ],
+    "skills": [
+      "VASCULAR_DISSECTION",
+      "EN_BLOC_RESECTION",
+      "VASCULAR_RECONSTRUCTION"
+    ],
+    "tags": [
+      "vascular",
+      "tumor"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ARTERIOVENOUS_MALFORMATION_RESECTION",
+    "name": "Arteriovenous Malformation Resection",
+    "specialty": "vascular",
+    "category": "miscellaneous_vascular",
+    "description": "Open surgical excision of peripheral arteriovenous malformations.",
+    "aliases": [
+      "AVM Resection"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis",
+        "reference": "vascular_diagnoses",
+        "required": true
+      }
+    ],
+    "skills": [
+      "VASCULAR_CONTROL",
+      "AVM_RESECTION",
+      "HEMOSTASIS"
+    ],
+    "tags": [
+      "vascular",
+      "avm"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

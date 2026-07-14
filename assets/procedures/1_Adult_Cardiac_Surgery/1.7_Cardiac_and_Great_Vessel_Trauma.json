@@ -1,0 +1,209 @@
+{
+  "category": "Adult Cardiac Surgery",
+  "subcategory": "Cardiac Trauma",
+  "version": "1.0",
+  "procedures": [
+    {
+      "id": "CARDIAC_LACERATION_REPAIR",
+      "name": "Cardiac Laceration Repair",
+      "shortName": "Cardiac Laceration",
+      "subcategory": "Cardiac Trauma",
+      "template": "cardiac_laceration",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Mechanism of Injury",
+        "Cardiac Chamber Injured",
+        "Associated Great Vessel Injury"
+      ],
+
+      "technicalSteps": [
+        "Cardiac Injury Identification",
+        "Cardiac Laceration Repair",
+        "Patch Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "Coronary Artery Repair",
+        "Great Vessel Repair"
+      ]
+    },
+
+    {
+      "id": "VENTRICULAR_RUPTURE_REPAIR",
+      "name": "Ventricular Rupture Repair",
+      "shortName": "Ventricular Rupture",
+      "subcategory": "Cardiac Trauma",
+      "template": "ventricular_rupture",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Ventricle",
+        "Cause of Rupture",
+        "Repair Technique"
+      ],
+
+      "technicalSteps": [
+        "Rupture Identification",
+        "Patch Reconstruction",
+        "Ventricular Repair"
+      ],
+
+      "associatedProcedures": [
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "ATRIAL_RUPTURE_REPAIR",
+      "name": "Atrial Rupture Repair",
+      "shortName": "Atrial Rupture",
+      "subcategory": "Cardiac Trauma",
+      "template": "atrial_rupture",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Atrium",
+        "Cause of Rupture"
+      ],
+
+      "technicalSteps": [
+        "Rupture Identification",
+        "Atrial Repair"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "CORONARY_ARTERY_TRAUMA_REPAIR",
+      "name": "Coronary Artery Trauma Repair",
+      "shortName": "Coronary Trauma",
+      "subcategory": "Cardiac Trauma",
+      "template": "coronary_trauma",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Injured Coronary Artery",
+        "Repair Technique"
+      ],
+
+      "technicalSteps": [
+        "Coronary Injury Identification",
+        "Coronary Repair",
+        "Coronary Bypass"
+      ],
+
+      "associatedProcedures": [
+        "CABG"
+      ]
+    },
+
+    {
+      "id": "GREAT_VESSEL_TRAUMA_REPAIR",
+      "name": "Great Vessel Trauma Repair",
+      "shortName": "Great Vessel Trauma",
+      "subcategory": "Cardiac Trauma",
+      "template": "great_vessel_trauma",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Injured Vessel",
+        "Repair Technique"
+      ],
+
+      "technicalSteps": [
+        "Great Vessel Exposure",
+        "Great Vessel Repair",
+        "Patch Reconstruction"
+      ],
+
+      "associatedProcedures": []
+    },
+
+    {
+      "id": "PENETRATING_CARDIAC_TRAUMA",
+      "name": "Penetrating Cardiac Trauma Exploration",
+      "shortName": "Penetrating Trauma",
+      "subcategory": "Cardiac Trauma",
+      "template": "penetrating_cardiac_trauma",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Mechanism of Injury",
+        "Cardiac Chamber Injured",
+        "Great Vessel Injury"
+      ],
+
+      "technicalSteps": [
+        "Cardiac Exploration",
+        "Cardiac Repair",
+        "Hemorrhage Control"
+      ],
+
+      "associatedProcedures": [
+        "Great Vessel Repair",
+        "Coronary Artery Repair"
+      ]
+    },
+
+    {
+      "id": "BLUNT_CARDIAC_TRAUMA_REPAIR",
+      "name": "Blunt Cardiac Trauma Repair",
+      "shortName": "Blunt Cardiac Trauma",
+      "subcategory": "Cardiac Trauma",
+      "template": "blunt_cardiac_trauma",
+
+      "supportsCPB": true,
+      "supportsRedo": false,
+      "supportsEmergency": true,
+      "supportsTechnicalSteps": true,
+      "supportsAssociatedProcedures": true,
+
+      "dynamicFields": [
+        "Mechanism of Injury",
+        "Injury Pattern"
+      ],
+
+      "technicalSteps": [
+        "Cardiac Exploration",
+        "Cardiac Repair",
+        "Patch Reconstruction"
+      ],
+
+      "associatedProcedures": [
+        "Great Vessel Repair"
+      ]
+    }
+  ]
+}

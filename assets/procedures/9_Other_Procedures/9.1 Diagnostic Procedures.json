@@ -1,0 +1,79 @@
+[
+  {
+    "id": "SURGICAL_CARDIAC_BIOPSY",
+    "name": "Surgical Cardiac Biopsy",
+    "specialty": "other",
+    "category": "diagnostic_procedures",
+    "description": "Open surgical biopsy of myocardial or cardiac tissue for diagnostic purposes.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "site",
+        "label": "Biopsy Site"
+      }
+    ],
+    "skills": [
+      "CARDIAC_EXPOSURE",
+      "BIOPSY"
+    ],
+    "tags": [
+      "diagnostic",
+      "cardiac"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PERICARDIAL_BIOPSY",
+    "name": "Pericardial Biopsy",
+    "specialty": "other",
+    "category": "diagnostic_procedures",
+    "description": "Open or thoracoscopic biopsy of the pericardium.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "PERICARDIAL_EXPOSURE",
+      "BIOPSY"
+    ],
+    "tags": [
+      "diagnostic",
+      "pericardium"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "SURGICAL_LUNG_BIOPSY",
+    "name": "Surgical Lung Biopsy",
+    "specialty": "other",
+    "category": "diagnostic_procedures",
+    "description": "Open or thoracoscopic lung biopsy for diagnosis of pulmonary disease.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "diagnosis",
+        "label": "Indication",
+        "reference": "thoracic_diagnoses"
+      }
+    ],
+    "skills": [
+      "LUNG_RESECTION",
+      "BIOPSY"
+    ],
+    "tags": [
+      "diagnostic",
+      "thoracic"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

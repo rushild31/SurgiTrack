@@ -1,0 +1,114 @@
+[
+  {
+    "id": "DELAYED_STERNAL_CLOSURE",
+    "name": "Delayed Sternal Closure",
+    "specialty": "congenital_cardiac",
+    "category": "support_procedures",
+    "description": "Planned delayed closure of the sternum following congenital cardiac surgery.",
+    "aliases": [
+      "Open Chest Management"
+    ],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "MEDIASTINAL_PACKING",
+      "TEMPORARY_STERNAL_COVERAGE",
+      "DELAYED_STERNAL_CLOSURE"
+    ],
+    "tags": [
+      "support",
+      "postoperative"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "CHEST_REEXPLORATION",
+    "name": "Chest Re-exploration for Bleeding",
+    "specialty": "congenital_cardiac",
+    "category": "support_procedures",
+    "description": "Re-exploration of the mediastinum for postoperative bleeding or tamponade.",
+    "aliases": [
+      "Re-exploration"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "indication",
+        "label": "Indication"
+      }
+    ],
+    "skills": [
+      "MEDIASTINAL_REENTRY",
+      "HEMOSTASIS",
+      "CHEST_CLOSURE"
+    ],
+    "tags": [
+      "support",
+      "bleeding"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ECMO_CANNULATION",
+    "name": "ECMO Cannulation",
+    "specialty": "congenital_cardiac",
+    "category": "support_procedures",
+    "description": "Central or peripheral cannulation for extracorporeal membrane oxygenation.",
+    "aliases": [
+      "ECMO Initiation"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "ecmo_mode",
+        "label": "ECMO Mode"
+      },
+      {
+        "id": "cannulation_strategy",
+        "label": "Cannulation Strategy"
+      }
+    ],
+    "skills": [
+      "ARTERIAL_CANNULATION",
+      "VENOUS_CANNULATION",
+      "ECMO_INITIATION"
+    ],
+    "tags": [
+      "support",
+      "ecmo"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "PERITONEAL_DIALYSIS_CATHETER_INSERTION",
+    "name": "Peritoneal Dialysis Catheter Insertion",
+    "specialty": "congenital_cardiac",
+    "category": "support_procedures",
+    "description": "Insertion of a peritoneal dialysis catheter for postoperative renal support.",
+    "aliases": [
+      "PD Catheter Insertion"
+    ],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "PERITONEAL_CATHETER_INSERTION"
+    ],
+    "tags": [
+      "support",
+      "renal_support"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]

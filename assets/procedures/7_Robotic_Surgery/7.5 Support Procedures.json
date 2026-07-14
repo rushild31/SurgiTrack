@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ROBOT_DOCKING",
+    "name": "Robot Docking",
+    "specialty": "robotic",
+    "category": "support_procedures",
+    "description": "Docking and positioning of the robotic surgical platform.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "robotic_platform",
+        "label": "Robotic Platform"
+      }
+    ],
+    "skills": [
+      "ROBOT_SETUP",
+      "PORT_ALIGNMENT"
+    ],
+    "tags": [
+      "robotic",
+      "setup"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_PORT_PLACEMENT",
+    "name": "Robotic Port Placement",
+    "specialty": "robotic",
+    "category": "support_procedures",
+    "description": "Placement of robotic working and camera ports.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "number_of_ports",
+        "label": "Number of Ports"
+      }
+    ],
+    "skills": [
+      "PORT_INSERTION",
+      "CAMERA_POSITIONING"
+    ],
+    "tags": [
+      "robotic",
+      "ports"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_PERIPHERAL_CANNULATION",
+    "name": "Robotic Peripheral Cannulation",
+    "specialty": "robotic",
+    "category": "support_procedures",
+    "description": "Peripheral arterial and venous cannulation for robot-assisted cardiac surgery.",
+    "aliases": [
+      "Femoral Cannulation"
+    ],
+    "active": true,
+    "fields": [
+      {
+        "id": "arterial_site",
+        "label": "Arterial Cannulation Site"
+      },
+      {
+        "id": "venous_site",
+        "label": "Venous Cannulation Site"
+      }
+    ],
+    "skills": [
+      "FEMORAL_ARTERY_EXPOSURE",
+      "FEMORAL_VEIN_CANNULATION"
+    ],
+    "tags": [
+      "robotic",
+      "cpb"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_CONVERSION_TO_STERNOTOMY",
+    "name": "Conversion to Median Sternotomy",
+    "specialty": "robotic",
+    "category": "support_procedures",
+    "description": "Emergency conversion from robotic surgery to conventional median sternotomy.",
+    "aliases": [],
+    "active": true,
+    "fields": [
+      {
+        "id": "reason",
+        "label": "Reason for Conversion"
+      }
+    ],
+    "skills": [
+      "EMERGENCY_STERNOTOMY",
+      "HEMOSTASIS"
+    ],
+    "tags": [
+      "robotic",
+      "conversion"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  },
+  {
+    "id": "ROBOTIC_UNDOCKING",
+    "name": "Robot Undocking",
+    "specialty": "robotic",
+    "category": "support_procedures",
+    "description": "Controlled undocking of the robotic system at the completion of the procedure or during emergency conversion.",
+    "aliases": [],
+    "active": true,
+    "fields": [],
+    "skills": [
+      "ROBOT_UNDOCKING"
+    ],
+    "tags": [
+      "robotic",
+      "completion"
+    ],
+    "metadata": {
+      "version": 1,
+      "lastUpdated": "2026-06-29"
+    }
+  }
+]
