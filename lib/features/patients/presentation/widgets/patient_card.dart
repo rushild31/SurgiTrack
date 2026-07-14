@@ -10,68 +10,100 @@ class PatientCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
+      elevation: 1,
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                patient.name,
-                style: Theme.of(context).textTheme.titleMedium,
+              /// Header
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CircleAvatar(radius: 22, child: Icon(Icons.person)),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          patient.name,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 2),
+
+                        Text(
+                          "${patient.age} years",
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const Icon(Icons.chevron_right, color: Colors.grey),
+                ],
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
 
+              /// MRD
               Row(
                 children: [
                   const Icon(Icons.badge_outlined, size: 18),
-                  const SizedBox(width: 6),
+
+                  const SizedBox(width: 8),
+
                   Expanded(
                     child: Text(
                       patient.hospitalId.isEmpty
-                          ? "No MRD"
-                          : patient.hospitalId,
+                          ? "MRD not available"
+                          : "MRD: ${patient.hospitalId}",
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 6),
+              const SizedBox(height: 10),
 
-              Row(
-                children: [
-                  const Icon(Icons.cake_outlined, size: 18),
-                  const SizedBox(width: 6),
-                  Text("${patient.age} years"),
-                ],
-              ),
-
-              const SizedBox(height: 6),
-
+              /// Blood Group
               Row(
                 children: [
                   const Icon(Icons.bloodtype_outlined, size: 18),
-                  const SizedBox(width: 6),
-                  Text(patient.bloodGroup ?? "-"),
+
+                  const SizedBox(width: 8),
+
+                  Text(
+                    patient.bloodGroup == null
+                        ? "Blood Group: -"
+                        : "Blood Group: ${patient.bloodGroup}",
+                  ),
                 ],
               ),
 
               if (patient.comorbidities.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
 
                 Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
+                  spacing: 8,
+                  runSpacing: 8,
                   children: patient.comorbidities
-                      .take(3)
+                      .take(4)
                       .map(
-                        (c) => Chip(
-                          label: Text(c),
+                        (item) => Chip(
+                          label: Text(item),
+                          visualDensity: VisualDensity.compact,
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                         ),
@@ -79,12 +111,12 @@ class PatientCard extends StatelessWidget {
                       .toList(),
                 ),
 
-                if (patient.comorbidities.length > 3)
+                if (patient.comorbidities.length > 4)
                   Padding(
-                    padding: const EdgeInsets.only(top: 4),
+                    padding: const EdgeInsets.only(top: 6),
                     child: Text(
-                      "+${patient.comorbidities.length - 3} more",
-                      style: Theme.of(context).textTheme.bodySmall,
+                      "+${patient.comorbidities.length - 4} more",
+                      style: theme.textTheme.bodySmall,
                     ),
                   ),
               ],
