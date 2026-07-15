@@ -3258,8 +3258,13 @@ class SurgicalCaseData extends DataClass
   /// Surgical approach
   final String? surgicalApproach;
 
-  /// Observer / Assistant /
-  /// Supervised / Independent
+  /// Personal operative role
+  ///
+  /// Allowed values:
+  /// observed
+  /// assisted
+  /// performed_under_supervision
+  /// performed_independently
   final String operativeRole;
 
   /// JSON encoded list of technical steps

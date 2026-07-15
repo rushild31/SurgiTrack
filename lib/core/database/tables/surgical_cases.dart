@@ -37,8 +37,13 @@ class SurgicalCases extends Table {
   // Resident Participation
   // =========================
 
-  /// Observer / Assistant /
-  /// Supervised / Independent
+  /// Personal operative role
+  ///
+  /// Allowed values:
+  /// observed
+  /// assisted
+  /// performed_under_supervision
+  /// performed_independently
   TextColumn get operativeRole => text()();
 
   /// JSON encoded list of technical steps
