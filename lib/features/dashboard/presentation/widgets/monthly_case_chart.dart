@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-class OperativeRoleCard extends StatelessWidget {
-  final Map<String, int> data;
+import 'package:surgitrack/features/dashboard/domain/monthly_case_data.dart';
 
-  const OperativeRoleCard({super.key, required this.data});
+class MonthlyCaseChart extends StatelessWidget {
+  final List<MonthlyCaseData> data;
+
+  const MonthlyCaseChart({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class OperativeRoleCard extends StatelessWidget {
 
           children: [
             Text(
-              "Operative Role Breakdown",
+              "Monthly Case Trend",
 
               style: Theme.of(context).textTheme.titleMedium,
             ),
@@ -26,7 +28,7 @@ class OperativeRoleCard extends StatelessWidget {
             if (data.isEmpty)
               const Text("No cases recorded yet")
             else
-              ...data.entries.map((entry) {
+              ...data.map((month) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
 
@@ -34,10 +36,10 @@ class OperativeRoleCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                     children: [
-                      Text(entry.key),
+                      Text(month.month),
 
                       Text(
-                        entry.value.toString(),
+                        month.count.toString(),
 
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),

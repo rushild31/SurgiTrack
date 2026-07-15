@@ -15,7 +15,9 @@ class CaseDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final procedures = ref.watch(caseProceduresProvider(surgicalCase.id!));
+    final procedures = surgicalCase.id == null
+        ? null
+        : ref.watch(caseProceduresProvider(surgicalCase.id!));
 
     return Scaffold(
       appBar: AppBar(
@@ -78,35 +80,38 @@ class CaseDetailsScreen extends ConsumerWidget {
           ]),
 
           _section("Procedures", [
-            procedures.when(
-              loading: () => const CircularProgressIndicator(),
+            if (procedures == null)
+              const Text("Procedures unavailable")
+            else
+              procedures.when(
+                loading: () => const CircularProgressIndicator(),
 
-              error: (_, _) => const Text("Unable to load procedures"),
+                error: (_, _) => const Text("Unable to load procedures"),
 
-              data: (items) {
-                if (items.isEmpty) {
-                  return const Text("No procedures linked");
-                }
+                data: (items) {
+                  if (items.isEmpty) {
+                    return const Text("No procedures linked");
+                  }
 
-                return Column(
-                  children: items.map((item) {
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
+                  return Column(
+                    children: items.map((item) {
+                      return ListTile(
+                        contentPadding: EdgeInsets.zero,
 
-                      leading: const Icon(Icons.medical_services),
+                        leading: const Icon(Icons.medical_services),
 
-                      title: Text(item.procedure.name),
+                        title: Text(item.procedure.name),
 
-                      subtitle: Text(
-                        item.caseProcedure.type == "PRIMARY"
-                            ? "Primary Procedure"
-                            : "Additional Procedure",
-                      ),
-                    );
-                  }).toList(),
-                );
-              },
-            ),
+                        subtitle: Text(
+                          item.caseProcedure.type == "PRIMARY"
+                              ? "Primary Procedure"
+                              : "Additional Procedure",
+                        ),
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
           ]),
 
           if (surgicalCase.notes != null && surgicalCase.notes!.isNotEmpty)

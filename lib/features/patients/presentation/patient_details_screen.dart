@@ -1,7 +1,3 @@
-// Replacement patient_details_screen.dart
-// NOTE: Based on your current implementation, this version focuses on UI polish
-// while preserving existing providers and workflow.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

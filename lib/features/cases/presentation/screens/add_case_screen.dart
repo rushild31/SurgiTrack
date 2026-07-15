@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:surgitrack/core/enums/outcome.dart';
+import 'package:surgitrack/core/enums/surgical_approach.dart';
+import 'package:surgitrack/core/enums/surgeon_role.dart';
+import 'package:surgitrack/core/enums/specialty.dart';
+import 'package:surgitrack/core/enums/case_type.dart';
+import 'package:surgitrack/core/enums/case_priority.dart';
+
 import 'package:surgitrack/features/patients/domain/patient.dart';
 
 import 'package:surgitrack/features/cases/domain/surgical_case.dart';
@@ -10,7 +17,6 @@ import 'package:surgitrack/features/procedures/domain/procedure.dart';
 import 'package:surgitrack/features/procedures/domain/procedure_selection.dart';
 
 import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
-import 'package:surgitrack/core/enums/surgeon_role.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/operative_role_selector.dart';
 
 class AddCaseScreen extends ConsumerStatefulWidget {
@@ -31,31 +37,32 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
   DateTime surgeryDate = DateTime.now();
 
-  String specialty = "Cardiac";
+  Specialty specialty = Specialty.cardiac;
 
-  String surgeryType = "Primary";
+  CaseType caseType = CaseType.primary;
 
-  String urgency = "Elective";
+  CasePriority priority = CasePriority.planned;
 
   SurgeonRole operativeRole = SurgeonRole.assisted;
 
-  String? outcome;
+  Outcome outcome = Outcome.ongoing;
+
+  SurgicalApproach surgicalApproach = SurgicalApproach.medianSternotomy;
 
   ProcedureSelection selection = const ProcedureSelection();
 
   @override
   void dispose() {
     diagnosisController.dispose();
-
     notesController.dispose();
 
     super.dispose();
   }
 
   void addProcedure(ProcedureEntity procedure) {
-    final currentPrimary = selection.primaryProcedure;
+    final primary = selection.primaryProcedure;
 
-    if (currentPrimary == null) {
+    if (primary == null) {
       setState(() {
         selection = ProcedureSelection(
           primaryProcedure: procedure,
@@ -66,14 +73,14 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
       return;
     }
 
-    final alreadyAdded = selection.associatedProcedures.any(
-      (item) => item.id == procedure.id,
+    final exists = selection.associatedProcedures.any(
+      (e) => e.id == procedure.id,
     );
 
-    if (!alreadyAdded && currentPrimary.id != procedure.id) {
+    if (!exists && primary.id != procedure.id) {
       setState(() {
         selection = ProcedureSelection(
-          primaryProcedure: currentPrimary,
+          primaryProcedure: primary,
           associatedProcedures: [...selection.associatedProcedures, procedure],
         );
       });
@@ -91,19 +98,31 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
         selection = ProcedureSelection(
           primaryProcedure: selection.primaryProcedure,
           associatedProcedures: selection.associatedProcedures
-              .where((item) => item.id != procedure.id)
+              .where((e) => e.id != procedure.id)
               .toList(),
         );
       }
     });
   }
 
-  List<ProcedureEntity> get selectedProcedures {
-    return [
-      if (selection.primaryProcedure != null) selection.primaryProcedure!,
+  List<ProcedureEntity> get selectedProcedures => [
+    if (selection.primaryProcedure != null) selection.primaryProcedure!,
+    ...selection.associatedProcedures,
+  ];
 
-      ...selection.associatedProcedures,
-    ];
+  Future<void> pickSurgeryDate() async {
+    final selected = await showDatePicker(
+      context: context,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      initialDate: surgeryDate,
+    );
+
+    if (selected != null) {
+      setState(() {
+        surgeryDate = selected;
+      });
+    }
   }
 
   @override
@@ -134,19 +153,14 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
               Wrap(
                 spacing: 8,
 
-                children: selectedProcedures.map((procedure) {
-                  final isPrimary =
-                      procedure.id == selection.primaryProcedure?.id;
+                children: selectedProcedures.map((p) {
+                  final primary = p.id == selection.primaryProcedure?.id;
 
                   return Chip(
-                    label: Text(
-                      isPrimary
-                          ? "${procedure.name} (Primary)"
-                          : procedure.name,
-                    ),
+                    label: Text(primary ? "${p.name} (Primary)" : p.name),
 
                     onDeleted: () {
-                      removeProcedure(procedure);
+                      removeProcedure(p);
                     },
                   );
                 }).toList(),
@@ -157,12 +171,94 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
               decoration: const InputDecoration(labelText: "Diagnosis"),
 
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return "Enter diagnosis";
-                }
+              validator: (v) =>
+                  v == null || v.trim().isEmpty ? "Enter diagnosis" : null,
+            ),
 
-                return null;
+            ListTile(
+              title: const Text("Surgery Date"),
+
+              subtitle: Text(
+                "${surgeryDate.day}-${surgeryDate.month}-${surgeryDate.year}",
+              ),
+
+              trailing: const Icon(Icons.calendar_today),
+
+              onTap: pickSurgeryDate,
+            ),
+
+            DropdownButtonFormField<Specialty>(
+              initialValue: specialty,
+
+              decoration: const InputDecoration(labelText: "Specialty"),
+
+              items: Specialty.values.map((e) {
+                return DropdownMenuItem(
+                  value: e,
+                  child: Text(e.name.toUpperCase()),
+                );
+              }).toList(),
+
+              onChanged: (v) {
+                if (v != null) {
+                  setState(() {
+                    specialty = v;
+                  });
+                }
+              },
+            ),
+
+            DropdownButtonFormField<CaseType>(
+              initialValue: caseType,
+
+              decoration: const InputDecoration(labelText: "Case Type"),
+
+              items: CaseType.values.map((e) {
+                return DropdownMenuItem(value: e, child: Text(e.name));
+              }).toList(),
+
+              onChanged: (v) {
+                if (v != null) {
+                  setState(() {
+                    caseType = v;
+                  });
+                }
+              },
+            ),
+
+            DropdownButtonFormField<CasePriority>(
+              initialValue: priority,
+
+              decoration: const InputDecoration(labelText: "Priority"),
+
+              items: CasePriority.values.map((e) {
+                return DropdownMenuItem(value: e, child: Text(e.name));
+              }).toList(),
+
+              onChanged: (v) {
+                if (v != null) {
+                  setState(() {
+                    priority = v;
+                  });
+                }
+              },
+            ),
+
+            DropdownButtonFormField<SurgicalApproach>(
+              initialValue: surgicalApproach,
+
+              decoration: const InputDecoration(labelText: "Surgical Approach"),
+
+              items: SurgicalApproach.values.map((e) {
+                return DropdownMenuItem(value: e, child: Text(e.name));
+              }).toList(),
+
+              onChanged: (v) {
+                if (v != null) {
+                  setState(() {
+                    surgicalApproach = v;
+                  });
+                }
               },
             ),
 
@@ -171,10 +267,28 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
             OperativeRoleSelector(
               value: operativeRole,
 
-              onChanged: (value) {
+              onChanged: (v) {
                 setState(() {
-                  operativeRole = value;
+                  operativeRole = v;
                 });
+              },
+            ),
+
+            DropdownButtonFormField<Outcome>(
+              initialValue: outcome,
+
+              decoration: const InputDecoration(labelText: "Outcome"),
+
+              items: Outcome.values.map((e) {
+                return DropdownMenuItem(value: e, child: Text(e.name));
+              }).toList(),
+
+              onChanged: (v) {
+                if (v != null) {
+                  setState(() {
+                    outcome = v;
+                  });
+                }
               },
             ),
 
@@ -203,9 +317,9 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
     }
 
     if (selection.primaryProcedure == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Select at least one primary procedure")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Select primary procedure")));
 
       return;
     }
@@ -221,13 +335,13 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
       diagnosis: diagnosisController.text.trim(),
 
-      urgency: urgency,
+      urgency: priority.name,
 
-      surgeryType: surgeryType,
+      surgeryType: caseType.name,
 
-      specialty: specialty,
+      specialty: specialty.name,
 
-      surgicalApproach: null,
+      surgicalApproach: surgicalApproach.name,
 
       operativeRole: operativeRole.label,
 
@@ -235,7 +349,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
       graftConduitImplant: null,
 
-      outcome: outcome ?? "",
+      outcome: outcome.name,
 
       notes: notesController.text.trim().isEmpty
           ? null

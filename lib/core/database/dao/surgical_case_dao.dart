@@ -10,19 +10,19 @@ class SurgicalCaseDao extends DatabaseAccessor<AppDatabase>
     with _$SurgicalCaseDaoMixin {
   SurgicalCaseDao(super.db);
 
-  Future<List<SurgicalCase>> getAllCases() {
+  Future<List<SurgicalCaseData>> getAllCases() {
     return (select(
       surgicalCases,
     )..orderBy([(tbl) => OrderingTerm.desc(tbl.id)])).get();
   }
 
-  Stream<List<SurgicalCase>> watchCases() {
+  Stream<List<SurgicalCaseData>> watchCases() {
     return (select(
       surgicalCases,
     )..orderBy([(tbl) => OrderingTerm.desc(tbl.id)])).watch();
   }
 
-  Future<SurgicalCase?> getCaseById(int id) {
+  Future<SurgicalCaseData?> getCaseById(int id) {
     return (select(
       surgicalCases,
     )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();

@@ -5,7 +5,7 @@ import 'package:surgitrack/core/database/app_database.dart' as database;
 import 'package:surgitrack/features/cases/domain/surgical_case.dart' as domain;
 
 class SurgicalCaseMapper {
-  static domain.SurgicalCase fromData(database.SurgicalCase data) {
+  static domain.SurgicalCase fromData(database.SurgicalCaseData data) {
     return domain.SurgicalCase(
       id: data.id,
 

@@ -2705,7 +2705,7 @@ class ProceduresCompanion extends UpdateCompanion<ProcedureData> {
 }
 
 class $SurgicalCasesTable extends SurgicalCases
-    with TableInfo<$SurgicalCasesTable, SurgicalCase> {
+    with TableInfo<$SurgicalCasesTable, SurgicalCaseData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2964,7 +2964,7 @@ class $SurgicalCasesTable extends SurgicalCases
   static const String $name = 'surgical_cases';
   @override
   VerificationContext validateIntegrity(
-    Insertable<SurgicalCase> instance, {
+    Insertable<SurgicalCaseData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -3140,9 +3140,9 @@ class $SurgicalCasesTable extends SurgicalCases
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SurgicalCase map(Map<String, dynamic> data, {String? tablePrefix}) {
+  SurgicalCaseData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SurgicalCase(
+    return SurgicalCaseData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
@@ -3232,7 +3232,8 @@ class $SurgicalCasesTable extends SurgicalCases
   }
 }
 
-class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
+class SurgicalCaseData extends DataClass
+    implements Insertable<SurgicalCaseData> {
   final int id;
 
   /// Internal SurgiTrack case identifier
@@ -3272,7 +3273,7 @@ class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
   final String? notes;
   final DateTime createdAt;
   final DateTime updatedAt;
-  const SurgicalCase({
+  const SurgicalCaseData({
     required this.id,
     required this.caseId,
     required this.patientId,
@@ -3375,12 +3376,12 @@ class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
     );
   }
 
-  factory SurgicalCase.fromJson(
+  factory SurgicalCaseData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SurgicalCase(
+    return SurgicalCaseData(
       id: serializer.fromJson<int>(json['id']),
       caseId: serializer.fromJson<String>(json['caseId']),
       patientId: serializer.fromJson<int>(json['patientId']),
@@ -3438,7 +3439,7 @@ class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
     };
   }
 
-  SurgicalCase copyWith({
+  SurgicalCaseData copyWith({
     int? id,
     String? caseId,
     int? patientId,
@@ -3459,7 +3460,7 @@ class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
     Value<String?> notes = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) => SurgicalCase(
+  }) => SurgicalCaseData(
     id: id ?? this.id,
     caseId: caseId ?? this.caseId,
     patientId: patientId ?? this.patientId,
@@ -3494,8 +3495,8 @@ class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
-  SurgicalCase copyWithCompanion(SurgicalCasesCompanion data) {
-    return SurgicalCase(
+  SurgicalCaseData copyWithCompanion(SurgicalCasesCompanion data) {
+    return SurgicalCaseData(
       id: data.id.present ? data.id.value : this.id,
       caseId: data.caseId.present ? data.caseId.value : this.caseId,
       patientId: data.patientId.present ? data.patientId.value : this.patientId,
@@ -3541,7 +3542,7 @@ class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
 
   @override
   String toString() {
-    return (StringBuffer('SurgicalCase(')
+    return (StringBuffer('SurgicalCaseData(')
           ..write('id: $id, ')
           ..write('caseId: $caseId, ')
           ..write('patientId: $patientId, ')
@@ -3592,7 +3593,7 @@ class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SurgicalCase &&
+      (other is SurgicalCaseData &&
           other.id == this.id &&
           other.caseId == this.caseId &&
           other.patientId == this.patientId &&
@@ -3615,7 +3616,7 @@ class SurgicalCase extends DataClass implements Insertable<SurgicalCase> {
           other.updatedAt == this.updatedAt);
 }
 
-class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCase> {
+class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
   final Value<int> id;
   final Value<String> caseId;
   final Value<int> patientId;
@@ -3688,7 +3689,7 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCase> {
        specialty = Value(specialty),
        operativeRole = Value(operativeRole),
        outcome = Value(outcome);
-  static Insertable<SurgicalCase> custom({
+  static Insertable<SurgicalCaseData> custom({
     Expression<int>? id,
     Expression<String>? caseId,
     Expression<int>? patientId,
@@ -6321,17 +6322,21 @@ class $$SurgicalCasesTableTableManager
         RootTableManager<
           _$AppDatabase,
           $SurgicalCasesTable,
-          SurgicalCase,
+          SurgicalCaseData,
           $$SurgicalCasesTableFilterComposer,
           $$SurgicalCasesTableOrderingComposer,
           $$SurgicalCasesTableAnnotationComposer,
           $$SurgicalCasesTableCreateCompanionBuilder,
           $$SurgicalCasesTableUpdateCompanionBuilder,
           (
-            SurgicalCase,
-            BaseReferences<_$AppDatabase, $SurgicalCasesTable, SurgicalCase>,
+            SurgicalCaseData,
+            BaseReferences<
+              _$AppDatabase,
+              $SurgicalCasesTable,
+              SurgicalCaseData
+            >,
           ),
-          SurgicalCase,
+          SurgicalCaseData,
           PrefetchHooks Function()
         > {
   $$SurgicalCasesTableTableManager(_$AppDatabase db, $SurgicalCasesTable table)
@@ -6445,17 +6450,17 @@ typedef $$SurgicalCasesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $SurgicalCasesTable,
-      SurgicalCase,
+      SurgicalCaseData,
       $$SurgicalCasesTableFilterComposer,
       $$SurgicalCasesTableOrderingComposer,
       $$SurgicalCasesTableAnnotationComposer,
       $$SurgicalCasesTableCreateCompanionBuilder,
       $$SurgicalCasesTableUpdateCompanionBuilder,
       (
-        SurgicalCase,
-        BaseReferences<_$AppDatabase, $SurgicalCasesTable, SurgicalCase>,
+        SurgicalCaseData,
+        BaseReferences<_$AppDatabase, $SurgicalCasesTable, SurgicalCaseData>,
       ),
-      SurgicalCase,
+      SurgicalCaseData,
       PrefetchHooks Function()
     >;
 typedef $$CaseProceduresTableCreateCompanionBuilder =

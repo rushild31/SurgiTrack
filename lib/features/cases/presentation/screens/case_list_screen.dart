@@ -8,7 +8,8 @@ import 'package:surgitrack/features/cases/presentation/widgets/cases_empty_state
 
 import 'package:surgitrack/features/cases/presentation/search/case_search_delegate.dart';
 
-import 'case_details_screen.dart';
+import 'package:surgitrack/features/cases/presentation/screens/case_details_screen.dart';
+import 'package:surgitrack/features/cases/domain/surgical_case.dart';
 
 class CaseListScreen extends ConsumerWidget {
   const CaseListScreen({super.key});
@@ -28,12 +29,23 @@ class CaseListScreen extends ConsumerWidget {
                 : IconButton(
                     icon: const Icon(Icons.search),
 
-                    onPressed: () {
-                      showSearch(
+                    onPressed: () async {
+                      final selectedCase = await showSearch<SurgicalCase?>(
                         context: context,
 
                         delegate: CaseSearchDelegate(list),
                       );
+
+                      if (selectedCase != null && context.mounted) {
+                        Navigator.push(
+                          context,
+
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                CaseDetailsScreen(surgicalCase: selectedCase),
+                          ),
+                        );
+                      }
                     },
                   ),
 
@@ -89,29 +101,35 @@ class CaseListScreen extends ConsumerWidget {
               ),
 
               Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(top: 8),
-
-                  itemCount: list.length,
-
-                  itemBuilder: (context, index) {
-                    final surgicalCase = list[index];
-
-                    return CaseCard(
-                      surgicalCase: surgicalCase,
-
-                      onTap: () {
-                        Navigator.push(
-                          context,
-
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                CaseDetailsScreen(surgicalCase: surgicalCase),
-                          ),
-                        );
-                      },
-                    );
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(surgicalCaseListProvider);
                   },
+
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(top: 8),
+
+                    itemCount: list.length,
+
+                    itemBuilder: (context, index) {
+                      final surgicalCase = list[index];
+
+                      return CaseCard(
+                        surgicalCase: surgicalCase,
+
+                        onTap: () {
+                          Navigator.push(
+                            context,
+
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  CaseDetailsScreen(surgicalCase: surgicalCase),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

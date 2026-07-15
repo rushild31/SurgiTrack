@@ -31,28 +31,33 @@ class DashboardDao extends DatabaseAccessor<AppDatabase>
   Future<int> procedureCount() async {
     final result = await (selectOnly(
       caseProcedures,
-    )..addColumns([caseProcedures.caseId.count()])).getSingle();
+    )..addColumns([caseProcedures.id.count()])).getSingle();
 
-    return result.read(caseProcedures.caseId.count()) ?? 0;
+    return result.read(caseProcedures.id.count()) ?? 0;
   }
 
-  Future<int> specialtyCount(String specialty) async {
+  Future<int> caseCountThisMonth() async {
+    final now = DateTime.now();
+
+    final start = DateTime(now.year, now.month, 1);
+
     final result =
         await (selectOnly(surgicalCases)
               ..addColumns([surgicalCases.id.count()])
-              ..where(surgicalCases.specialty.equals(specialty)))
+              ..where(surgicalCases.surgeryDate.isBiggerOrEqualValue(start)))
             .getSingle();
 
     return result.read(surgicalCases.id.count()) ?? 0;
   }
 
-  Future<int> operativeRoleCount(String role) async {
-    final result =
-        await (selectOnly(surgicalCases)
-              ..addColumns([surgicalCases.id.count()])
-              ..where(surgicalCases.operativeRole.equals(role)))
-            .getSingle();
+  Future<List<SurgicalCaseData>> recentCases() {
+    return (select(surgicalCases)
+          ..orderBy([(tbl) => OrderingTerm.desc(tbl.surgeryDate)])
+          ..limit(5))
+        .get();
+  }
 
-    return result.read(surgicalCases.id.count()) ?? 0;
+  Future<List<SurgicalCaseData>> getAllCases() {
+    return select(surgicalCases).get();
   }
 }

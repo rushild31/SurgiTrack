@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 
 import 'patients.dart';
 
+@DataClassName('SurgicalCaseData')
 class SurgicalCases extends Table {
   IntColumn get id => integer().autoIncrement()();
 

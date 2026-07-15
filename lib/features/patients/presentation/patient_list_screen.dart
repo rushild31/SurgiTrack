@@ -11,8 +11,12 @@ import 'package:surgitrack/features/patients/presentation/widgets/empty_patient_
 
 import 'package:surgitrack/features/patients/presentation/search/patient_search_delegate.dart';
 
+import 'package:surgitrack/features/cases/presentation/screens/add_case_screen.dart';
+
 class PatientListScreen extends ConsumerWidget {
-  const PatientListScreen({super.key});
+  final bool selectionMode;
+
+  const PatientListScreen({super.key, this.selectionMode = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,19 +24,20 @@ class PatientListScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Patients"),
+        title: Text(selectionMode ? "Select Patient" : "Patients"),
 
         actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
+          if (!selectionMode)
+            IconButton(
+              icon: const Icon(Icons.search),
 
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: PatientSearchDelegate(ref),
-              );
-            },
-          ),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: PatientSearchDelegate(ref),
+                );
+              },
+            ),
         ],
       ),
 
@@ -63,13 +68,24 @@ class PatientListScreen extends ConsumerWidget {
                   patient: patient,
 
                   onTap: () {
-                    Navigator.push(
-                      context,
+                    if (selectionMode) {
+                      Navigator.push(
+                        context,
 
-                      MaterialPageRoute(
-                        builder: (_) => PatientDetailsScreen(patient: patient),
-                      ),
-                    );
+                        MaterialPageRoute(
+                          builder: (_) => AddCaseScreen(patient: patient),
+                        ),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              PatientDetailsScreen(patient: patient),
+                        ),
+                      );
+                    }
                   },
                 );
               },
@@ -78,23 +94,25 @@ class PatientListScreen extends ConsumerWidget {
         },
       ),
 
-      floatingActionButton: FloatingActionButton(
-        tooltip: "Add Patient",
+      floatingActionButton: selectionMode
+          ? null
+          : FloatingActionButton(
+              tooltip: "Add Patient",
 
-        child: const Icon(Icons.person_add),
+              child: const Icon(Icons.person_add),
 
-        onPressed: () async {
-          final result = await Navigator.push(
-            context,
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
 
-            MaterialPageRoute(builder: (_) => const PatientFormScreen()),
-          );
+                  MaterialPageRoute(builder: (_) => const PatientFormScreen()),
+                );
 
-          if (result == true) {
-            ref.invalidate(patientListProvider);
-          }
-        },
-      ),
+                if (result == true) {
+                  ref.invalidate(patientListProvider);
+                }
+              },
+            ),
     );
   }
 }

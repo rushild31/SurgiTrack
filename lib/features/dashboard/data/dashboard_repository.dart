@@ -1,7 +1,7 @@
 import 'package:surgitrack/core/database/app_database.dart';
-import 'package:surgitrack/features/dashboard/domain/dashboard_statistics.dart';
 
-import 'package:surgitrack/core/enums/surgeon_role.dart';
+import 'package:surgitrack/features/dashboard/domain/dashboard_statistics.dart';
+import 'package:surgitrack/features/dashboard/domain/monthly_case_data.dart';
 
 class DashboardRepository {
   final AppDatabase database;
@@ -11,54 +11,66 @@ class DashboardRepository {
   Future<DashboardStatistics> getStatistics() async {
     final dao = database.dashboardDao;
 
-    final totalPatients = await dao.patientCount();
-
-    final totalCases = await dao.caseCount();
-
-    final totalProcedures = await dao.procedureCount();
-
-    final cardiacCases = await dao.specialtyCount("Cardiac");
-
-    final thoracicCases = await dao.specialtyCount("Thoracic");
-
-    final vascularCases = await dao.specialtyCount("Vascular");
-
-    final observedCases = await dao.operativeRoleCount(
-      SurgeonRole.observed.label,
-    );
-
-    final assistedCases = await dao.operativeRoleCount(
-      SurgeonRole.assisted.label,
-    );
-
-    final supervisedCases = await dao.operativeRoleCount(
-      SurgeonRole.supervised.label,
-    );
-
-    final independentCases = await dao.operativeRoleCount(
-      SurgeonRole.independent.label,
-    );
-
     return DashboardStatistics(
-      totalPatients: totalPatients,
+      totalPatients: await dao.patientCount(),
 
-      totalCases: totalCases,
+      totalCases: await dao.caseCount(),
 
-      totalProcedures: totalProcedures,
+      totalProcedures: await dao.procedureCount(),
 
-      cardiacCases: cardiacCases,
-
-      thoracicCases: thoracicCases,
-
-      vascularCases: vascularCases,
-
-      observedCases: observedCases,
-
-      assistedCases: assistedCases,
-
-      supervisedCases: supervisedCases,
-
-      independentCases: independentCases,
+      casesThisMonth: await dao.caseCountThisMonth(),
     );
+  }
+
+  Future<List<SurgicalCaseData>> getRecentCases() {
+    return database.dashboardDao.recentCases();
+  }
+
+  Future<List<SurgicalCaseData>> getAllCases() {
+    return database.dashboardDao.getAllCases();
+  }
+
+  /// Cases grouped by specialty
+  Future<Map<String, int>> getSpecialtyBreakdown() async {
+    final cases = await database.dashboardDao.getAllCases();
+
+    final Map<String, int> result = {};
+
+    for (final c in cases) {
+      result[c.specialty] = (result[c.specialty] ?? 0) + 1;
+    }
+
+    return result;
+  }
+
+  /// Cases grouped by operative role
+  Future<Map<String, int>> getOperativeRoleBreakdown() async {
+    final cases = await database.dashboardDao.getAllCases();
+
+    final Map<String, int> result = {};
+
+    for (final c in cases) {
+      result[c.operativeRole] = (result[c.operativeRole] ?? 0) + 1;
+    }
+
+    return result;
+  }
+
+  /// Monthly case volume
+  Future<List<MonthlyCaseData>> getMonthlyCaseData() async {
+    final cases = await database.dashboardDao.getAllCases();
+
+    final Map<String, int> monthly = {};
+
+    for (final c in cases) {
+      final month =
+          "${c.surgeryDate.year}-${c.surgeryDate.month.toString().padLeft(2, '0')}";
+
+      monthly[month] = (monthly[month] ?? 0) + 1;
+    }
+
+    return monthly.entries.map((e) {
+      return MonthlyCaseData(month: e.key, count: e.value);
+    }).toList();
   }
 }
