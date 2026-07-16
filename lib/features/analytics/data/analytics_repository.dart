@@ -7,11 +7,16 @@ import 'package:surgitrack/features/analytics/domain/procedure_exposure.dart';
 import 'package:surgitrack/features/analytics/domain/technical_step_exposure.dart';
 import 'package:surgitrack/features/analytics/domain/monthly_case_trend.dart';
 import 'package:surgitrack/features/analytics/domain/operative_role_distribution.dart';
+import 'package:surgitrack/features/analytics/domain/analytics_report.dart';
 
 class AnalyticsRepository {
   final AppDatabase database;
 
   const AnalyticsRepository(this.database);
+
+  // =====================================================
+  // Complete Statistics
+  // =====================================================
 
   Future<AnalyticsStatistics> getStatistics() async {
     final totalPatients = await getTotalPatients();
@@ -23,7 +28,9 @@ class AnalyticsRepository {
     final cases = await database.surgicalCaseDao.getAllCases();
 
     int cardiacCases = 0;
+
     int thoracicCases = 0;
+
     int vascularCases = 0;
 
     for (final surgicalCase in cases) {
@@ -43,12 +50,16 @@ class AnalyticsRepository {
     }
 
     return AnalyticsStatistics(
-      totalCases: totalCases,
       totalPatients: totalPatients,
+
+      totalCases: totalCases,
+
       totalProcedures: totalProcedures,
 
       cardiacCases: cardiacCases,
+
       thoracicCases: thoracicCases,
+
       vascularCases: vascularCases,
 
       averageProceduresPerCase: totalCases == 0
@@ -57,13 +68,20 @@ class AnalyticsRepository {
     );
   }
 
+  // =====================================================
+  // Procedure Exposure
+  // =====================================================
+
   Future<List<ProcedureExposure>> getProcedureExposure() async {
     final caseProcedures = await database.caseProcedureDao
         .getAllCaseProcedures();
 
     final cases = await database.surgicalCaseDao.getAllCases();
 
-    final roleMap = {for (final item in cases) item.id: item.operativeRole};
+    final roleMap = {
+      for (final surgicalCase in cases)
+        surgicalCase.id: surgicalCase.operativeRole,
+    };
 
     final Map<String, ProcedureExposureBuilder> exposure = {};
 
@@ -74,8 +92,10 @@ class AnalyticsRepository {
 
       exposure.putIfAbsent(
         procedure.procedureId,
+
         () => ProcedureExposureBuilder(
           procedureId: procedure.procedureId,
+
           procedureName: procedure.name,
         ),
       );
@@ -83,8 +103,12 @@ class AnalyticsRepository {
       exposure[procedure.procedureId]!.addCase(role);
     }
 
-    return exposure.values.map((e) => e.build()).toList();
+    return exposure.values.map((item) => item.build()).toList();
   }
+
+  // =====================================================
+  // Technical Step Exposure
+  // =====================================================
 
   Future<List<TechnicalStepExposure>> getTechnicalStepExposure() async {
     final steps = await database.caseProcedureStepsDao
@@ -101,10 +125,14 @@ class AnalyticsRepository {
 
       exposure.putIfAbsent(
         key,
+
         () => TechnicalStepExposureBuilder(
           procedureId: procedure.procedureId,
+
           procedureName: procedure.name,
+
           stepId: step.stepId,
+
           stepName: step.stepName,
         ),
       );
@@ -112,8 +140,12 @@ class AnalyticsRepository {
       exposure[key]!.addStep(normalizeOperativeRole(item.caseStep.role));
     }
 
-    return exposure.values.map((e) => e.build()).toList();
+    return exposure.values.map((item) => item.build()).toList();
   }
+
+  // =====================================================
+  // Monthly Case Trend
+  // =====================================================
 
   Future<List<MonthlyCaseTrend>> getMonthlyCaseTrend() async {
     final cases = await database.surgicalCaseDao.getAllCases();
@@ -139,6 +171,10 @@ class AnalyticsRepository {
     }).toList()..sort((a, b) => a.month.compareTo(b.month));
   }
 
+  // =====================================================
+  // Operative Role Distribution
+  // =====================================================
+
   Future<List<OperativeRoleDistribution>> getOperativeRoleDistribution() async {
     final cases = await database.surgicalCaseDao.getAllCases();
 
@@ -152,8 +188,8 @@ class AnalyticsRepository {
       'performed_independently': 0,
     };
 
-    for (final item in cases) {
-      final role = normalizeOperativeRole(item.operativeRole);
+    for (final surgicalCase in cases) {
+      final role = normalizeOperativeRole(surgicalCase.operativeRole);
 
       if (counts.containsKey(role)) {
         counts[role] = counts[role]! + 1;
@@ -161,9 +197,39 @@ class AnalyticsRepository {
     }
 
     return counts.entries
-        .map((e) => OperativeRoleDistribution(role: e.key, count: e.value))
+        .map(
+          (entry) =>
+              OperativeRoleDistribution(role: entry.key, count: entry.value),
+        )
         .toList();
   }
+
+  // =====================================================
+  // Report Engine Foundation
+  // =====================================================
+
+  Future<AnalyticsReport> generateReport({
+    required DateTime from,
+
+    required DateTime to,
+  }) async {
+    // Placeholder for report module.
+    // Will power:
+    // - Monthly report
+    // - Quarterly report
+    // - Six monthly report
+    // - Annual report
+    // - PDF export
+    // - Excel export
+
+    throw UnimplementedError(
+      'Analytics report engine will be implemented next.',
+    );
+  }
+
+  // =====================================================
+  // Counters
+  // =====================================================
 
   Future<int> getTotalPatients() async {
     final patients = await database.patientDao.getAllPatients();
@@ -184,6 +250,10 @@ class AnalyticsRepository {
   }
 }
 
+// =====================================================
+// Procedure Exposure Builder
+// =====================================================
+
 class ProcedureExposureBuilder {
   final String procedureId;
 
@@ -203,26 +273,36 @@ class ProcedureExposureBuilder {
 
   ProcedureExposureBuilder({
     required this.procedureId,
+
     required this.procedureName,
   });
 
   void addCase(String role) {
     totalCases++;
 
-    if (roleCounts.containsKey(role)) {
-      roleCounts[role] = roleCounts[role]! + 1;
+    final normalizedRole = normalizeOperativeRole(role);
+
+    if (roleCounts.containsKey(normalizedRole)) {
+      roleCounts[normalizedRole] = roleCounts[normalizedRole]! + 1;
     }
   }
 
   ProcedureExposure build() {
     return ProcedureExposure(
       procedureId: procedureId,
+
       procedureName: procedureName,
+
       totalCases: totalCases,
+
       roleCounts: roleCounts,
     );
   }
 }
+
+// =====================================================
+// Technical Step Exposure Builder
+// =====================================================
 
 class TechnicalStepExposureBuilder {
   final String procedureId;
@@ -247,26 +327,36 @@ class TechnicalStepExposureBuilder {
 
   TechnicalStepExposureBuilder({
     required this.procedureId,
+
     required this.procedureName,
+
     required this.stepId,
+
     required this.stepName,
   });
 
   void addStep(String role) {
     totalCases++;
 
-    if (roleCounts.containsKey(role)) {
-      roleCounts[role] = roleCounts[role]! + 1;
+    final normalizedRole = normalizeOperativeRole(role);
+
+    if (roleCounts.containsKey(normalizedRole)) {
+      roleCounts[normalizedRole] = roleCounts[normalizedRole]! + 1;
     }
   }
 
   TechnicalStepExposure build() {
     return TechnicalStepExposure(
       procedureId: procedureId,
+
       procedureName: procedureName,
+
       stepId: stepId,
+
       stepName: stepName,
+
       totalCases: totalCases,
+
       roleCounts: roleCounts,
     );
   }
