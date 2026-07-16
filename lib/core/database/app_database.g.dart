@@ -2810,6 +2810,39 @@ class $SurgicalCasesTable extends SurgicalCases
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _approachMeta = const VerificationMeta(
+    'approach',
+  );
+  @override
+  late final GeneratedColumn<String> approach = GeneratedColumn<String>(
+    'approach',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _caseTypeMeta = const VerificationMeta(
+    'caseType',
+  );
+  @override
+  late final GeneratedColumn<String> caseType = GeneratedColumn<String>(
+    'case_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _complexityMeta = const VerificationMeta(
+    'complexity',
+  );
+  @override
+  late final GeneratedColumn<String> complexity = GeneratedColumn<String>(
+    'complexity',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _operativeRoleMeta = const VerificationMeta(
     'operativeRole',
   );
@@ -2945,6 +2978,9 @@ class $SurgicalCasesTable extends SurgicalCases
     surgeryType,
     specialty,
     surgicalApproach,
+    approach,
+    caseType,
+    complexity,
     operativeRole,
     technicalSteps,
     cardiopulmonaryBypassUsed,
@@ -3041,6 +3077,24 @@ class $SurgicalCasesTable extends SurgicalCases
           data['surgical_approach']!,
           _surgicalApproachMeta,
         ),
+      );
+    }
+    if (data.containsKey('approach')) {
+      context.handle(
+        _approachMeta,
+        approach.isAcceptableOrUnknown(data['approach']!, _approachMeta),
+      );
+    }
+    if (data.containsKey('case_type')) {
+      context.handle(
+        _caseTypeMeta,
+        caseType.isAcceptableOrUnknown(data['case_type']!, _caseTypeMeta),
+      );
+    }
+    if (data.containsKey('complexity')) {
+      context.handle(
+        _complexityMeta,
+        complexity.isAcceptableOrUnknown(data['complexity']!, _complexityMeta),
       );
     }
     if (data.containsKey('operative_role')) {
@@ -3179,6 +3233,18 @@ class $SurgicalCasesTable extends SurgicalCases
         DriftSqlType.string,
         data['${effectivePrefix}surgical_approach'],
       ),
+      approach: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}approach'],
+      ),
+      caseType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}case_type'],
+      ),
+      complexity: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}complexity'],
+      ),
       operativeRole: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}operative_role'],
@@ -3257,6 +3323,9 @@ class SurgicalCaseData extends DataClass
 
   /// Surgical approach
   final String? surgicalApproach;
+  final String? approach;
+  final String? caseType;
+  final String? complexity;
 
   /// Personal operative role
   ///
@@ -3288,6 +3357,9 @@ class SurgicalCaseData extends DataClass
     required this.surgeryType,
     required this.specialty,
     this.surgicalApproach,
+    this.approach,
+    this.caseType,
+    this.complexity,
     required this.operativeRole,
     this.technicalSteps,
     required this.cardiopulmonaryBypassUsed,
@@ -3313,6 +3385,15 @@ class SurgicalCaseData extends DataClass
     map['specialty'] = Variable<String>(specialty);
     if (!nullToAbsent || surgicalApproach != null) {
       map['surgical_approach'] = Variable<String>(surgicalApproach);
+    }
+    if (!nullToAbsent || approach != null) {
+      map['approach'] = Variable<String>(approach);
+    }
+    if (!nullToAbsent || caseType != null) {
+      map['case_type'] = Variable<String>(caseType);
+    }
+    if (!nullToAbsent || complexity != null) {
+      map['complexity'] = Variable<String>(complexity);
     }
     map['operative_role'] = Variable<String>(operativeRole);
     if (!nullToAbsent || technicalSteps != null) {
@@ -3355,6 +3436,15 @@ class SurgicalCaseData extends DataClass
       surgicalApproach: surgicalApproach == null && nullToAbsent
           ? const Value.absent()
           : Value(surgicalApproach),
+      approach: approach == null && nullToAbsent
+          ? const Value.absent()
+          : Value(approach),
+      caseType: caseType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(caseType),
+      complexity: complexity == null && nullToAbsent
+          ? const Value.absent()
+          : Value(complexity),
       operativeRole: Value(operativeRole),
       technicalSteps: technicalSteps == null && nullToAbsent
           ? const Value.absent()
@@ -3396,6 +3486,9 @@ class SurgicalCaseData extends DataClass
       surgeryType: serializer.fromJson<String>(json['surgeryType']),
       specialty: serializer.fromJson<String>(json['specialty']),
       surgicalApproach: serializer.fromJson<String?>(json['surgicalApproach']),
+      approach: serializer.fromJson<String?>(json['approach']),
+      caseType: serializer.fromJson<String?>(json['caseType']),
+      complexity: serializer.fromJson<String?>(json['complexity']),
       operativeRole: serializer.fromJson<String>(json['operativeRole']),
       technicalSteps: serializer.fromJson<String?>(json['technicalSteps']),
       cardiopulmonaryBypassUsed: serializer.fromJson<bool>(
@@ -3428,6 +3521,9 @@ class SurgicalCaseData extends DataClass
       'surgeryType': serializer.toJson<String>(surgeryType),
       'specialty': serializer.toJson<String>(specialty),
       'surgicalApproach': serializer.toJson<String?>(surgicalApproach),
+      'approach': serializer.toJson<String?>(approach),
+      'caseType': serializer.toJson<String?>(caseType),
+      'complexity': serializer.toJson<String?>(complexity),
       'operativeRole': serializer.toJson<String>(operativeRole),
       'technicalSteps': serializer.toJson<String?>(technicalSteps),
       'cardiopulmonaryBypassUsed': serializer.toJson<bool>(
@@ -3454,6 +3550,9 @@ class SurgicalCaseData extends DataClass
     String? surgeryType,
     String? specialty,
     Value<String?> surgicalApproach = const Value.absent(),
+    Value<String?> approach = const Value.absent(),
+    Value<String?> caseType = const Value.absent(),
+    Value<String?> complexity = const Value.absent(),
     String? operativeRole,
     Value<String?> technicalSteps = const Value.absent(),
     bool? cardiopulmonaryBypassUsed,
@@ -3477,6 +3576,9 @@ class SurgicalCaseData extends DataClass
     surgicalApproach: surgicalApproach.present
         ? surgicalApproach.value
         : this.surgicalApproach,
+    approach: approach.present ? approach.value : this.approach,
+    caseType: caseType.present ? caseType.value : this.caseType,
+    complexity: complexity.present ? complexity.value : this.complexity,
     operativeRole: operativeRole ?? this.operativeRole,
     technicalSteps: technicalSteps.present
         ? technicalSteps.value
@@ -3517,6 +3619,11 @@ class SurgicalCaseData extends DataClass
       surgicalApproach: data.surgicalApproach.present
           ? data.surgicalApproach.value
           : this.surgicalApproach,
+      approach: data.approach.present ? data.approach.value : this.approach,
+      caseType: data.caseType.present ? data.caseType.value : this.caseType,
+      complexity: data.complexity.present
+          ? data.complexity.value
+          : this.complexity,
       operativeRole: data.operativeRole.present
           ? data.operativeRole.value
           : this.operativeRole,
@@ -3557,6 +3664,9 @@ class SurgicalCaseData extends DataClass
           ..write('surgeryType: $surgeryType, ')
           ..write('specialty: $specialty, ')
           ..write('surgicalApproach: $surgicalApproach, ')
+          ..write('approach: $approach, ')
+          ..write('caseType: $caseType, ')
+          ..write('complexity: $complexity, ')
           ..write('operativeRole: $operativeRole, ')
           ..write('technicalSteps: $technicalSteps, ')
           ..write('cardiopulmonaryBypassUsed: $cardiopulmonaryBypassUsed, ')
@@ -3573,7 +3683,7 @@ class SurgicalCaseData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     id,
     caseId,
     patientId,
@@ -3583,6 +3693,9 @@ class SurgicalCaseData extends DataClass
     surgeryType,
     specialty,
     surgicalApproach,
+    approach,
+    caseType,
+    complexity,
     operativeRole,
     technicalSteps,
     cardiopulmonaryBypassUsed,
@@ -3594,7 +3707,7 @@ class SurgicalCaseData extends DataClass
     notes,
     createdAt,
     updatedAt,
-  );
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3608,6 +3721,9 @@ class SurgicalCaseData extends DataClass
           other.surgeryType == this.surgeryType &&
           other.specialty == this.specialty &&
           other.surgicalApproach == this.surgicalApproach &&
+          other.approach == this.approach &&
+          other.caseType == this.caseType &&
+          other.complexity == this.complexity &&
           other.operativeRole == this.operativeRole &&
           other.technicalSteps == this.technicalSteps &&
           other.cardiopulmonaryBypassUsed == this.cardiopulmonaryBypassUsed &&
@@ -3631,6 +3747,9 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
   final Value<String> surgeryType;
   final Value<String> specialty;
   final Value<String?> surgicalApproach;
+  final Value<String?> approach;
+  final Value<String?> caseType;
+  final Value<String?> complexity;
   final Value<String> operativeRole;
   final Value<String?> technicalSteps;
   final Value<bool> cardiopulmonaryBypassUsed;
@@ -3652,6 +3771,9 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
     this.surgeryType = const Value.absent(),
     this.specialty = const Value.absent(),
     this.surgicalApproach = const Value.absent(),
+    this.approach = const Value.absent(),
+    this.caseType = const Value.absent(),
+    this.complexity = const Value.absent(),
     this.operativeRole = const Value.absent(),
     this.technicalSteps = const Value.absent(),
     this.cardiopulmonaryBypassUsed = const Value.absent(),
@@ -3674,6 +3796,9 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
     required String surgeryType,
     required String specialty,
     this.surgicalApproach = const Value.absent(),
+    this.approach = const Value.absent(),
+    this.caseType = const Value.absent(),
+    this.complexity = const Value.absent(),
     required String operativeRole,
     this.technicalSteps = const Value.absent(),
     this.cardiopulmonaryBypassUsed = const Value.absent(),
@@ -3704,6 +3829,9 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
     Expression<String>? surgeryType,
     Expression<String>? specialty,
     Expression<String>? surgicalApproach,
+    Expression<String>? approach,
+    Expression<String>? caseType,
+    Expression<String>? complexity,
     Expression<String>? operativeRole,
     Expression<String>? technicalSteps,
     Expression<bool>? cardiopulmonaryBypassUsed,
@@ -3726,6 +3854,9 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
       if (surgeryType != null) 'surgery_type': surgeryType,
       if (specialty != null) 'specialty': specialty,
       if (surgicalApproach != null) 'surgical_approach': surgicalApproach,
+      if (approach != null) 'approach': approach,
+      if (caseType != null) 'case_type': caseType,
+      if (complexity != null) 'complexity': complexity,
       if (operativeRole != null) 'operative_role': operativeRole,
       if (technicalSteps != null) 'technical_steps': technicalSteps,
       if (cardiopulmonaryBypassUsed != null)
@@ -3753,6 +3884,9 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
     Value<String>? surgeryType,
     Value<String>? specialty,
     Value<String?>? surgicalApproach,
+    Value<String?>? approach,
+    Value<String?>? caseType,
+    Value<String?>? complexity,
     Value<String>? operativeRole,
     Value<String?>? technicalSteps,
     Value<bool>? cardiopulmonaryBypassUsed,
@@ -3775,6 +3909,9 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
       surgeryType: surgeryType ?? this.surgeryType,
       specialty: specialty ?? this.specialty,
       surgicalApproach: surgicalApproach ?? this.surgicalApproach,
+      approach: approach ?? this.approach,
+      caseType: caseType ?? this.caseType,
+      complexity: complexity ?? this.complexity,
       operativeRole: operativeRole ?? this.operativeRole,
       technicalSteps: technicalSteps ?? this.technicalSteps,
       cardiopulmonaryBypassUsed:
@@ -3820,6 +3957,15 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
     }
     if (surgicalApproach.present) {
       map['surgical_approach'] = Variable<String>(surgicalApproach.value);
+    }
+    if (approach.present) {
+      map['approach'] = Variable<String>(approach.value);
+    }
+    if (caseType.present) {
+      map['case_type'] = Variable<String>(caseType.value);
+    }
+    if (complexity.present) {
+      map['complexity'] = Variable<String>(complexity.value);
     }
     if (operativeRole.present) {
       map['operative_role'] = Variable<String>(operativeRole.value);
@@ -3875,6 +4021,9 @@ class SurgicalCasesCompanion extends UpdateCompanion<SurgicalCaseData> {
           ..write('surgeryType: $surgeryType, ')
           ..write('specialty: $specialty, ')
           ..write('surgicalApproach: $surgicalApproach, ')
+          ..write('approach: $approach, ')
+          ..write('caseType: $caseType, ')
+          ..write('complexity: $complexity, ')
           ..write('operativeRole: $operativeRole, ')
           ..write('technicalSteps: $technicalSteps, ')
           ..write('cardiopulmonaryBypassUsed: $cardiopulmonaryBypassUsed, ')
@@ -6809,6 +6958,9 @@ typedef $$SurgicalCasesTableCreateCompanionBuilder =
       required String surgeryType,
       required String specialty,
       Value<String?> surgicalApproach,
+      Value<String?> approach,
+      Value<String?> caseType,
+      Value<String?> complexity,
       required String operativeRole,
       Value<String?> technicalSteps,
       Value<bool> cardiopulmonaryBypassUsed,
@@ -6832,6 +6984,9 @@ typedef $$SurgicalCasesTableUpdateCompanionBuilder =
       Value<String> surgeryType,
       Value<String> specialty,
       Value<String?> surgicalApproach,
+      Value<String?> approach,
+      Value<String?> caseType,
+      Value<String?> complexity,
       Value<String> operativeRole,
       Value<String?> technicalSteps,
       Value<bool> cardiopulmonaryBypassUsed,
@@ -6896,6 +7051,21 @@ class $$SurgicalCasesTableFilterComposer
 
   ColumnFilters<String> get surgicalApproach => $composableBuilder(
     column: $table.surgicalApproach,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get approach => $composableBuilder(
+    column: $table.approach,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get caseType => $composableBuilder(
+    column: $table.caseType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get complexity => $composableBuilder(
+    column: $table.complexity,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7009,6 +7179,21 @@ class $$SurgicalCasesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get approach => $composableBuilder(
+    column: $table.approach,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get caseType => $composableBuilder(
+    column: $table.caseType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get complexity => $composableBuilder(
+    column: $table.complexity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get operativeRole => $composableBuilder(
     column: $table.operativeRole,
     builder: (column) => ColumnOrderings(column),
@@ -7107,6 +7292,17 @@ class $$SurgicalCasesTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get approach =>
+      $composableBuilder(column: $table.approach, builder: (column) => column);
+
+  GeneratedColumn<String> get caseType =>
+      $composableBuilder(column: $table.caseType, builder: (column) => column);
+
+  GeneratedColumn<String> get complexity => $composableBuilder(
+    column: $table.complexity,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get operativeRole => $composableBuilder(
     column: $table.operativeRole,
     builder: (column) => column,
@@ -7199,6 +7395,9 @@ class $$SurgicalCasesTableTableManager
                 Value<String> surgeryType = const Value.absent(),
                 Value<String> specialty = const Value.absent(),
                 Value<String?> surgicalApproach = const Value.absent(),
+                Value<String?> approach = const Value.absent(),
+                Value<String?> caseType = const Value.absent(),
+                Value<String?> complexity = const Value.absent(),
                 Value<String> operativeRole = const Value.absent(),
                 Value<String?> technicalSteps = const Value.absent(),
                 Value<bool> cardiopulmonaryBypassUsed = const Value.absent(),
@@ -7220,6 +7419,9 @@ class $$SurgicalCasesTableTableManager
                 surgeryType: surgeryType,
                 specialty: specialty,
                 surgicalApproach: surgicalApproach,
+                approach: approach,
+                caseType: caseType,
+                complexity: complexity,
                 operativeRole: operativeRole,
                 technicalSteps: technicalSteps,
                 cardiopulmonaryBypassUsed: cardiopulmonaryBypassUsed,
@@ -7243,6 +7445,9 @@ class $$SurgicalCasesTableTableManager
                 required String surgeryType,
                 required String specialty,
                 Value<String?> surgicalApproach = const Value.absent(),
+                Value<String?> approach = const Value.absent(),
+                Value<String?> caseType = const Value.absent(),
+                Value<String?> complexity = const Value.absent(),
                 required String operativeRole,
                 Value<String?> technicalSteps = const Value.absent(),
                 Value<bool> cardiopulmonaryBypassUsed = const Value.absent(),
@@ -7264,6 +7469,9 @@ class $$SurgicalCasesTableTableManager
                 surgeryType: surgeryType,
                 specialty: specialty,
                 surgicalApproach: surgicalApproach,
+                approach: approach,
+                caseType: caseType,
+                complexity: complexity,
                 operativeRole: operativeRole,
                 technicalSteps: technicalSteps,
                 cardiopulmonaryBypassUsed: cardiopulmonaryBypassUsed,

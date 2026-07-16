@@ -43,6 +43,61 @@ class AnalyticsRepository {
         }
       }
 
+      // =========================
+      // Approach Filter
+      // =========================
+
+      if (filter.hasApproachFilter) {
+        if (surgicalCase.approach?.toLowerCase() !=
+            filter.approach!.toLowerCase()) {
+          return false;
+        }
+      }
+
+      // =========================
+      // Primary / Redo Filter
+      // =========================
+
+      if (filter.hasCaseTypeFilter) {
+        if (surgicalCase.caseType?.toLowerCase() !=
+            filter.caseType!.toLowerCase()) {
+          return false;
+        }
+      }
+
+      // =========================
+      // Elective / Emergency Filter
+      // =========================
+
+      if (filter.hasUrgencyFilter) {
+        if (surgicalCase.urgency.toLowerCase() !=
+            filter.urgency!.toLowerCase()) {
+          return false;
+        }
+      }
+
+      // =========================
+      // Complexity Filter
+      // =========================
+
+      if (filter.hasComplexityFilter) {
+        if (surgicalCase.complexity?.toLowerCase() !=
+            filter.complexity!.toLowerCase()) {
+          return false;
+        }
+      }
+
+      // =========================
+      // Operative Role Filter
+      // =========================
+
+      if (filter.hasOperativeRoleFilter) {
+        if (normalizeOperativeRole(surgicalCase.operativeRole) !=
+            normalizeOperativeRole(filter.operativeRole)) {
+          return false;
+        }
+      }
+
       return true;
     }).toList();
   }

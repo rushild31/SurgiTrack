@@ -5,65 +5,79 @@ import 'package:surgitrack/core/database/database_provider.dart';
 import 'package:surgitrack/features/analytics/data/analytics_repository.dart';
 
 import 'package:surgitrack/features/analytics/domain/analytics_statistics.dart';
-
 import 'package:surgitrack/features/analytics/domain/procedure_exposure.dart';
-
 import 'package:surgitrack/features/analytics/domain/technical_step_exposure.dart';
-
 import 'package:surgitrack/features/analytics/domain/monthly_case_trend.dart';
-
 import 'package:surgitrack/features/analytics/domain/operative_role_distribution.dart';
+
+import 'package:surgitrack/features/analytics/providers/analytics_filter_provider.dart';
+
+// Repository
 
 final analyticsRepositoryProvider = Provider<AnalyticsRepository>((ref) {
   return AnalyticsRepository(ref.watch(databaseProvider));
 });
 
-// =========================
-// Overall Statistics
-// =========================
+// Current Filter
+
+final currentAnalyticsFilterProvider = Provider((ref) {
+  return ref.watch(analyticsFilterProvider);
+});
+
+// Statistics
 
 final analyticsStatisticsProvider = FutureProvider<AnalyticsStatistics>((
   ref,
 ) async {
-  return ref.watch(analyticsRepositoryProvider).getStatistics();
+  final repository = ref.watch(analyticsRepositoryProvider);
+
+  final filter = ref.watch(currentAnalyticsFilterProvider);
+
+  return repository.getStatistics(filter: filter);
 });
 
-// =========================
 // Procedure Exposure
-// =========================
 
 final procedureExposureProvider = FutureProvider<List<ProcedureExposure>>((
   ref,
 ) async {
-  return ref.watch(analyticsRepositoryProvider).getProcedureExposure();
+  final repository = ref.watch(analyticsRepositoryProvider);
+
+  final filter = ref.watch(currentAnalyticsFilterProvider);
+
+  return repository.getProcedureExposure(filter: filter);
 });
 
-// =========================
-// Technical Step Exposure
-// =========================
+// Technical Steps
 
 final technicalStepExposureProvider =
     FutureProvider<List<TechnicalStepExposure>>((ref) async {
-      return ref.watch(analyticsRepositoryProvider).getTechnicalStepExposure();
+      final repository = ref.watch(analyticsRepositoryProvider);
+
+      final filter = ref.watch(currentAnalyticsFilterProvider);
+
+      return repository.getTechnicalStepExposure(filter: filter);
     });
 
-// =========================
-// Monthly Case Trend
-// =========================
+// Monthly Trend
 
 final monthlyCaseTrendProvider = FutureProvider<List<MonthlyCaseTrend>>((
   ref,
 ) async {
-  return ref.watch(analyticsRepositoryProvider).getMonthlyCaseTrend();
+  final repository = ref.watch(analyticsRepositoryProvider);
+
+  final filter = ref.watch(currentAnalyticsFilterProvider);
+
+  return repository.getMonthlyCaseTrend(filter: filter);
 });
 
-// =========================
-// Operative Role Distribution
-// =========================
+// Operative Role
 
 final operativeRoleDistributionProvider =
     FutureProvider<List<OperativeRoleDistribution>>((ref) async {
-      return ref
-          .watch(analyticsRepositoryProvider)
-          .getOperativeRoleDistribution();
+      final repository = ref.watch(analyticsRepositoryProvider);
+
+      final filter = ref.watch(currentAnalyticsFilterProvider);
+
+      return repository.getOperativeRoleDistribution(filter: filter);
     });

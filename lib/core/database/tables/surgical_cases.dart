@@ -33,6 +33,12 @@ class SurgicalCases extends Table {
   /// Surgical approach
   TextColumn get surgicalApproach => text().nullable()();
 
+  TextColumn get approach => text().nullable()();
+
+  TextColumn get caseType => text().nullable()();
+
+  TextColumn get complexity => text().nullable()();
+
   // =========================
   // Resident Participation
   // =========================

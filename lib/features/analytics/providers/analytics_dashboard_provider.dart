@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/analytics/domain/analytics_dashboard.dart';
-
 import 'package:surgitrack/features/analytics/domain/specialty_distribution.dart';
 
 import 'package:surgitrack/features/analytics/providers/analytics_provider.dart';
@@ -23,7 +22,7 @@ final analyticsDashboardProvider = FutureProvider<AnalyticsDashboard>((
     operativeRoleDistributionProvider.future,
   );
 
-  final specialtyDistribution = [
+  final specialtyDistribution = <SpecialtyDistribution>[
     SpecialtyDistribution(specialty: 'Cardiac', count: statistics.cardiacCases),
 
     SpecialtyDistribution(
