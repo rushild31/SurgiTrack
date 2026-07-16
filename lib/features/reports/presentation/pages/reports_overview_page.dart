@@ -4,6 +4,7 @@ import 'package:surgitrack/features/reports/presentation/widgets/report_card.dar
 import 'package:surgitrack/features/reports/presentation/pages/surgical_logbook_page.dart';
 import 'package:surgitrack/features/reports/presentation/pages/procedure_exposure_page.dart';
 import 'package:surgitrack/features/reports/presentation/pages/technical_skill_report_page.dart';
+import 'package:surgitrack/features/reports/presentation/pages/training_summary_report_page.dart';
 
 class ReportsOverviewPage extends StatelessWidget {
   const ReportsOverviewPage({super.key});
@@ -82,6 +83,16 @@ class ReportsOverviewPage extends StatelessWidget {
             description: "Monthly and residency progress",
 
             icon: Icons.timeline,
+
+            onTap: () {
+              Navigator.push(
+                context,
+
+                MaterialPageRoute(
+                  builder: (_) => const TrainingSummaryReportPage(),
+                ),
+              );
+            },
           ),
         ],
       ),
