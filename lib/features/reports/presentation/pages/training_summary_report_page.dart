@@ -4,10 +4,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:surgitrack/features/reports/providers/report_provider.dart';
 import 'package:surgitrack/features/reports/domain/training_period_report.dart';
 
+import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
+import 'package:surgitrack/features/reports/data/pdf/training_summary_pdf_generator.dart';
+
 import 'package:surgitrack/features/analytics/domain/analytics_report_filter.dart';
 
 class TrainingSummaryReportPage extends ConsumerWidget {
   const TrainingSummaryReportPage({super.key});
+
+  Future<void> exportPdf(TrainingPeriodReport report) async {
+    final generator = TrainingSummaryPdfGenerator();
+
+    final widgets = generator.build(report);
+
+    final pdfService = PdfService();
+
+    final bytes = await pdfService.generatePdf(content: widgets);
+
+    await pdfService.previewPdf(pdfBytes: bytes);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +31,25 @@ class TrainingSummaryReportPage extends ConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Training Summary")),
+      appBar: AppBar(
+        title: const Text("Training Summary"),
+
+        actions: [
+          report.when(
+            loading: () => const SizedBox(),
+
+            error: (_, _) => const SizedBox(),
+
+            data: (summary) {
+              return IconButton(
+                icon: const Icon(Icons.picture_as_pdf),
+
+                onPressed: () => exportPdf(summary),
+              );
+            },
+          ),
+        ],
+      ),
 
       body: report.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -98,6 +131,7 @@ class SummaryHeader extends StatelessWidget {
 
             Text(
               report.totalCases.toString(),
+
               style: const TextStyle(fontSize: 28),
             ),
           ],

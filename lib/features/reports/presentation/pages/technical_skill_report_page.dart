@@ -4,15 +4,52 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:surgitrack/features/reports/providers/report_provider.dart';
 import 'package:surgitrack/features/reports/domain/technical_skill_report.dart';
 
+import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
+import 'package:surgitrack/features/reports/data/pdf/technical_skill_pdf_generator.dart';
+
 class TechnicalSkillReportPage extends ConsumerWidget {
   const TechnicalSkillReportPage({super.key});
+
+  Future<void> exportPdf(List<TechnicalSkillReport> reports) async {
+    final generator = TechnicalSkillPdfGenerator();
+
+    final widgets = generator.build(reports);
+
+    final pdfService = PdfService();
+
+    final bytes = await pdfService.generatePdf(content: widgets);
+
+    await pdfService.previewPdf(pdfBytes: bytes);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final report = ref.watch(technicalSkillReportProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Technical Skills")),
+      appBar: AppBar(
+        title: const Text("Technical Skills"),
+
+        actions: [
+          report.when(
+            loading: () => const SizedBox(),
+
+            error: (_, _) => const SizedBox(),
+
+            data: (skills) {
+              if (skills.isEmpty) {
+                return const SizedBox();
+              }
+
+              return IconButton(
+                icon: const Icon(Icons.picture_as_pdf),
+
+                onPressed: () => exportPdf(skills),
+              );
+            },
+          ),
+        ],
+      ),
 
       body: report.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -66,10 +103,7 @@ class TechnicalSkillCard extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            Text(
-              "Exposure: "
-              "${report.exposure}",
-            ),
+            Text("Exposure: ${report.exposure}"),
 
             const SizedBox(height: 8),
 
@@ -89,7 +123,6 @@ class TechnicalSkillCard extends StatelessWidget {
 
 class SkillExposureRow extends StatelessWidget {
   final String label;
-
   final int value;
 
   const SkillExposureRow({super.key, required this.label, required this.value});
