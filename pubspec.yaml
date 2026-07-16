@@ -16,7 +16,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  
   # State Management
   flutter_riverpod: ^2.6.1
 
