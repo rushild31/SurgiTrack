@@ -103,4 +103,10 @@ class ProcedureDao extends DatabaseAccessor<AppDatabase>
   Future<int> deleteProcedure(int id) {
     return (delete(procedures)..where((tbl) => tbl.id.equals(id))).go();
   }
+
+  Future<ProcedureData?> getProcedureByProcedureId(String procedureId) {
+    return (select(
+      procedures,
+    )..where((tbl) => tbl.procedureId.equals(procedureId))).getSingleOrNull();
+  }
 }

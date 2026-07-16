@@ -47,6 +47,21 @@ final procedureByIdProvider = FutureProvider.family<ProcedureEntity?, int>((
 });
 
 //
+// Lookup by stable procedure id
+//
+// Examples:
+// CABG
+// BENTALL_PROCEDURE
+// MIDCAB
+//
+final procedureByProcedureIdProvider =
+    FutureProvider.family<ProcedureEntity?, String>((ref, procedureId) async {
+      return ref
+          .watch(procedureRepositoryProvider)
+          .getProcedureByProcedureId(procedureId);
+    });
+
+//
 // Search procedures
 //
 final procedureSearchProvider =

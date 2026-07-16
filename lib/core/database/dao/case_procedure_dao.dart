@@ -26,6 +26,7 @@ class CaseProcedureDao extends DatabaseAccessor<AppDatabase>
     return into(caseProcedures).insert(companion);
   }
 
+  /// Get all procedures linked to a particular case
   Future<List<CaseProcedureWithProcedure>> getProceduresForCase(int caseId) {
     final query = select(caseProcedures).join([
       innerJoin(
@@ -37,7 +38,29 @@ class CaseProcedureDao extends DatabaseAccessor<AppDatabase>
     return query.map((row) {
       return CaseProcedureWithProcedure(
         caseProcedure: row.readTable(caseProcedures),
+        procedure: row.readTable(procedures),
+      );
+    }).get();
+  }
 
+  /// Analytics:
+  /// Returns every procedure performed across all cases
+  ///
+  /// Used for:
+  /// - total procedure count
+  /// - procedure exposure analytics
+  /// - role based procedure statistics
+  Future<List<CaseProcedureWithProcedure>> getAllCaseProcedures() {
+    final query = select(caseProcedures).join([
+      innerJoin(
+        procedures,
+        procedures.id.equalsExp(caseProcedures.procedureId),
+      ),
+    ]);
+
+    return query.map((row) {
+      return CaseProcedureWithProcedure(
+        caseProcedure: row.readTable(caseProcedures),
         procedure: row.readTable(procedures),
       );
     }).get();

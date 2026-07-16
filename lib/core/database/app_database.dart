@@ -17,7 +17,10 @@ import 'dao/surgical_case_dao.dart';
 import 'dao/case_procedure_dao.dart';
 import 'dao/case_attachment_dao.dart';
 import 'dao/dashboard_dao.dart';
-
+import 'dao/procedure_steps_dao.dart';
+import 'dao/case_procedure_steps_dao.dart';
+import 'tables/procedure_steps.dart';
+import 'tables/case_procedure_steps.dart';
 part 'app_database.g.dart';
 
 @DriftDatabase(
@@ -29,6 +32,8 @@ part 'app_database.g.dart';
     SurgicalCases,
     CaseProcedures,
     CaseAttachments,
+    ProcedureSteps,
+    CaseProcedureSteps,
   ],
   daos: [
     PatientDao,
@@ -38,6 +43,8 @@ part 'app_database.g.dart';
     CaseProcedureDao,
     CaseAttachmentDao,
     DashboardDao,
+    ProcedureStepsDao,
+    CaseProcedureStepsDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

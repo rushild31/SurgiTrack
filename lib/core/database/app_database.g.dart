@@ -4644,6 +4644,829 @@ class CaseAttachmentsCompanion extends UpdateCompanion<CaseAttachment> {
   }
 }
 
+class $ProcedureStepsTable extends ProcedureSteps
+    with TableInfo<$ProcedureStepsTable, ProcedureStepData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProcedureStepsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _procedureIdMeta = const VerificationMeta(
+    'procedureId',
+  );
+  @override
+  late final GeneratedColumn<int> procedureId = GeneratedColumn<int>(
+    'procedure_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stepIdMeta = const VerificationMeta('stepId');
+  @override
+  late final GeneratedColumn<String> stepId = GeneratedColumn<String>(
+    'step_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stepNameMeta = const VerificationMeta(
+    'stepName',
+  );
+  @override
+  late final GeneratedColumn<String> stepName = GeneratedColumn<String>(
+    'step_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orderIndexMeta = const VerificationMeta(
+    'orderIndex',
+  );
+  @override
+  late final GeneratedColumn<int> orderIndex = GeneratedColumn<int>(
+    'order_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    procedureId,
+    stepId,
+    stepName,
+    orderIndex,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'procedure_steps';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ProcedureStepData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('procedure_id')) {
+      context.handle(
+        _procedureIdMeta,
+        procedureId.isAcceptableOrUnknown(
+          data['procedure_id']!,
+          _procedureIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_procedureIdMeta);
+    }
+    if (data.containsKey('step_id')) {
+      context.handle(
+        _stepIdMeta,
+        stepId.isAcceptableOrUnknown(data['step_id']!, _stepIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stepIdMeta);
+    }
+    if (data.containsKey('step_name')) {
+      context.handle(
+        _stepNameMeta,
+        stepName.isAcceptableOrUnknown(data['step_name']!, _stepNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stepNameMeta);
+    }
+    if (data.containsKey('order_index')) {
+      context.handle(
+        _orderIndexMeta,
+        orderIndex.isAcceptableOrUnknown(data['order_index']!, _orderIndexMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orderIndexMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProcedureStepData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProcedureStepData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      procedureId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}procedure_id'],
+      )!,
+      stepId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}step_id'],
+      )!,
+      stepName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}step_name'],
+      )!,
+      orderIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}order_index'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $ProcedureStepsTable createAlias(String alias) {
+    return $ProcedureStepsTable(attachedDatabase, alias);
+  }
+}
+
+class ProcedureStepData extends DataClass
+    implements Insertable<ProcedureStepData> {
+  final int id;
+  final int procedureId;
+
+  /// Stable identifier from JSON library
+  /// Example:
+  /// DISTAL_ANASTOMOSIS
+  final String stepId;
+  final String stepName;
+  final int orderIndex;
+  final DateTime createdAt;
+  const ProcedureStepData({
+    required this.id,
+    required this.procedureId,
+    required this.stepId,
+    required this.stepName,
+    required this.orderIndex,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['procedure_id'] = Variable<int>(procedureId);
+    map['step_id'] = Variable<String>(stepId);
+    map['step_name'] = Variable<String>(stepName);
+    map['order_index'] = Variable<int>(orderIndex);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  ProcedureStepsCompanion toCompanion(bool nullToAbsent) {
+    return ProcedureStepsCompanion(
+      id: Value(id),
+      procedureId: Value(procedureId),
+      stepId: Value(stepId),
+      stepName: Value(stepName),
+      orderIndex: Value(orderIndex),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory ProcedureStepData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProcedureStepData(
+      id: serializer.fromJson<int>(json['id']),
+      procedureId: serializer.fromJson<int>(json['procedureId']),
+      stepId: serializer.fromJson<String>(json['stepId']),
+      stepName: serializer.fromJson<String>(json['stepName']),
+      orderIndex: serializer.fromJson<int>(json['orderIndex']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'procedureId': serializer.toJson<int>(procedureId),
+      'stepId': serializer.toJson<String>(stepId),
+      'stepName': serializer.toJson<String>(stepName),
+      'orderIndex': serializer.toJson<int>(orderIndex),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  ProcedureStepData copyWith({
+    int? id,
+    int? procedureId,
+    String? stepId,
+    String? stepName,
+    int? orderIndex,
+    DateTime? createdAt,
+  }) => ProcedureStepData(
+    id: id ?? this.id,
+    procedureId: procedureId ?? this.procedureId,
+    stepId: stepId ?? this.stepId,
+    stepName: stepName ?? this.stepName,
+    orderIndex: orderIndex ?? this.orderIndex,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  ProcedureStepData copyWithCompanion(ProcedureStepsCompanion data) {
+    return ProcedureStepData(
+      id: data.id.present ? data.id.value : this.id,
+      procedureId: data.procedureId.present
+          ? data.procedureId.value
+          : this.procedureId,
+      stepId: data.stepId.present ? data.stepId.value : this.stepId,
+      stepName: data.stepName.present ? data.stepName.value : this.stepName,
+      orderIndex: data.orderIndex.present
+          ? data.orderIndex.value
+          : this.orderIndex,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProcedureStepData(')
+          ..write('id: $id, ')
+          ..write('procedureId: $procedureId, ')
+          ..write('stepId: $stepId, ')
+          ..write('stepName: $stepName, ')
+          ..write('orderIndex: $orderIndex, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, procedureId, stepId, stepName, orderIndex, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProcedureStepData &&
+          other.id == this.id &&
+          other.procedureId == this.procedureId &&
+          other.stepId == this.stepId &&
+          other.stepName == this.stepName &&
+          other.orderIndex == this.orderIndex &&
+          other.createdAt == this.createdAt);
+}
+
+class ProcedureStepsCompanion extends UpdateCompanion<ProcedureStepData> {
+  final Value<int> id;
+  final Value<int> procedureId;
+  final Value<String> stepId;
+  final Value<String> stepName;
+  final Value<int> orderIndex;
+  final Value<DateTime> createdAt;
+  const ProcedureStepsCompanion({
+    this.id = const Value.absent(),
+    this.procedureId = const Value.absent(),
+    this.stepId = const Value.absent(),
+    this.stepName = const Value.absent(),
+    this.orderIndex = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  ProcedureStepsCompanion.insert({
+    this.id = const Value.absent(),
+    required int procedureId,
+    required String stepId,
+    required String stepName,
+    required int orderIndex,
+    this.createdAt = const Value.absent(),
+  }) : procedureId = Value(procedureId),
+       stepId = Value(stepId),
+       stepName = Value(stepName),
+       orderIndex = Value(orderIndex);
+  static Insertable<ProcedureStepData> custom({
+    Expression<int>? id,
+    Expression<int>? procedureId,
+    Expression<String>? stepId,
+    Expression<String>? stepName,
+    Expression<int>? orderIndex,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (procedureId != null) 'procedure_id': procedureId,
+      if (stepId != null) 'step_id': stepId,
+      if (stepName != null) 'step_name': stepName,
+      if (orderIndex != null) 'order_index': orderIndex,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  ProcedureStepsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? procedureId,
+    Value<String>? stepId,
+    Value<String>? stepName,
+    Value<int>? orderIndex,
+    Value<DateTime>? createdAt,
+  }) {
+    return ProcedureStepsCompanion(
+      id: id ?? this.id,
+      procedureId: procedureId ?? this.procedureId,
+      stepId: stepId ?? this.stepId,
+      stepName: stepName ?? this.stepName,
+      orderIndex: orderIndex ?? this.orderIndex,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (procedureId.present) {
+      map['procedure_id'] = Variable<int>(procedureId.value);
+    }
+    if (stepId.present) {
+      map['step_id'] = Variable<String>(stepId.value);
+    }
+    if (stepName.present) {
+      map['step_name'] = Variable<String>(stepName.value);
+    }
+    if (orderIndex.present) {
+      map['order_index'] = Variable<int>(orderIndex.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProcedureStepsCompanion(')
+          ..write('id: $id, ')
+          ..write('procedureId: $procedureId, ')
+          ..write('stepId: $stepId, ')
+          ..write('stepName: $stepName, ')
+          ..write('orderIndex: $orderIndex, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $CaseProcedureStepsTable extends CaseProcedureSteps
+    with TableInfo<$CaseProcedureStepsTable, CaseProcedureStepData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CaseProcedureStepsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _caseProcedureIdMeta = const VerificationMeta(
+    'caseProcedureId',
+  );
+  @override
+  late final GeneratedColumn<int> caseProcedureId = GeneratedColumn<int>(
+    'case_procedure_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _procedureStepIdMeta = const VerificationMeta(
+    'procedureStepId',
+  );
+  @override
+  late final GeneratedColumn<int> procedureStepId = GeneratedColumn<int>(
+    'procedure_step_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    caseProcedureId,
+    procedureStepId,
+    role,
+    notes,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'case_procedure_steps';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CaseProcedureStepData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('case_procedure_id')) {
+      context.handle(
+        _caseProcedureIdMeta,
+        caseProcedureId.isAcceptableOrUnknown(
+          data['case_procedure_id']!,
+          _caseProcedureIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_caseProcedureIdMeta);
+    }
+    if (data.containsKey('procedure_step_id')) {
+      context.handle(
+        _procedureStepIdMeta,
+        procedureStepId.isAcceptableOrUnknown(
+          data['procedure_step_id']!,
+          _procedureStepIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_procedureStepIdMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+        _roleMeta,
+        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CaseProcedureStepData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CaseProcedureStepData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      caseProcedureId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}case_procedure_id'],
+      )!,
+      procedureStepId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}procedure_step_id'],
+      )!,
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $CaseProcedureStepsTable createAlias(String alias) {
+    return $CaseProcedureStepsTable(attachedDatabase, alias);
+  }
+}
+
+class CaseProcedureStepData extends DataClass
+    implements Insertable<CaseProcedureStepData> {
+  final int id;
+  final int caseProcedureId;
+  final int procedureStepId;
+
+  /// Personal technical step exposure role
+  ///
+  /// Allowed values:
+  /// observed
+  /// assisted
+  /// performed_under_supervision
+  /// performed_independently
+  final String role;
+  final String? notes;
+  final DateTime createdAt;
+  const CaseProcedureStepData({
+    required this.id,
+    required this.caseProcedureId,
+    required this.procedureStepId,
+    required this.role,
+    this.notes,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['case_procedure_id'] = Variable<int>(caseProcedureId);
+    map['procedure_step_id'] = Variable<int>(procedureStepId);
+    map['role'] = Variable<String>(role);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  CaseProcedureStepsCompanion toCompanion(bool nullToAbsent) {
+    return CaseProcedureStepsCompanion(
+      id: Value(id),
+      caseProcedureId: Value(caseProcedureId),
+      procedureStepId: Value(procedureStepId),
+      role: Value(role),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory CaseProcedureStepData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CaseProcedureStepData(
+      id: serializer.fromJson<int>(json['id']),
+      caseProcedureId: serializer.fromJson<int>(json['caseProcedureId']),
+      procedureStepId: serializer.fromJson<int>(json['procedureStepId']),
+      role: serializer.fromJson<String>(json['role']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'caseProcedureId': serializer.toJson<int>(caseProcedureId),
+      'procedureStepId': serializer.toJson<int>(procedureStepId),
+      'role': serializer.toJson<String>(role),
+      'notes': serializer.toJson<String?>(notes),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  CaseProcedureStepData copyWith({
+    int? id,
+    int? caseProcedureId,
+    int? procedureStepId,
+    String? role,
+    Value<String?> notes = const Value.absent(),
+    DateTime? createdAt,
+  }) => CaseProcedureStepData(
+    id: id ?? this.id,
+    caseProcedureId: caseProcedureId ?? this.caseProcedureId,
+    procedureStepId: procedureStepId ?? this.procedureStepId,
+    role: role ?? this.role,
+    notes: notes.present ? notes.value : this.notes,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  CaseProcedureStepData copyWithCompanion(CaseProcedureStepsCompanion data) {
+    return CaseProcedureStepData(
+      id: data.id.present ? data.id.value : this.id,
+      caseProcedureId: data.caseProcedureId.present
+          ? data.caseProcedureId.value
+          : this.caseProcedureId,
+      procedureStepId: data.procedureStepId.present
+          ? data.procedureStepId.value
+          : this.procedureStepId,
+      role: data.role.present ? data.role.value : this.role,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CaseProcedureStepData(')
+          ..write('id: $id, ')
+          ..write('caseProcedureId: $caseProcedureId, ')
+          ..write('procedureStepId: $procedureStepId, ')
+          ..write('role: $role, ')
+          ..write('notes: $notes, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, caseProcedureId, procedureStepId, role, notes, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CaseProcedureStepData &&
+          other.id == this.id &&
+          other.caseProcedureId == this.caseProcedureId &&
+          other.procedureStepId == this.procedureStepId &&
+          other.role == this.role &&
+          other.notes == this.notes &&
+          other.createdAt == this.createdAt);
+}
+
+class CaseProcedureStepsCompanion
+    extends UpdateCompanion<CaseProcedureStepData> {
+  final Value<int> id;
+  final Value<int> caseProcedureId;
+  final Value<int> procedureStepId;
+  final Value<String> role;
+  final Value<String?> notes;
+  final Value<DateTime> createdAt;
+  const CaseProcedureStepsCompanion({
+    this.id = const Value.absent(),
+    this.caseProcedureId = const Value.absent(),
+    this.procedureStepId = const Value.absent(),
+    this.role = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  CaseProcedureStepsCompanion.insert({
+    this.id = const Value.absent(),
+    required int caseProcedureId,
+    required int procedureStepId,
+    required String role,
+    this.notes = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  }) : caseProcedureId = Value(caseProcedureId),
+       procedureStepId = Value(procedureStepId),
+       role = Value(role);
+  static Insertable<CaseProcedureStepData> custom({
+    Expression<int>? id,
+    Expression<int>? caseProcedureId,
+    Expression<int>? procedureStepId,
+    Expression<String>? role,
+    Expression<String>? notes,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (caseProcedureId != null) 'case_procedure_id': caseProcedureId,
+      if (procedureStepId != null) 'procedure_step_id': procedureStepId,
+      if (role != null) 'role': role,
+      if (notes != null) 'notes': notes,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  CaseProcedureStepsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? caseProcedureId,
+    Value<int>? procedureStepId,
+    Value<String>? role,
+    Value<String?>? notes,
+    Value<DateTime>? createdAt,
+  }) {
+    return CaseProcedureStepsCompanion(
+      id: id ?? this.id,
+      caseProcedureId: caseProcedureId ?? this.caseProcedureId,
+      procedureStepId: procedureStepId ?? this.procedureStepId,
+      role: role ?? this.role,
+      notes: notes ?? this.notes,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (caseProcedureId.present) {
+      map['case_procedure_id'] = Variable<int>(caseProcedureId.value);
+    }
+    if (procedureStepId.present) {
+      map['procedure_step_id'] = Variable<int>(procedureStepId.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CaseProcedureStepsCompanion(')
+          ..write('id: $id, ')
+          ..write('caseProcedureId: $caseProcedureId, ')
+          ..write('procedureStepId: $procedureStepId, ')
+          ..write('role: $role, ')
+          ..write('notes: $notes, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -4657,6 +5480,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CaseAttachmentsTable caseAttachments = $CaseAttachmentsTable(
     this,
   );
+  late final $ProcedureStepsTable procedureSteps = $ProcedureStepsTable(this);
+  late final $CaseProcedureStepsTable caseProcedureSteps =
+      $CaseProcedureStepsTable(this);
   late final PatientDao patientDao = PatientDao(this as AppDatabase);
   late final PatientAttachmentDao patientAttachmentDao = PatientAttachmentDao(
     this as AppDatabase,
@@ -4672,6 +5498,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this as AppDatabase,
   );
   late final DashboardDao dashboardDao = DashboardDao(this as AppDatabase);
+  late final ProcedureStepsDao procedureStepsDao = ProcedureStepsDao(
+    this as AppDatabase,
+  );
+  late final CaseProcedureStepsDao caseProcedureStepsDao =
+      CaseProcedureStepsDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4684,6 +5515,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     surgicalCases,
     caseProcedures,
     caseAttachments,
+    procedureSteps,
+    caseProcedureSteps,
   ];
 }
 
@@ -6891,6 +7724,459 @@ typedef $$CaseAttachmentsTableProcessedTableManager =
       CaseAttachment,
       PrefetchHooks Function()
     >;
+typedef $$ProcedureStepsTableCreateCompanionBuilder =
+    ProcedureStepsCompanion Function({
+      Value<int> id,
+      required int procedureId,
+      required String stepId,
+      required String stepName,
+      required int orderIndex,
+      Value<DateTime> createdAt,
+    });
+typedef $$ProcedureStepsTableUpdateCompanionBuilder =
+    ProcedureStepsCompanion Function({
+      Value<int> id,
+      Value<int> procedureId,
+      Value<String> stepId,
+      Value<String> stepName,
+      Value<int> orderIndex,
+      Value<DateTime> createdAt,
+    });
+
+class $$ProcedureStepsTableFilterComposer
+    extends Composer<_$AppDatabase, $ProcedureStepsTable> {
+  $$ProcedureStepsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get procedureId => $composableBuilder(
+    column: $table.procedureId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stepId => $composableBuilder(
+    column: $table.stepId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stepName => $composableBuilder(
+    column: $table.stepName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ProcedureStepsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProcedureStepsTable> {
+  $$ProcedureStepsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get procedureId => $composableBuilder(
+    column: $table.procedureId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stepId => $composableBuilder(
+    column: $table.stepId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stepName => $composableBuilder(
+    column: $table.stepName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ProcedureStepsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProcedureStepsTable> {
+  $$ProcedureStepsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get procedureId => $composableBuilder(
+    column: $table.procedureId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get stepId =>
+      $composableBuilder(column: $table.stepId, builder: (column) => column);
+
+  GeneratedColumn<String> get stepName =>
+      $composableBuilder(column: $table.stepName, builder: (column) => column);
+
+  GeneratedColumn<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$ProcedureStepsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ProcedureStepsTable,
+          ProcedureStepData,
+          $$ProcedureStepsTableFilterComposer,
+          $$ProcedureStepsTableOrderingComposer,
+          $$ProcedureStepsTableAnnotationComposer,
+          $$ProcedureStepsTableCreateCompanionBuilder,
+          $$ProcedureStepsTableUpdateCompanionBuilder,
+          (
+            ProcedureStepData,
+            BaseReferences<
+              _$AppDatabase,
+              $ProcedureStepsTable,
+              ProcedureStepData
+            >,
+          ),
+          ProcedureStepData,
+          PrefetchHooks Function()
+        > {
+  $$ProcedureStepsTableTableManager(
+    _$AppDatabase db,
+    $ProcedureStepsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProcedureStepsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProcedureStepsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProcedureStepsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> procedureId = const Value.absent(),
+                Value<String> stepId = const Value.absent(),
+                Value<String> stepName = const Value.absent(),
+                Value<int> orderIndex = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => ProcedureStepsCompanion(
+                id: id,
+                procedureId: procedureId,
+                stepId: stepId,
+                stepName: stepName,
+                orderIndex: orderIndex,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int procedureId,
+                required String stepId,
+                required String stepName,
+                required int orderIndex,
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => ProcedureStepsCompanion.insert(
+                id: id,
+                procedureId: procedureId,
+                stepId: stepId,
+                stepName: stepName,
+                orderIndex: orderIndex,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ProcedureStepsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ProcedureStepsTable,
+      ProcedureStepData,
+      $$ProcedureStepsTableFilterComposer,
+      $$ProcedureStepsTableOrderingComposer,
+      $$ProcedureStepsTableAnnotationComposer,
+      $$ProcedureStepsTableCreateCompanionBuilder,
+      $$ProcedureStepsTableUpdateCompanionBuilder,
+      (
+        ProcedureStepData,
+        BaseReferences<_$AppDatabase, $ProcedureStepsTable, ProcedureStepData>,
+      ),
+      ProcedureStepData,
+      PrefetchHooks Function()
+    >;
+typedef $$CaseProcedureStepsTableCreateCompanionBuilder =
+    CaseProcedureStepsCompanion Function({
+      Value<int> id,
+      required int caseProcedureId,
+      required int procedureStepId,
+      required String role,
+      Value<String?> notes,
+      Value<DateTime> createdAt,
+    });
+typedef $$CaseProcedureStepsTableUpdateCompanionBuilder =
+    CaseProcedureStepsCompanion Function({
+      Value<int> id,
+      Value<int> caseProcedureId,
+      Value<int> procedureStepId,
+      Value<String> role,
+      Value<String?> notes,
+      Value<DateTime> createdAt,
+    });
+
+class $$CaseProcedureStepsTableFilterComposer
+    extends Composer<_$AppDatabase, $CaseProcedureStepsTable> {
+  $$CaseProcedureStepsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get caseProcedureId => $composableBuilder(
+    column: $table.caseProcedureId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get procedureStepId => $composableBuilder(
+    column: $table.procedureStepId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$CaseProcedureStepsTableOrderingComposer
+    extends Composer<_$AppDatabase, $CaseProcedureStepsTable> {
+  $$CaseProcedureStepsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get caseProcedureId => $composableBuilder(
+    column: $table.caseProcedureId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get procedureStepId => $composableBuilder(
+    column: $table.procedureStepId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$CaseProcedureStepsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CaseProcedureStepsTable> {
+  $$CaseProcedureStepsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get caseProcedureId => $composableBuilder(
+    column: $table.caseProcedureId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get procedureStepId => $composableBuilder(
+    column: $table.procedureStepId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$CaseProcedureStepsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $CaseProcedureStepsTable,
+          CaseProcedureStepData,
+          $$CaseProcedureStepsTableFilterComposer,
+          $$CaseProcedureStepsTableOrderingComposer,
+          $$CaseProcedureStepsTableAnnotationComposer,
+          $$CaseProcedureStepsTableCreateCompanionBuilder,
+          $$CaseProcedureStepsTableUpdateCompanionBuilder,
+          (
+            CaseProcedureStepData,
+            BaseReferences<
+              _$AppDatabase,
+              $CaseProcedureStepsTable,
+              CaseProcedureStepData
+            >,
+          ),
+          CaseProcedureStepData,
+          PrefetchHooks Function()
+        > {
+  $$CaseProcedureStepsTableTableManager(
+    _$AppDatabase db,
+    $CaseProcedureStepsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CaseProcedureStepsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CaseProcedureStepsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CaseProcedureStepsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> caseProcedureId = const Value.absent(),
+                Value<int> procedureStepId = const Value.absent(),
+                Value<String> role = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => CaseProcedureStepsCompanion(
+                id: id,
+                caseProcedureId: caseProcedureId,
+                procedureStepId: procedureStepId,
+                role: role,
+                notes: notes,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int caseProcedureId,
+                required int procedureStepId,
+                required String role,
+                Value<String?> notes = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => CaseProcedureStepsCompanion.insert(
+                id: id,
+                caseProcedureId: caseProcedureId,
+                procedureStepId: procedureStepId,
+                role: role,
+                notes: notes,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$CaseProcedureStepsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $CaseProcedureStepsTable,
+      CaseProcedureStepData,
+      $$CaseProcedureStepsTableFilterComposer,
+      $$CaseProcedureStepsTableOrderingComposer,
+      $$CaseProcedureStepsTableAnnotationComposer,
+      $$CaseProcedureStepsTableCreateCompanionBuilder,
+      $$CaseProcedureStepsTableUpdateCompanionBuilder,
+      (
+        CaseProcedureStepData,
+        BaseReferences<
+          _$AppDatabase,
+          $CaseProcedureStepsTable,
+          CaseProcedureStepData
+        >,
+      ),
+      CaseProcedureStepData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -6909,4 +8195,8 @@ class $AppDatabaseManager {
       $$CaseProceduresTableTableManager(_db, _db.caseProcedures);
   $$CaseAttachmentsTableTableManager get caseAttachments =>
       $$CaseAttachmentsTableTableManager(_db, _db.caseAttachments);
+  $$ProcedureStepsTableTableManager get procedureSteps =>
+      $$ProcedureStepsTableTableManager(_db, _db.procedureSteps);
+  $$CaseProcedureStepsTableTableManager get caseProcedureSteps =>
+      $$CaseProcedureStepsTableTableManager(_db, _db.caseProcedureSteps);
 }

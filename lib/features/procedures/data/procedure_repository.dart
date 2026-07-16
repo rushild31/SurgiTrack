@@ -36,9 +36,22 @@ class ProcedureRepository {
   Future<ProcedureEntity?> getProcedureById(int id) async {
     final row = await database.procedureDao.getProcedureById(id);
 
-    if (row == null) {
-      return null;
-    }
+    if (row == null) return null;
+
+    return ProcedureMapper.fromData(row);
+  }
+
+  /// Lookup using the stable JSON id
+  /// Example:
+  /// CABG
+  /// BENTALL_PROCEDURE
+  /// MIDCAB
+  Future<ProcedureEntity?> getProcedureByProcedureId(String procedureId) async {
+    final row = await database.procedureDao.getProcedureByProcedureId(
+      procedureId,
+    );
+
+    if (row == null) return null;
 
     return ProcedureMapper.fromData(row);
   }
