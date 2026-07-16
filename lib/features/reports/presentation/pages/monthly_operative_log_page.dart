@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/reports/providers/report_provider.dart';
 
+import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
+import 'package:surgitrack/features/reports/data/pdf/monthly_log_pdf_generator.dart';
+
 class MonthlyOperativeLogPage extends ConsumerStatefulWidget {
   const MonthlyOperativeLogPage({super.key});
 
@@ -28,10 +31,6 @@ class _MonthlyOperativeLogPageState
     );
   }
 
-  void loadReport() {
-    ref.invalidate(monthlyOperativeLogReportProvider(selectedRange));
-  }
-
   Future<void> pickMonth() async {
     final picked = await showDatePicker(
       context: context,
@@ -52,6 +51,18 @@ class _MonthlyOperativeLogPageState
         end: DateTime(picked.year, picked.month + 1, 0),
       );
     });
+  }
+
+  Future<void> exportPdf(dynamic report) async {
+    final generator = MonthlyLogPdfGenerator();
+
+    final widgets = generator.build(report);
+
+    final pdfService = PdfService();
+
+    final bytes = await pdfService.generatePdf(content: widgets);
+
+    await pdfService.previewPdf(pdfBytes: bytes);
   }
 
   @override
@@ -86,19 +97,29 @@ class _MonthlyOperativeLogPageState
               Padding(
                 padding: const EdgeInsets.all(12),
 
-                child: Align(
-                  alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                  child: Text(
-                    "${data.month}  "
-                    "(${data.totalCases} cases)",
+                  children: [
+                    Text(
+                      "${data.month} "
+                      "(${data.totalCases} cases)",
 
-                    style: const TextStyle(
-                      fontSize: 18,
+                      style: const TextStyle(
+                        fontSize: 18,
 
-                      fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
+
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.picture_as_pdf),
+
+                      label: const Text("Export PDF"),
+
+                      onPressed: () => exportPdf(data),
+                    ),
+                  ],
                 ),
               ),
 
@@ -110,8 +131,6 @@ class _MonthlyOperativeLogPageState
                     child: DataTable(
                       columnSpacing: 18,
 
-                      headingRowHeight: 48,
-
                       columns: const [
                         DataColumn(label: Text("Sr No")),
 
@@ -121,57 +140,52 @@ class _MonthlyOperativeLogPageState
 
                         DataColumn(label: Text("Age/Sex")),
 
-                        DataColumn(label: Text("Admission Date")),
+                        DataColumn(label: Text("Admission")),
 
                         DataColumn(label: Text("Diagnosis")),
 
                         DataColumn(label: Text("Surgery Date")),
 
-                        DataColumn(label: Text("Procedure(s)")),
+                        DataColumn(label: Text("Procedure")),
 
                         DataColumn(label: Text("Role")),
                       ],
 
-                      rows: data.entries
-                          .map(
-                            (entry) => DataRow(
-                              cells: [
-                                DataCell(Text(entry.serialNumber.toString())),
+                      rows: data.entries.map((entry) {
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(entry.serialNumber.toString())),
 
-                                DataCell(Text(entry.patientName)),
+                            DataCell(Text(entry.patientName)),
 
-                                DataCell(Text(entry.hospitalId)),
+                            DataCell(Text(entry.hospitalId)),
 
-                                DataCell(Text(entry.ageSex)),
+                            DataCell(Text(entry.ageSex)),
 
-                                DataCell(
-                                  Text(
-                                    entry.admissionDate
-                                            ?.toString()
-                                            .split(" ")
-                                            .first ??
-                                        "-",
-                                  ),
-                                ),
-
-                                DataCell(Text(entry.diagnosis)),
-
-                                DataCell(
-                                  Text(
-                                    entry.surgeryDate
-                                        .toString()
+                            DataCell(
+                              Text(
+                                entry.admissionDate
+                                        ?.toString()
                                         .split(" ")
-                                        .first,
-                                  ),
-                                ),
-
-                                DataCell(Text(entry.procedures.join(", "))),
-
-                                DataCell(Text(entry.operativeRole)),
-                              ],
+                                        .first ??
+                                    "-",
+                              ),
                             ),
-                          )
-                          .toList(),
+
+                            DataCell(Text(entry.diagnosis)),
+
+                            DataCell(
+                              Text(
+                                entry.surgeryDate.toString().split(" ").first,
+                              ),
+                            ),
+
+                            DataCell(Text(entry.procedures.join(", "))),
+
+                            DataCell(Text(entry.operativeRole)),
+                          ],
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
