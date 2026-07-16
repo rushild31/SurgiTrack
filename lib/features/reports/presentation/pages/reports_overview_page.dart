@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/report_card.dart';
+import 'package:surgitrack/features/reports/presentation/widgets/report_card.dart';
+import 'package:surgitrack/features/reports/presentation/pages/surgical_logbook_page.dart';
 
 class ReportsOverviewPage extends StatelessWidget {
   const ReportsOverviewPage({super.key});
@@ -27,6 +28,14 @@ class ReportsOverviewPage extends StatelessWidget {
             description: "Complete operative case listing",
 
             icon: Icons.menu_book,
+
+            onTap: () {
+              Navigator.push(
+                context,
+
+                MaterialPageRoute(builder: (_) => const SurgicalLogbookPage()),
+              );
+            },
           ),
 
           ReportCard(
