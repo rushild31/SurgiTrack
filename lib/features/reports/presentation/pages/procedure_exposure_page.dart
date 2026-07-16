@@ -4,15 +4,55 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:surgitrack/features/reports/providers/report_provider.dart';
 import 'package:surgitrack/features/reports/domain/procedure_exposure_report.dart';
 
+import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
+import 'package:surgitrack/features/reports/data/pdf/procedure_exposure_pdf_generator.dart';
+
 class ProcedureExposurePage extends ConsumerWidget {
   const ProcedureExposurePage({super.key});
+
+  Future<void> exportPdf(
+    BuildContext context,
+    List<ProcedureExposureReport> reports,
+  ) async {
+    final generator = ProcedureExposurePdfGenerator();
+
+    final widgets = generator.build(reports);
+
+    final pdfService = PdfService();
+
+    final bytes = await pdfService.generatePdf(content: widgets);
+
+    await pdfService.previewPdf(pdfBytes: bytes);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final report = ref.watch(procedureExposureReportProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Procedure Exposure")),
+      appBar: AppBar(
+        title: const Text("Procedure Exposure"),
+
+        actions: [
+          report.when(
+            loading: () => const SizedBox(),
+
+            error: (_, _) => const SizedBox(),
+
+            data: (procedures) {
+              if (procedures.isEmpty) {
+                return const SizedBox();
+              }
+
+              return IconButton(
+                icon: const Icon(Icons.picture_as_pdf),
+
+                onPressed: () => exportPdf(context, procedures),
+              );
+            },
+          ),
+        ],
+      ),
 
       body: report.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -64,10 +104,7 @@ class ProcedureExposureCard extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            Text(
-              "Total Exposure: "
-              "${report.totalCases}",
-            ),
+            Text("Total Exposure: ${report.totalCases}"),
 
             const SizedBox(height: 8),
 
