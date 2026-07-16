@@ -8,6 +8,8 @@ mixin _$CaseProcedureStepsDaoMixin on DatabaseAccessor<AppDatabase> {
       attachedDatabase.caseProcedureSteps;
   $ProcedureStepsTable get procedureSteps => attachedDatabase.procedureSteps;
   $ProceduresTable get procedures => attachedDatabase.procedures;
+  $CaseProceduresTable get caseProcedures => attachedDatabase.caseProcedures;
+  $SurgicalCasesTable get surgicalCases => attachedDatabase.surgicalCases;
   CaseProcedureStepsDaoManager get managers =>
       CaseProcedureStepsDaoManager(this);
 }
@@ -27,4 +29,11 @@ class CaseProcedureStepsDaoManager {
       );
   $$ProceduresTableTableManager get procedures =>
       $$ProceduresTableTableManager(_db.attachedDatabase, _db.procedures);
+  $$CaseProceduresTableTableManager get caseProcedures =>
+      $$CaseProceduresTableTableManager(
+        _db.attachedDatabase,
+        _db.caseProcedures,
+      );
+  $$SurgicalCasesTableTableManager get surgicalCases =>
+      $$SurgicalCasesTableTableManager(_db.attachedDatabase, _db.surgicalCases);
 }

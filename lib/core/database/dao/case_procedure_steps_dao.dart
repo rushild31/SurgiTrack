@@ -5,6 +5,8 @@ import 'package:surgitrack/core/database/app_database.dart';
 import 'package:surgitrack/core/database/tables/case_procedure_steps.dart';
 import 'package:surgitrack/core/database/tables/procedure_steps.dart';
 import 'package:surgitrack/core/database/tables/procedures.dart';
+import 'package:surgitrack/core/database/tables/case_procedures.dart';
+import 'package:surgitrack/core/database/tables/surgical_cases.dart';
 
 part 'case_procedure_steps_dao.g.dart';
 
@@ -15,7 +17,6 @@ class CaseProcedureStepWithDetails {
 
   CaseProcedureStepWithDetails({
     required this.caseStep,
-
     required this.procedureStep,
   });
 }
@@ -27,16 +28,25 @@ class CaseProcedureStepWithProcedureDetails {
 
   final ProcedureData procedure;
 
+  final int caseId;
+
   CaseProcedureStepWithProcedureDetails({
     required this.caseStep,
-
     required this.procedureStep,
-
     required this.procedure,
+    required this.caseId,
   });
 }
 
-@DriftAccessor(tables: [CaseProcedureSteps, ProcedureSteps, Procedures])
+@DriftAccessor(
+  tables: [
+    CaseProcedureSteps,
+    ProcedureSteps,
+    Procedures,
+    CaseProcedures,
+    SurgicalCases,
+  ],
+)
 class CaseProcedureStepsDao extends DatabaseAccessor<AppDatabase>
     with _$CaseProcedureStepsDaoMixin {
   CaseProcedureStepsDao(super.db);
@@ -67,12 +77,6 @@ class CaseProcedureStepsDao extends DatabaseAccessor<AppDatabase>
     }).get();
   }
 
-  // =========================
-  // Analytics
-  // =========================
-
-  /// Returns all technical step exposure logs
-  /// with parent procedure information
   Future<List<CaseProcedureStepWithProcedureDetails>>
   getAllCaseProcedureSteps() {
     final query = select(caseProcedureSteps).join([
@@ -85,6 +89,16 @@ class CaseProcedureStepsDao extends DatabaseAccessor<AppDatabase>
         procedures,
         procedures.id.equalsExp(procedureSteps.procedureId),
       ),
+
+      innerJoin(
+        caseProcedures,
+        caseProcedures.id.equalsExp(caseProcedureSteps.caseProcedureId),
+      ),
+
+      innerJoin(
+        surgicalCases,
+        surgicalCases.id.equalsExp(caseProcedures.caseId),
+      ),
     ]);
 
     return query.map((row) {
@@ -94,6 +108,8 @@ class CaseProcedureStepsDao extends DatabaseAccessor<AppDatabase>
         procedureStep: row.readTable(procedureSteps),
 
         procedure: row.readTable(procedures),
+
+        caseId: row.readTable(surgicalCases).id,
       );
     }).get();
   }
