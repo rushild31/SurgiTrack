@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/reports/providers/reports_provider.dart';
 import 'package:surgitrack/features/reports/domain/surgical_logbook_report.dart';
-import 'package:surgitrack/features/reports/presentation/pages/surgical_logbook_page.dart';
 
 class SurgicalLogbookPage extends ConsumerWidget {
   const SurgicalLogbookPage({super.key});

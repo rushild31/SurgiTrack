@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:surgitrack/features/reports/presentation/widgets/report_card.dart';
 import 'package:surgitrack/features/reports/presentation/pages/surgical_logbook_page.dart';
+import 'package:surgitrack/features/reports/presentation/pages/procedure_exposure_page.dart';
 
 class ReportsOverviewPage extends StatelessWidget {
   const ReportsOverviewPage({super.key});
@@ -44,6 +45,16 @@ class ReportsOverviewPage extends StatelessWidget {
             description: "Procedure-wise operative experience",
 
             icon: Icons.analytics,
+
+            onTap: () {
+              Navigator.push(
+                context,
+
+                MaterialPageRoute(
+                  builder: (_) => const ProcedureExposurePage(),
+                ),
+              );
+            },
           ),
 
           ReportCard(
