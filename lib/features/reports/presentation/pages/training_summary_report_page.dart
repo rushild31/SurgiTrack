@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:surgitrack/features/reports/providers/reports_provider.dart';
+import 'package:surgitrack/features/reports/providers/report_provider.dart';
 import 'package:surgitrack/features/reports/domain/training_period_report.dart';
 
 import 'package:surgitrack/features/analytics/domain/analytics_report_filter.dart';

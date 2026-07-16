@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:surgitrack/features/reports/providers/reports_provider.dart';
+import 'package:surgitrack/features/reports/providers/report_provider.dart';
 import 'package:surgitrack/features/reports/domain/procedure_exposure_report.dart';
 
 class ProcedureExposurePage extends ConsumerWidget {

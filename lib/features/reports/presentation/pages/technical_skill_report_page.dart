@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:surgitrack/features/reports/providers/reports_provider.dart';
+import 'package:surgitrack/features/reports/providers/report_provider.dart';
 import 'package:surgitrack/features/reports/domain/technical_skill_report.dart';
 
 class TechnicalSkillReportPage extends ConsumerWidget {

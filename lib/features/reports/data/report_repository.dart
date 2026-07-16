@@ -7,6 +7,7 @@ import 'package:surgitrack/features/reports/domain/surgical_logbook_report.dart'
 import 'package:surgitrack/features/reports/domain/procedure_exposure_report.dart';
 import 'package:surgitrack/features/reports/domain/technical_skill_report.dart';
 import 'package:surgitrack/features/reports/domain/training_period_report.dart';
+import 'package:surgitrack/features/reports/domain/monthly_operative_log_report.dart';
 
 class ReportRepository {
   final AppDatabase database;
@@ -19,7 +20,91 @@ class ReportRepository {
   });
 
   // =====================================================
-  // SURGICAL LOGBOOK REPORT
+  // MONTHLY OPERATIVE LOG REPORT
+  // =====================================================
+
+  Future<MonthlyOperativeLogReport> getMonthlyOperativeLogReport({
+    required DateTime from,
+
+    required DateTime to,
+  }) async {
+    final cases = await database.surgicalCaseDao.getAllCases();
+
+    final patients = await database.patientDao.getAllPatients();
+
+    final caseProcedures = await database.caseProcedureDao
+        .getAllCaseProcedures();
+
+    final procedures = await database.procedureDao.getAllProcedures();
+
+    final patientMap = {for (final patient in patients) patient.id: patient};
+
+    final procedureMap = {
+      for (final procedure in procedures) procedure.id: procedure.name,
+    };
+
+    final procedureListMap = <int, List<String>>{};
+
+    for (final item in caseProcedures) {
+      procedureListMap
+          .putIfAbsent(item.caseProcedure.caseId, () => [])
+          .add(
+            procedureMap[item.caseProcedure.procedureId] ?? "Unknown Procedure",
+          );
+    }
+
+    final filteredCases = cases.where((surgicalCase) {
+      return !surgicalCase.surgeryDate.isBefore(from) &&
+          !surgicalCase.surgeryDate.isAfter(to);
+    }).toList();
+
+    filteredCases.sort((a, b) => a.surgeryDate.compareTo(b.surgeryDate));
+
+    final entries = <MonthlyOperativeLogEntry>[];
+
+    int serialNumber = 1;
+
+    for (final surgicalCase in filteredCases) {
+      final patient = patientMap[surgicalCase.patientId];
+
+      entries.add(
+        MonthlyOperativeLogEntry(
+          serialNumber: serialNumber++,
+
+          patientName: patient?.name ?? "Unknown",
+
+          hospitalId: patient?.hospitalId ?? "-",
+
+          ageSex:
+              "${_calculateAge(patient?.dateOfBirth)} / "
+              "NA",
+
+          admissionDate: patient?.admissionDate,
+
+          diagnosis: surgicalCase.diagnosis,
+
+          surgeryDate: surgicalCase.surgeryDate,
+
+          procedures: procedureListMap[surgicalCase.id] ?? [],
+
+          operativeRole: surgicalCase.operativeRole,
+        ),
+      );
+    }
+
+    return MonthlyOperativeLogReport(
+      month: "${from.month}/${from.year}",
+
+      fromDate: from,
+
+      toDate: to,
+
+      entries: entries,
+    );
+  }
+
+  // =====================================================
+  // EXISTING REPORT METHODS
   // =====================================================
 
   Future<List<SurgicalLogbookEntry>> getSurgicalLogbook() async {
@@ -68,12 +153,8 @@ class ReportRepository {
             ? "Dual procedure"
             : "Complex",
       );
-    }).toList()..sort((a, b) => b.surgeryDate.compareTo(a.surgeryDate));
+    }).toList();
   }
-
-  // =====================================================
-  // PROCEDURE EXPOSURE REPORT
-  // =====================================================
 
   Future<List<ProcedureExposureReport>> getProcedureExposureReport() async {
     final exposure = await analyticsRepository.getProcedureExposure();
@@ -95,16 +176,14 @@ class ReportRepository {
     }).toList();
   }
 
-  // =====================================================
-  // TECHNICAL SKILL REPORT
-  // =====================================================
-
   Future<List<TechnicalSkillReport>> getTechnicalSkillReport() async {
     final exposure = await analyticsRepository.getTechnicalStepExposure();
 
     return exposure.map((item) {
       return TechnicalSkillReport(
-        skillName: "${item.procedureName} - ${item.stepName}",
+        skillName:
+            "${item.procedureName} - "
+            "${item.stepName}",
 
         exposure: item.totalCases,
 
@@ -119,10 +198,6 @@ class ReportRepository {
     }).toList();
   }
 
-  // =====================================================
-  // TRAINING PERIOD REPORT
-  // =====================================================
-
   Future<TrainingPeriodReport> getTrainingPeriodReport({
     AnalyticsReportFilter filter = AnalyticsReportFilter.empty,
   }) async {
@@ -132,14 +207,10 @@ class ReportRepository {
       filter: filter,
     );
 
-    final Map<String, int> roleMap = {
-      for (final role in roles) role.role: role.count,
-    };
+    final roleMap = {for (final role in roles) role.role: role.count};
 
     return TrainingPeriodReport(
-      period:
-          "${filter.from?.year ?? 'All'} - "
-          "${filter.to?.year ?? 'Present'}",
+      period: "Training Period",
 
       totalCases: statistics.totalCases,
 
@@ -159,5 +230,22 @@ class ReportRepository {
 
       observedCases: roleMap['observed'] ?? 0,
     );
+  }
+
+  int? _calculateAge(DateTime? birthDate) {
+    if (birthDate == null) {
+      return null;
+    }
+
+    final today = DateTime.now();
+
+    int age = today.year - birthDate.year;
+
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+
+    return age;
   }
 }

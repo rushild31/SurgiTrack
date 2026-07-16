@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:surgitrack/features/reports/presentation/widgets/report_card.dart';
+
 import 'package:surgitrack/features/reports/presentation/pages/surgical_logbook_page.dart';
 import 'package:surgitrack/features/reports/presentation/pages/procedure_exposure_page.dart';
 import 'package:surgitrack/features/reports/presentation/pages/technical_skill_report_page.dart';
 import 'package:surgitrack/features/reports/presentation/pages/training_summary_report_page.dart';
+import 'package:surgitrack/features/reports/presentation/pages/monthly_operative_log_page.dart';
 
 class ReportsOverviewPage extends StatelessWidget {
   const ReportsOverviewPage({super.key});
@@ -20,10 +22,32 @@ class ReportsOverviewPage extends StatelessWidget {
         children: [
           const Text(
             "Generate portfolio reports",
+
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 16),
+
+          // =====================================================
+          // OPERATIVE LOG REPORTS
+          // =====================================================
+          ReportCard(
+            title: "Monthly Operative Log",
+
+            description: "Date-wise patient and surgery record",
+
+            icon: Icons.table_chart,
+
+            onTap: () {
+              Navigator.push(
+                context,
+
+                MaterialPageRoute(
+                  builder: (_) => const MonthlyOperativeLogPage(),
+                ),
+              );
+            },
+          ),
 
           ReportCard(
             title: "Surgical Logbook",
@@ -41,6 +65,30 @@ class ReportsOverviewPage extends StatelessWidget {
             },
           ),
 
+          // =====================================================
+          // TRAINING ANALYTICS
+          // =====================================================
+          ReportCard(
+            title: "Training Summary",
+
+            description: "Monthly and residency progress",
+
+            icon: Icons.timeline,
+
+            onTap: () {
+              Navigator.push(
+                context,
+
+                MaterialPageRoute(
+                  builder: (_) => const TrainingSummaryReportPage(),
+                ),
+              );
+            },
+          ),
+
+          // =====================================================
+          // PROCEDURE COMPETENCY
+          // =====================================================
           ReportCard(
             title: "Procedure Exposure",
 
@@ -72,24 +120,6 @@ class ReportsOverviewPage extends StatelessWidget {
 
                 MaterialPageRoute(
                   builder: (_) => const TechnicalSkillReportPage(),
-                ),
-              );
-            },
-          ),
-
-          ReportCard(
-            title: "Training Summary",
-
-            description: "Monthly and residency progress",
-
-            icon: Icons.timeline,
-
-            onTap: () {
-              Navigator.push(
-                context,
-
-                MaterialPageRoute(
-                  builder: (_) => const TrainingSummaryReportPage(),
                 ),
               );
             },
