@@ -8,25 +8,43 @@ class ProcedureExposureExcelGenerator {
 
     final sheet = excel['Procedure Exposure'];
 
-    // Header
     sheet.appendRow([
+      TextCellValue('Sr No'),
+
       TextCellValue('Procedure'),
+
       TextCellValue('Total Cases'),
+
       TextCellValue('Observed'),
+
       TextCellValue('Assisted'),
+
       TextCellValue('Supervised'),
+
       TextCellValue('Independent'),
+
+      TextCellValue('Total Exposure'),
     ]);
 
-    // Data
-    for (final report in reports) {
+    for (int i = 0; i < reports.length; i++) {
+      final report = reports[i];
+
       sheet.appendRow([
+        IntCellValue(i + 1),
+
         TextCellValue(report.procedureName),
+
         IntCellValue(report.totalCases),
+
         IntCellValue(report.observed),
+
         IntCellValue(report.assisted),
+
         IntCellValue(report.supervised),
+
         IntCellValue(report.independent),
+
+        IntCellValue(report.totalExposure),
       ]);
     }
 
