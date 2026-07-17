@@ -10,6 +10,7 @@ import 'package:surgitrack/features/reports/data/pdf/training_summary_pdf_genera
 import 'package:surgitrack/features/reports/data/export/export_repository.dart';
 
 import 'package:surgitrack/features/analytics/domain/analytics_report_filter.dart';
+import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
 
 class TrainingSummaryReportPage extends ConsumerWidget {
   const TrainingSummaryReportPage({super.key});
@@ -23,7 +24,10 @@ class TrainingSummaryReportPage extends ConsumerWidget {
 
     final bytes = await pdfService.generatePdf(content: widgets);
 
-    await pdfService.previewPdf(pdfBytes: bytes);
+    await ReportExportService.exportPdf(
+      bytes: bytes,
+      fileName: "SurgiTrack_Training_Summary.pdf",
+    );
   }
 
   Future<void> exportExcel(TrainingPeriodReport report) async {
@@ -31,7 +35,11 @@ class TrainingSummaryReportPage extends ConsumerWidget {
 
     final bytes = await repository.exportTrainingSummary(report);
 
-    debugPrint("Training Summary Excel generated: ${bytes.length} bytes");
+    await ReportExportService.exportExcel(
+      bytes: bytes,
+
+      fileName: "SurgiTrack_Training_Summary.xlsx",
+    );
   }
 
   @override

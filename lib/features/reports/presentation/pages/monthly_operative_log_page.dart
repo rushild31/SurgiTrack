@@ -7,6 +7,7 @@ import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
 import 'package:surgitrack/features/reports/data/pdf/monthly_log_pdf_generator.dart';
 
 import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
 
 import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
 
@@ -24,7 +25,7 @@ class _MonthlyOperativeLogPageState
     extends ConsumerState<MonthlyOperativeLogPage> {
   late DateTimeRange selectedRange;
 
-  final ExportRepository exportRepository = ExportRepository();
+  final ExportRepository repository = ExportRepository();
 
   @override
   void initState() {
@@ -65,13 +66,19 @@ class _MonthlyOperativeLogPageState
 
     final bytes = await pdfService.generatePdf(content: widgets);
 
-    await pdfService.previewPdf(pdfBytes: bytes);
+    await ReportExportService.exportPdf(
+      bytes: bytes,
+      fileName: "SurgiTrack_Monthly_Operative_Log.pdf",
+    );
   }
 
   Future<void> exportExcel(MonthlyOperativeLogReport report) async {
-    final bytes = await exportRepository.exportMonthlyOperativeLog(report);
+    final bytes = await repository.exportMonthlyOperativeLog(report);
 
-    debugPrint("Monthly Operative Log Excel generated: ${bytes.length} bytes");
+    await ReportExportService.exportExcel(
+      bytes: bytes,
+      fileName: "SurgiTrack_Monthly_Operative_Log.xlsx",
+    );
   }
 
   @override
@@ -95,7 +102,6 @@ class _MonthlyOperativeLogPageState
 
               return ExportButton(
                 onPdfExport: () => exportPdf(data),
-
                 onExcelExport: () => exportExcel(data),
               );
             },
@@ -103,7 +109,6 @@ class _MonthlyOperativeLogPageState
 
           IconButton(
             icon: const Icon(Icons.calendar_month),
-
             onPressed: pickMonth,
           ),
         ],
@@ -143,38 +148,35 @@ class _MonthlyOperativeLogPageState
                 DataColumn(label: Text("Role")),
               ],
 
-              rows: data.entries
-                  .map(
-                    (entry) => DataRow(
-                      cells: [
-                        DataCell(Text(entry.serialNumber.toString())),
+              rows: data.entries.map((entry) {
+                return DataRow(
+                  cells: [
+                    DataCell(Text(entry.serialNumber.toString())),
 
-                        DataCell(Text(entry.patientName)),
+                    DataCell(Text(entry.patientName)),
 
-                        DataCell(Text(entry.hospitalId)),
+                    DataCell(Text(entry.hospitalId)),
 
-                        DataCell(Text(entry.ageSex)),
+                    DataCell(Text(entry.ageSex)),
 
-                        DataCell(
-                          Text(
-                            entry.admissionDate?.toString().split(" ").first ??
-                                "-",
-                          ),
-                        ),
-
-                        DataCell(Text(entry.diagnosis)),
-
-                        DataCell(
-                          Text(entry.surgeryDate.toString().split(" ").first),
-                        ),
-
-                        DataCell(Text(entry.procedures.join(", "))),
-
-                        DataCell(Text(entry.operativeRole)),
-                      ],
+                    DataCell(
+                      Text(
+                        entry.admissionDate?.toString().split(" ").first ?? "-",
+                      ),
                     ),
-                  )
-                  .toList(),
+
+                    DataCell(Text(entry.diagnosis)),
+
+                    DataCell(
+                      Text(entry.surgeryDate.toString().split(" ").first),
+                    ),
+
+                    DataCell(Text(entry.procedures.join(", "))),
+
+                    DataCell(Text(entry.operativeRole)),
+                  ],
+                );
+              }).toList(),
             ),
           );
         },

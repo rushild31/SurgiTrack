@@ -6,6 +6,7 @@ import 'package:surgitrack/features/reports/providers/portfolio_snapshot_provide
 import 'package:surgitrack/features/reports/data/export/export_repository.dart';
 
 import 'package:surgitrack/features/reports/domain/portfolio_snapshot_data.dart';
+import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
 
 class PortfolioSnapshotReportPage extends ConsumerWidget {
   const PortfolioSnapshotReportPage({super.key});
@@ -18,7 +19,11 @@ class PortfolioSnapshotReportPage extends ConsumerWidget {
 
     final bytes = await repository.exportPortfolioSnapshot(data);
 
-    debugPrint("Portfolio Snapshot Excel generated: ${bytes.length} bytes");
+    await ReportExportService.exportExcel(
+      bytes: bytes,
+
+      fileName: "SurgiTrack_Portfolio_Snapshot.xlsx",
+    );
 
     if (!context.mounted) return;
 

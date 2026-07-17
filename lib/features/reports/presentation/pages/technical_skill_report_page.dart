@@ -9,6 +9,7 @@ import 'package:surgitrack/features/reports/data/pdf/technical_skill_pdf_generat
 import 'package:surgitrack/features/reports/data/export/export_repository.dart';
 
 import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
+import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
 
 class TechnicalSkillReportPage extends ConsumerWidget {
   const TechnicalSkillReportPage({super.key});
@@ -22,7 +23,10 @@ class TechnicalSkillReportPage extends ConsumerWidget {
 
     final bytes = await pdfService.generatePdf(content: widgets);
 
-    await pdfService.previewPdf(pdfBytes: bytes);
+    await ReportExportService.exportPdf(
+      bytes: bytes,
+      fileName: "SurgiTrack_Technical_Skills.pdf",
+    );
   }
 
   @override
@@ -149,5 +153,9 @@ Future<void> exportExcel(List<TechnicalSkillReport> reports) async {
 
   final bytes = await repository.exportTechnicalSkill(reports);
 
-  debugPrint("Technical Skill Excel generated: ${bytes.length} bytes");
+  await ReportExportService.exportExcel(
+    bytes: bytes,
+
+    fileName: "SurgiTrack_Technical_Skills.xlsx",
+  );
 }

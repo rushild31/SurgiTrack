@@ -5,6 +5,7 @@ import 'package:surgitrack/features/patients/domain/patient.dart';
 import 'package:surgitrack/features/patients/providers/patient_provider.dart';
 
 import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
 
 class PatientDatabaseReportPage extends ConsumerWidget {
   const PatientDatabaseReportPage({super.key});
@@ -14,7 +15,11 @@ class PatientDatabaseReportPage extends ConsumerWidget {
 
     final bytes = await repository.exportPatientDatabase(patients);
 
-    debugPrint("Patient Database Excel generated: ${bytes.length} bytes");
+    await ReportExportService.exportExcel(
+      bytes: bytes,
+
+      fileName: "SurgiTrack_Patient_Database.xlsx",
+    );
   }
 
   @override
@@ -71,6 +76,7 @@ class PatientDatabaseReportPage extends ConsumerWidget {
 
                     style: const TextStyle(
                       fontSize: 18,
+
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -8,6 +8,7 @@ import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
 import 'package:surgitrack/features/reports/data/pdf/procedure_exposure_pdf_generator.dart';
 
 import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
 
 class ProcedureExposurePage extends ConsumerWidget {
   const ProcedureExposurePage({super.key});
@@ -21,7 +22,10 @@ class ProcedureExposurePage extends ConsumerWidget {
 
     final bytes = await pdfService.generatePdf(content: widgets);
 
-    await pdfService.previewPdf(pdfBytes: bytes);
+    await ReportExportService.exportPdf(
+      bytes: bytes,
+      fileName: "SurgiTrack_Procedure_Exposure.pdf",
+    );
   }
 
   Future<void> exportExcel(List<ProcedureExposureReport> reports) async {
@@ -29,7 +33,10 @@ class ProcedureExposurePage extends ConsumerWidget {
 
     final bytes = await repository.exportProcedureExposure(reports);
 
-    debugPrint("Procedure Exposure Excel generated: ${bytes.length} bytes");
+    await ReportExportService.exportExcel(
+      bytes: bytes,
+      fileName: "SurgiTrack_Procedure_Exposure.xlsx",
+    );
   }
 
   @override
