@@ -71,4 +71,12 @@ class ExportRepository {
 
     return _excelService.generateExcel(workbook: workbook);
   }
+
+  Future<Uint8List> exportTechnicalSkillReport(
+    List<TechnicalSkillReport> reports,
+  ) async {
+    final workbook = TechnicalSkillExcelGenerator().build(reports);
+
+    return _excelService.generateExcel(workbook: workbook);
+  }
 }

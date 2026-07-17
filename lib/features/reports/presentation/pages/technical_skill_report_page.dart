@@ -151,11 +151,10 @@ class SkillExposureRow extends StatelessWidget {
 Future<void> exportExcel(List<TechnicalSkillReport> reports) async {
   final repository = ExportRepository();
 
-  final bytes = await repository.exportTechnicalSkill(reports);
+  final bytes = await repository.exportTechnicalSkillReport(reports);
 
   await ReportExportService.exportExcel(
     bytes: bytes,
-
     fileName: "SurgiTrack_Technical_Skills.xlsx",
   );
 }
