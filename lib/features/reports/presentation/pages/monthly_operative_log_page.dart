@@ -9,6 +9,7 @@ import 'package:surgitrack/features/reports/data/pdf/monthly_log_pdf_generator.d
 import 'package:surgitrack/features/reports/data/export/export_repository.dart';
 
 import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
+
 import 'package:surgitrack/features/reports/domain/monthly_operative_log_report.dart';
 
 class MonthlyOperativeLogPage extends ConsumerStatefulWidget {
@@ -33,7 +34,6 @@ class _MonthlyOperativeLogPageState
 
     selectedRange = DateTimeRange(
       start: DateTime(now.year, now.month, 1),
-
       end: DateTime(now.year, now.month + 1, 0),
     );
   }
@@ -41,11 +41,8 @@ class _MonthlyOperativeLogPageState
   Future<void> pickMonth() async {
     final picked = await showDatePicker(
       context: context,
-
       initialDate: selectedRange.start,
-
       firstDate: DateTime(2020),
-
       lastDate: DateTime.now(),
     );
 
@@ -54,7 +51,6 @@ class _MonthlyOperativeLogPageState
     setState(() {
       selectedRange = DateTimeRange(
         start: DateTime(picked.year, picked.month, 1),
-
         end: DateTime(picked.year, picked.month + 1, 0),
       );
     });
@@ -87,24 +83,22 @@ class _MonthlyOperativeLogPageState
         title: const Text("Monthly Operative Log"),
 
         actions: [
-          ExportButton(
-            onPdfExport: report.when(
-              loading: () => null,
+          report.when(
+            loading: () => const SizedBox(),
 
-              error: (_, _) => null,
+            error: (_, _) => const SizedBox(),
 
-              data: (data) =>
-                  () => exportPdf(data),
-            ),
+            data: (data) {
+              if (data.entries.isEmpty) {
+                return const SizedBox();
+              }
 
-            onExcelExport: report.when(
-              loading: () => null,
+              return ExportButton(
+                onPdfExport: () => exportPdf(data),
 
-              error: (_, _) => null,
-
-              data: (data) =>
-                  () => exportExcel(data),
-            ),
+                onExcelExport: () => exportExcel(data),
+              );
+            },
           ),
 
           IconButton(

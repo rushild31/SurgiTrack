@@ -6,6 +6,9 @@ import 'package:surgitrack/features/reports/domain/technical_skill_report.dart';
 
 import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
 import 'package:surgitrack/features/reports/data/pdf/technical_skill_pdf_generator.dart';
+import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+
+import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
 
 class TechnicalSkillReportPage extends ConsumerWidget {
   const TechnicalSkillReportPage({super.key});
@@ -41,10 +44,10 @@ class TechnicalSkillReportPage extends ConsumerWidget {
                 return const SizedBox();
               }
 
-              return IconButton(
-                icon: const Icon(Icons.picture_as_pdf),
+              return ExportButton(
+                onPdfExport: () => exportPdf(skills),
 
-                onPressed: () => exportPdf(skills),
+                onExcelExport: () => exportExcel(skills),
               );
             },
           ),
@@ -139,4 +142,12 @@ class SkillExposureRow extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> exportExcel(List<TechnicalSkillReport> reports) async {
+  final repository = ExportRepository();
+
+  final bytes = await repository.exportTechnicalSkill(reports);
+
+  debugPrint("Technical Skill Excel generated: ${bytes.length} bytes");
 }
