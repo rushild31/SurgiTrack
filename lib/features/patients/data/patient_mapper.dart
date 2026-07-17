@@ -19,6 +19,8 @@ class PatientMapper {
 
       dateOfBirth: data.dateOfBirth,
 
+      sex: data.sex,
+
       bloodGroup: data.bloodGroup,
 
       comorbidities: data.comorbidities == null
@@ -50,6 +52,8 @@ class PatientMapper {
       hospitalId: Value(patient.hospitalId),
 
       dateOfBirth: Value(patient.dateOfBirth),
+
+      sex: Value(patient.sex),
 
       bloodGroup: Value(patient.bloodGroup),
 

@@ -105,6 +105,7 @@ class PatientDetailsScreen extends ConsumerWidget {
                     children: [
                       Chip(label: Text("MRD: ${patient.hospitalId}")),
                       Chip(label: Text("${patient.age} yrs")),
+                      Chip(label: Text(patient.sex)),
                       Chip(label: Text(patient.bloodGroup ?? "-")),
                     ],
                   ),
@@ -115,6 +116,7 @@ class PatientDetailsScreen extends ConsumerWidget {
           _section("Basic Information", [
             _row("Date of Birth", _date(patient.dateOfBirth)),
             _row("Age", "${patient.age} years"),
+            _row("Sex", patient.sex),
             _row("Hospital ID", patient.hospitalId),
           ]),
           _section("Clinical Information", [

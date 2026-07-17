@@ -65,6 +65,16 @@ class $PatientsTable extends Patients
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _sexMeta = const VerificationMeta('sex');
+  @override
+  late final GeneratedColumn<String> sex = GeneratedColumn<String>(
+    'sex',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('Male'),
+  );
   static const VerificationMeta _bloodGroupMeta = const VerificationMeta(
     'bloodGroup',
   );
@@ -161,6 +171,7 @@ class $PatientsTable extends Patients
     name,
     hospitalId,
     dateOfBirth,
+    sex,
     bloodGroup,
     comorbidities,
     address,
@@ -219,6 +230,12 @@ class $PatientsTable extends Patients
       );
     } else if (isInserting) {
       context.missing(_dateOfBirthMeta);
+    }
+    if (data.containsKey('sex')) {
+      context.handle(
+        _sexMeta,
+        sex.isAcceptableOrUnknown(data['sex']!, _sexMeta),
+      );
     }
     if (data.containsKey('blood_group')) {
       context.handle(
@@ -313,6 +330,10 @@ class $PatientsTable extends Patients
         DriftSqlType.dateTime,
         data['${effectivePrefix}date_of_birth'],
       )!,
+      sex: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sex'],
+      )!,
       bloodGroup: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}blood_group'],
@@ -360,6 +381,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
   final String name;
   final String hospitalId;
   final DateTime dateOfBirth;
+  final String sex;
   final String? bloodGroup;
   final String? comorbidities;
   final String? address;
@@ -374,6 +396,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
     required this.name,
     required this.hospitalId,
     required this.dateOfBirth,
+    required this.sex,
     this.bloodGroup,
     this.comorbidities,
     this.address,
@@ -391,6 +414,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
     map['name'] = Variable<String>(name);
     map['hospital_id'] = Variable<String>(hospitalId);
     map['date_of_birth'] = Variable<DateTime>(dateOfBirth);
+    map['sex'] = Variable<String>(sex);
     if (!nullToAbsent || bloodGroup != null) {
       map['blood_group'] = Variable<String>(bloodGroup);
     }
@@ -421,6 +445,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
       name: Value(name),
       hospitalId: Value(hospitalId),
       dateOfBirth: Value(dateOfBirth),
+      sex: Value(sex),
       bloodGroup: bloodGroup == null && nullToAbsent
           ? const Value.absent()
           : Value(bloodGroup),
@@ -455,6 +480,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
       name: serializer.fromJson<String>(json['name']),
       hospitalId: serializer.fromJson<String>(json['hospitalId']),
       dateOfBirth: serializer.fromJson<DateTime>(json['dateOfBirth']),
+      sex: serializer.fromJson<String>(json['sex']),
       bloodGroup: serializer.fromJson<String?>(json['bloodGroup']),
       comorbidities: serializer.fromJson<String?>(json['comorbidities']),
       address: serializer.fromJson<String?>(json['address']),
@@ -476,6 +502,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
       'name': serializer.toJson<String>(name),
       'hospitalId': serializer.toJson<String>(hospitalId),
       'dateOfBirth': serializer.toJson<DateTime>(dateOfBirth),
+      'sex': serializer.toJson<String>(sex),
       'bloodGroup': serializer.toJson<String?>(bloodGroup),
       'comorbidities': serializer.toJson<String?>(comorbidities),
       'address': serializer.toJson<String?>(address),
@@ -493,6 +520,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
     String? name,
     String? hospitalId,
     DateTime? dateOfBirth,
+    String? sex,
     Value<String?> bloodGroup = const Value.absent(),
     Value<String?> comorbidities = const Value.absent(),
     Value<String?> address = const Value.absent(),
@@ -507,6 +535,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
     name: name ?? this.name,
     hospitalId: hospitalId ?? this.hospitalId,
     dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+    sex: sex ?? this.sex,
     bloodGroup: bloodGroup.present ? bloodGroup.value : this.bloodGroup,
     comorbidities: comorbidities.present
         ? comorbidities.value
@@ -535,6 +564,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
       dateOfBirth: data.dateOfBirth.present
           ? data.dateOfBirth.value
           : this.dateOfBirth,
+      sex: data.sex.present ? data.sex.value : this.sex,
       bloodGroup: data.bloodGroup.present
           ? data.bloodGroup.value
           : this.bloodGroup,
@@ -564,6 +594,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
           ..write('name: $name, ')
           ..write('hospitalId: $hospitalId, ')
           ..write('dateOfBirth: $dateOfBirth, ')
+          ..write('sex: $sex, ')
           ..write('bloodGroup: $bloodGroup, ')
           ..write('comorbidities: $comorbidities, ')
           ..write('address: $address, ')
@@ -583,6 +614,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
     name,
     hospitalId,
     dateOfBirth,
+    sex,
     bloodGroup,
     comorbidities,
     address,
@@ -601,6 +633,7 @@ class PatientData extends DataClass implements Insertable<PatientData> {
           other.name == this.name &&
           other.hospitalId == this.hospitalId &&
           other.dateOfBirth == this.dateOfBirth &&
+          other.sex == this.sex &&
           other.bloodGroup == this.bloodGroup &&
           other.comorbidities == this.comorbidities &&
           other.address == this.address &&
@@ -617,6 +650,7 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
   final Value<String> name;
   final Value<String> hospitalId;
   final Value<DateTime> dateOfBirth;
+  final Value<String> sex;
   final Value<String?> bloodGroup;
   final Value<String?> comorbidities;
   final Value<String?> address;
@@ -631,6 +665,7 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
     this.name = const Value.absent(),
     this.hospitalId = const Value.absent(),
     this.dateOfBirth = const Value.absent(),
+    this.sex = const Value.absent(),
     this.bloodGroup = const Value.absent(),
     this.comorbidities = const Value.absent(),
     this.address = const Value.absent(),
@@ -646,6 +681,7 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
     required String name,
     required String hospitalId,
     required DateTime dateOfBirth,
+    this.sex = const Value.absent(),
     this.bloodGroup = const Value.absent(),
     this.comorbidities = const Value.absent(),
     this.address = const Value.absent(),
@@ -666,6 +702,7 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
     Expression<String>? name,
     Expression<String>? hospitalId,
     Expression<DateTime>? dateOfBirth,
+    Expression<String>? sex,
     Expression<String>? bloodGroup,
     Expression<String>? comorbidities,
     Expression<String>? address,
@@ -681,6 +718,7 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
       if (name != null) 'name': name,
       if (hospitalId != null) 'hospital_id': hospitalId,
       if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
+      if (sex != null) 'sex': sex,
       if (bloodGroup != null) 'blood_group': bloodGroup,
       if (comorbidities != null) 'comorbidities': comorbidities,
       if (address != null) 'address': address,
@@ -699,6 +737,7 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
     Value<String>? name,
     Value<String>? hospitalId,
     Value<DateTime>? dateOfBirth,
+    Value<String>? sex,
     Value<String?>? bloodGroup,
     Value<String?>? comorbidities,
     Value<String?>? address,
@@ -714,6 +753,7 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
       name: name ?? this.name,
       hospitalId: hospitalId ?? this.hospitalId,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      sex: sex ?? this.sex,
       bloodGroup: bloodGroup ?? this.bloodGroup,
       comorbidities: comorbidities ?? this.comorbidities,
       address: address ?? this.address,
@@ -742,6 +782,9 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
     }
     if (dateOfBirth.present) {
       map['date_of_birth'] = Variable<DateTime>(dateOfBirth.value);
+    }
+    if (sex.present) {
+      map['sex'] = Variable<String>(sex.value);
     }
     if (bloodGroup.present) {
       map['blood_group'] = Variable<String>(bloodGroup.value);
@@ -780,6 +823,7 @@ class PatientsCompanion extends UpdateCompanion<PatientData> {
           ..write('name: $name, ')
           ..write('hospitalId: $hospitalId, ')
           ..write('dateOfBirth: $dateOfBirth, ')
+          ..write('sex: $sex, ')
           ..write('bloodGroup: $bloodGroup, ')
           ..write('comorbidities: $comorbidities, ')
           ..write('address: $address, ')
@@ -5676,6 +5720,7 @@ typedef $$PatientsTableCreateCompanionBuilder =
       required String name,
       required String hospitalId,
       required DateTime dateOfBirth,
+      Value<String> sex,
       Value<String?> bloodGroup,
       Value<String?> comorbidities,
       Value<String?> address,
@@ -5692,6 +5737,7 @@ typedef $$PatientsTableUpdateCompanionBuilder =
       Value<String> name,
       Value<String> hospitalId,
       Value<DateTime> dateOfBirth,
+      Value<String> sex,
       Value<String?> bloodGroup,
       Value<String?> comorbidities,
       Value<String?> address,
@@ -5733,6 +5779,11 @@ class $$PatientsTableFilterComposer
 
   ColumnFilters<DateTime> get dateOfBirth => $composableBuilder(
     column: $table.dateOfBirth,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sex => $composableBuilder(
+    column: $table.sex,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5811,6 +5862,11 @@ class $$PatientsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get sex => $composableBuilder(
+    column: $table.sex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get bloodGroup => $composableBuilder(
     column: $table.bloodGroup,
     builder: (column) => ColumnOrderings(column),
@@ -5879,6 +5935,9 @@ class $$PatientsTableAnnotationComposer
     column: $table.dateOfBirth,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get sex =>
+      $composableBuilder(column: $table.sex, builder: (column) => column);
 
   GeneratedColumn<String> get bloodGroup => $composableBuilder(
     column: $table.bloodGroup,
@@ -5951,6 +6010,7 @@ class $$PatientsTableTableManager
                 Value<String> name = const Value.absent(),
                 Value<String> hospitalId = const Value.absent(),
                 Value<DateTime> dateOfBirth = const Value.absent(),
+                Value<String> sex = const Value.absent(),
                 Value<String?> bloodGroup = const Value.absent(),
                 Value<String?> comorbidities = const Value.absent(),
                 Value<String?> address = const Value.absent(),
@@ -5965,6 +6025,7 @@ class $$PatientsTableTableManager
                 name: name,
                 hospitalId: hospitalId,
                 dateOfBirth: dateOfBirth,
+                sex: sex,
                 bloodGroup: bloodGroup,
                 comorbidities: comorbidities,
                 address: address,
@@ -5981,6 +6042,7 @@ class $$PatientsTableTableManager
                 required String name,
                 required String hospitalId,
                 required DateTime dateOfBirth,
+                Value<String> sex = const Value.absent(),
                 Value<String?> bloodGroup = const Value.absent(),
                 Value<String?> comorbidities = const Value.absent(),
                 Value<String?> address = const Value.absent(),
@@ -5995,6 +6057,7 @@ class $$PatientsTableTableManager
                 name: name,
                 hospitalId: hospitalId,
                 dateOfBirth: dateOfBirth,
+                sex: sex,
                 bloodGroup: bloodGroup,
                 comorbidities: comorbidities,
                 address: address,

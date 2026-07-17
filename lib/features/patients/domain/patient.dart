@@ -9,6 +9,8 @@ class Patient {
 
   final DateTime dateOfBirth;
 
+  final String sex;
+
   final String? bloodGroup;
 
   final List<String> comorbidities;
@@ -31,6 +33,7 @@ class Patient {
     required this.name,
     required this.hospitalId,
     required this.dateOfBirth,
+    required this.sex,
     this.bloodGroup,
     this.comorbidities = const [],
     this.address,

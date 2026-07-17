@@ -27,6 +27,8 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
 
   String? bloodGroup;
 
+  String sex = "Male";
+
   final List<String> selectedComorbidities = [];
 
   final List<String> availableComorbidities = [
@@ -72,6 +74,8 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
 
     bloodGroup = patient?.bloodGroup;
 
+    sex = patient?.sex ?? "Male";
+
     selectedComorbidities.addAll(patient?.comorbidities ?? []);
   }
 
@@ -89,11 +93,8 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
   Future<void> pickDate(bool isDob) async {
     final selected = await showDatePicker(
       context: context,
-
       firstDate: DateTime(1900),
-
       lastDate: DateTime.now(),
-
       initialDate: DateTime.now(),
     );
 
@@ -135,6 +136,8 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
       hospitalId: hospitalIdController.text.trim(),
 
       dateOfBirth: dob!,
+
+      sex: sex,
 
       bloodGroup: bloodGroup,
 
@@ -185,7 +188,8 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
 
               decoration: const InputDecoration(labelText: "Patient Name"),
 
-              validator: (v) => v!.isEmpty ? "Enter patient name" : null,
+              validator: (v) =>
+                  v == null || v.isEmpty ? "Enter patient name" : null,
             ),
 
             TextFormField(
@@ -207,11 +211,31 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
             ),
 
             DropdownButtonFormField<String>(
+              initialValue: sex,
+
+              decoration: const InputDecoration(labelText: "Sex"),
+
+              items: const [
+                DropdownMenuItem(value: "Male", child: Text("Male")),
+                DropdownMenuItem(value: "Female", child: Text("Female")),
+                DropdownMenuItem(value: "Other", child: Text("Other")),
+              ],
+
+              onChanged: (value) {
+                if (value == null) return;
+
+                setState(() {
+                  sex = value;
+                });
+              },
+            ),
+
+            DropdownButtonFormField<String>(
               initialValue: bloodGroup,
 
               decoration: const InputDecoration(labelText: "Blood Group"),
 
-              items: [
+              items: const [
                 "A+",
                 "A-",
                 "B+",
@@ -220,11 +244,12 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
                 "AB-",
                 "O+",
                 "O-",
+                "Unknown",
               ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
 
-              onChanged: (v) {
+              onChanged: (value) {
                 setState(() {
-                  bloodGroup = v;
+                  bloodGroup = value;
                 });
               },
             ),

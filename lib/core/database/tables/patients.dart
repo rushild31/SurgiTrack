@@ -12,6 +12,8 @@ class Patients extends Table {
 
   DateTimeColumn get dateOfBirth => dateTime()();
 
+  TextColumn get sex => text().withDefault(const Constant('Male'))();
+
   TextColumn get bloodGroup => text().nullable()();
 
   TextColumn get comorbidities => text().nullable()();
