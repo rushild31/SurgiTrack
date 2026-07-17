@@ -1,66 +1,62 @@
 import 'package:flutter/material.dart';
 
 class ExportButton extends StatelessWidget {
-  final VoidCallback? onPdfExport;
+  final Future<void> Function()? onPdfExport;
 
-  final VoidCallback? onExcelExport;
+  final Future<void> Function()? onExcelExport;
 
   const ExportButton({super.key, this.onPdfExport, this.onExcelExport});
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      icon: const Icon(Icons.file_download),
+      icon: const Icon(Icons.download),
 
-      onSelected: (value) {
+      tooltip: "Export Report",
+
+      onSelected: (value) async {
         switch (value) {
-          case 'pdf':
+          case "pdf":
             if (onPdfExport != null) {
-              onPdfExport!();
+              await onPdfExport!();
             }
-
             break;
 
-          case 'excel':
+          case "excel":
             if (onExcelExport != null) {
-              onExcelExport!();
+              await onExcelExport!();
             }
-
             break;
         }
       },
 
-      itemBuilder: (context) => [
-        if (onPdfExport != null)
-          const PopupMenuItem(
-            value: 'pdf',
-
-            child: Row(
-              children: [
-                Icon(Icons.picture_as_pdf),
-
-                SizedBox(width: 10),
-
-                Text("Export PDF"),
-              ],
+      itemBuilder: (context) {
+        return [
+          if (onPdfExport != null)
+            const PopupMenuItem(
+              value: "pdf",
+              child: Row(
+                children: [
+                  Icon(Icons.picture_as_pdf),
+                  SizedBox(width: 8),
+                  Text("Export PDF"),
+                ],
+              ),
             ),
-          ),
 
-        if (onExcelExport != null)
-          const PopupMenuItem(
-            value: 'excel',
-
-            child: Row(
-              children: [
-                Icon(Icons.table_chart),
-
-                SizedBox(width: 10),
-
-                Text("Export Excel"),
-              ],
+          if (onExcelExport != null)
+            const PopupMenuItem(
+              value: "excel",
+              child: Row(
+                children: [
+                  Icon(Icons.table_chart),
+                  SizedBox(width: 8),
+                  Text("Export Excel"),
+                ],
+              ),
             ),
-          ),
-      ],
+        ];
+      },
     );
   }
 }
