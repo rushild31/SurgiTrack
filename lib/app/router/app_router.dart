@@ -6,7 +6,7 @@ import 'package:surgitrack/features/procedures/procedures_screen.dart';
 import 'package:surgitrack/features/academics/academics_screen.dart';
 import 'package:surgitrack/features/analytics/analytics_screen.dart';
 import 'package:surgitrack/features/reports/reports_screen.dart';
-import 'package:surgitrack/features/settings/settings_screen.dart';
+import 'package:surgitrack/features/settings/presentation/settings_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/dashboard',
