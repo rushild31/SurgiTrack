@@ -8,37 +8,49 @@ class TrainingSummaryExcelGenerator {
 
     final sheet = excel['Training Summary'];
 
-    sheet.appendRow([TextCellValue('Metric'), TextCellValue('Count')]);
+    sheet.appendRow([TextCellValue('Parameter'), TextCellValue('Value')]);
 
-    final metrics = [
-      ['Period', report.period],
-
-      ['Total Cases', report.totalCases.toString()],
-
-      ['Independent Cases', report.independentCases.toString()],
-
-      ['Supervised Cases', report.supervisedCases.toString()],
-
-      ['Assisted Cases', report.assistedCases.toString()],
-
-      ['Observed Cases', report.observedCases.toString()],
-    ];
-
-    for (final row in metrics) {
-      sheet.appendRow([TextCellValue(row[0]), TextCellValue(row[1])]);
-    }
-
-    final specialtySheet = excel['Specialty Distribution'];
-
-    specialtySheet.appendRow([
-      TextCellValue('Specialty'),
-
-      TextCellValue('Cases'),
+    sheet.appendRow([
+      TextCellValue('Training Period'),
+      TextCellValue(report.period),
     ]);
 
-    report.specialtyDistribution.forEach((key, value) {
-      specialtySheet.appendRow([TextCellValue(key), IntCellValue(value)]);
-    });
+    sheet.appendRow([
+      TextCellValue('Total Cases'),
+      IntCellValue(report.totalCases),
+    ]);
+
+    sheet.appendRow([]);
+
+    sheet.appendRow([TextCellValue('Operative Role'), TextCellValue('Cases')]);
+
+    sheet.appendRow([
+      TextCellValue('Independent'),
+      IntCellValue(report.independentCases),
+    ]);
+
+    sheet.appendRow([
+      TextCellValue('Supervised'),
+      IntCellValue(report.supervisedCases),
+    ]);
+
+    sheet.appendRow([
+      TextCellValue('Assisted'),
+      IntCellValue(report.assistedCases),
+    ]);
+
+    sheet.appendRow([
+      TextCellValue('Observed'),
+      IntCellValue(report.observedCases),
+    ]);
+
+    sheet.appendRow([]);
+
+    sheet.appendRow([TextCellValue('Specialty'), TextCellValue('Cases')]);
+
+    for (final entry in report.specialtyDistribution.entries) {
+      sheet.appendRow([TextCellValue(entry.key), IntCellValue(entry.value)]);
+    }
 
     return excel;
   }

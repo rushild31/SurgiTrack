@@ -6,6 +6,11 @@ import 'package:surgitrack/features/reports/providers/report_provider.dart';
 import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
 import 'package:surgitrack/features/reports/data/pdf/monthly_log_pdf_generator.dart';
 
+import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+
+import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
+import 'package:surgitrack/features/reports/domain/monthly_operative_log_report.dart';
+
 class MonthlyOperativeLogPage extends ConsumerStatefulWidget {
   const MonthlyOperativeLogPage({super.key});
 
@@ -17,6 +22,8 @@ class MonthlyOperativeLogPage extends ConsumerStatefulWidget {
 class _MonthlyOperativeLogPageState
     extends ConsumerState<MonthlyOperativeLogPage> {
   late DateTimeRange selectedRange;
+
+  final ExportRepository exportRepository = ExportRepository();
 
   @override
   void initState() {
@@ -53,7 +60,7 @@ class _MonthlyOperativeLogPageState
     });
   }
 
-  Future<void> exportPdf(dynamic report) async {
+  Future<void> exportPdf(MonthlyOperativeLogReport report) async {
     final generator = MonthlyLogPdfGenerator();
 
     final widgets = generator.build(report);
@@ -65,6 +72,13 @@ class _MonthlyOperativeLogPageState
     await pdfService.previewPdf(pdfBytes: bytes);
   }
 
+  Future<void> exportExcel(MonthlyOperativeLogReport report) async {
+    final bytes = await exportRepository.exportSurgicalLogbook(report);
+
+    // Placeholder until file sharing/storage is added
+    debugPrint("Excel generated: ${bytes.length} bytes");
+  }
+
   @override
   Widget build(BuildContext context) {
     final report = ref.watch(monthlyOperativeLogReportProvider(selectedRange));
@@ -74,6 +88,26 @@ class _MonthlyOperativeLogPageState
         title: const Text("Monthly Operative Log"),
 
         actions: [
+          ExportButton(
+            onPdfExport: report.when(
+              loading: () => null,
+
+              error: (_, _) => null,
+
+              data: (data) =>
+                  () => exportPdf(data),
+            ),
+
+            onExcelExport: report.when(
+              loading: () => null,
+
+              error: (_, _) => null,
+
+              data: (data) =>
+                  () => exportExcel(data),
+            ),
+          ),
+
           IconButton(
             icon: const Icon(Icons.calendar_month),
 
@@ -92,105 +126,63 @@ class _MonthlyOperativeLogPageState
             return const Center(child: Text("No cases found for this month"));
           }
 
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12),
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
 
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: DataTable(
+              columns: const [
+                DataColumn(label: Text("Sr")),
 
-                  children: [
-                    Text(
-                      "${data.month} "
-                      "(${data.totalCases} cases)",
+                DataColumn(label: Text("Patient")),
 
-                      style: const TextStyle(
-                        fontSize: 18,
+                DataColumn(label: Text("Hospital ID")),
 
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                DataColumn(label: Text("Age/Sex")),
 
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.picture_as_pdf),
+                DataColumn(label: Text("Admission")),
 
-                      label: const Text("Export PDF"),
+                DataColumn(label: Text("Diagnosis")),
 
-                      onPressed: () => exportPdf(data),
-                    ),
-                  ],
-                ),
-              ),
+                DataColumn(label: Text("Surgery Date")),
 
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
+                DataColumn(label: Text("Procedure")),
 
-                  child: SingleChildScrollView(
-                    child: DataTable(
-                      columnSpacing: 18,
+                DataColumn(label: Text("Role")),
+              ],
 
-                      columns: const [
-                        DataColumn(label: Text("Sr No")),
+              rows: data.entries
+                  .map(
+                    (entry) => DataRow(
+                      cells: [
+                        DataCell(Text(entry.serialNumber.toString())),
 
-                        DataColumn(label: Text("Patient Name")),
+                        DataCell(Text(entry.patientName)),
 
-                        DataColumn(label: Text("Hospital ID")),
+                        DataCell(Text(entry.hospitalId)),
 
-                        DataColumn(label: Text("Age/Sex")),
+                        DataCell(Text(entry.ageSex)),
 
-                        DataColumn(label: Text("Admission")),
+                        DataCell(
+                          Text(
+                            entry.admissionDate?.toString().split(" ").first ??
+                                "-",
+                          ),
+                        ),
 
-                        DataColumn(label: Text("Diagnosis")),
+                        DataCell(Text(entry.diagnosis)),
 
-                        DataColumn(label: Text("Surgery Date")),
+                        DataCell(
+                          Text(entry.surgeryDate.toString().split(" ").first),
+                        ),
 
-                        DataColumn(label: Text("Procedure")),
+                        DataCell(Text(entry.procedures.join(", "))),
 
-                        DataColumn(label: Text("Role")),
+                        DataCell(Text(entry.operativeRole)),
                       ],
-
-                      rows: data.entries.map((entry) {
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(entry.serialNumber.toString())),
-
-                            DataCell(Text(entry.patientName)),
-
-                            DataCell(Text(entry.hospitalId)),
-
-                            DataCell(Text(entry.ageSex)),
-
-                            DataCell(
-                              Text(
-                                entry.admissionDate
-                                        ?.toString()
-                                        .split(" ")
-                                        .first ??
-                                    "-",
-                              ),
-                            ),
-
-                            DataCell(Text(entry.diagnosis)),
-
-                            DataCell(
-                              Text(
-                                entry.surgeryDate.toString().split(" ").first,
-                              ),
-                            ),
-
-                            DataCell(Text(entry.procedures.join(", "))),
-
-                            DataCell(Text(entry.operativeRole)),
-                          ],
-                        );
-                      }).toList(),
                     ),
-                  ),
-                ),
-              ),
-            ],
+                  )
+                  .toList(),
+            ),
           );
         },
       ),

@@ -7,13 +7,12 @@ import 'package:surgitrack/features/reports/domain/procedure_exposure_report.dar
 import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
 import 'package:surgitrack/features/reports/data/pdf/procedure_exposure_pdf_generator.dart';
 
+import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+
 class ProcedureExposurePage extends ConsumerWidget {
   const ProcedureExposurePage({super.key});
 
-  Future<void> exportPdf(
-    BuildContext context,
-    List<ProcedureExposureReport> reports,
-  ) async {
+  Future<void> exportPdf(List<ProcedureExposureReport> reports) async {
     final generator = ProcedureExposurePdfGenerator();
 
     final widgets = generator.build(reports);
@@ -23,6 +22,14 @@ class ProcedureExposurePage extends ConsumerWidget {
     final bytes = await pdfService.generatePdf(content: widgets);
 
     await pdfService.previewPdf(pdfBytes: bytes);
+  }
+
+  Future<void> exportExcel(List<ProcedureExposureReport> reports) async {
+    final repository = ExportRepository();
+
+    final bytes = await repository.exportProcedureExposure(reports);
+
+    debugPrint("Procedure Exposure Excel generated: ${bytes.length} bytes");
   }
 
   @override
@@ -44,10 +51,24 @@ class ProcedureExposurePage extends ConsumerWidget {
                 return const SizedBox();
               }
 
-              return IconButton(
-                icon: const Icon(Icons.picture_as_pdf),
+              return Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.picture_as_pdf),
 
-                onPressed: () => exportPdf(context, procedures),
+                    onPressed: () {
+                      exportPdf(procedures);
+                    },
+                  ),
+
+                  IconButton(
+                    icon: const Icon(Icons.table_chart),
+
+                    onPressed: () {
+                      exportExcel(procedures);
+                    },
+                  ),
+                ],
               );
             },
           ),

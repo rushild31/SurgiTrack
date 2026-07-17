@@ -7,6 +7,8 @@ import 'package:surgitrack/features/reports/domain/training_period_report.dart';
 import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
 import 'package:surgitrack/features/reports/data/pdf/training_summary_pdf_generator.dart';
 
+import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+
 import 'package:surgitrack/features/analytics/domain/analytics_report_filter.dart';
 
 class TrainingSummaryReportPage extends ConsumerWidget {
@@ -22,6 +24,14 @@ class TrainingSummaryReportPage extends ConsumerWidget {
     final bytes = await pdfService.generatePdf(content: widgets);
 
     await pdfService.previewPdf(pdfBytes: bytes);
+  }
+
+  Future<void> exportExcel(TrainingPeriodReport report) async {
+    final repository = ExportRepository();
+
+    final bytes = await repository.exportTrainingSummary(report);
+
+    debugPrint("Training Summary Excel generated: ${bytes.length} bytes");
   }
 
   @override
@@ -41,10 +51,24 @@ class TrainingSummaryReportPage extends ConsumerWidget {
             error: (_, _) => const SizedBox(),
 
             data: (summary) {
-              return IconButton(
-                icon: const Icon(Icons.picture_as_pdf),
+              return Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.picture_as_pdf),
 
-                onPressed: () => exportPdf(summary),
+                    onPressed: () {
+                      exportPdf(summary);
+                    },
+                  ),
+
+                  IconButton(
+                    icon: const Icon(Icons.table_chart),
+
+                    onPressed: () {
+                      exportExcel(summary);
+                    },
+                  ),
+                ],
               );
             },
           ),
