@@ -7,6 +7,8 @@ import 'package:surgitrack/features/reports/domain/surgical_logbook_report.dart'
 import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
 import 'package:surgitrack/features/reports/data/pdf/surgical_logbook_pdf_generator.dart';
 
+import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+
 import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
 
 class SurgicalLogbookPage extends ConsumerWidget {
@@ -22,6 +24,14 @@ class SurgicalLogbookPage extends ConsumerWidget {
     final bytes = await pdfService.generatePdf(content: widgets);
 
     await pdfService.previewPdf(pdfBytes: bytes);
+  }
+
+  Future<void> exportExcel(List<SurgicalLogbookEntry> entries) async {
+    final repository = ExportRepository();
+
+    final bytes = await repository.exportSurgicalLogbook(entries);
+
+    debugPrint("Surgical Logbook Excel generated: ${bytes.length} bytes");
   }
 
   @override
@@ -43,7 +53,11 @@ class SurgicalLogbookPage extends ConsumerWidget {
                 return const SizedBox();
               }
 
-              return ExportButton(onPdfExport: () => exportPdf(entries));
+              return ExportButton(
+                onPdfExport: () => exportPdf(entries),
+
+                onExcelExport: () => exportExcel(entries),
+              );
             },
           ),
         ],

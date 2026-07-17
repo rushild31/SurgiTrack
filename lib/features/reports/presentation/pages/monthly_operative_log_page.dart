@@ -73,10 +73,9 @@ class _MonthlyOperativeLogPageState
   }
 
   Future<void> exportExcel(MonthlyOperativeLogReport report) async {
-    final bytes = await exportRepository.exportSurgicalLogbook(report);
+    final bytes = await exportRepository.exportMonthlyOperativeLog(report);
 
-    // Placeholder until file sharing/storage is added
-    debugPrint("Excel generated: ${bytes.length} bytes");
+    debugPrint("Monthly Operative Log Excel generated: ${bytes.length} bytes");
   }
 
   @override
