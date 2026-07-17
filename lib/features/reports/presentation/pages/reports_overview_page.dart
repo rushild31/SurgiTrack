@@ -7,6 +7,7 @@ import 'package:surgitrack/features/reports/presentation/pages/procedure_exposur
 import 'package:surgitrack/features/reports/presentation/pages/technical_skill_report_page.dart';
 import 'package:surgitrack/features/reports/presentation/pages/training_summary_report_page.dart';
 import 'package:surgitrack/features/reports/presentation/pages/monthly_operative_log_page.dart';
+import 'package:surgitrack/features/reports/presentation/pages/portfolio_snapshot_report_page.dart';
 
 class ReportsOverviewPage extends StatelessWidget {
   const ReportsOverviewPage({super.key});
@@ -22,11 +23,30 @@ class ReportsOverviewPage extends StatelessWidget {
         children: [
           const Text(
             "Generate portfolio reports",
-
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 16),
+
+          // =====================================================
+          // PORTFOLIO OVERVIEW
+          // =====================================================
+          ReportCard(
+            title: "Portfolio Snapshot",
+
+            description: "Overall residency exposure and competency summary",
+
+            icon: Icons.dashboard,
+
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const PortfolioSnapshotReportPage(),
+                ),
+              );
+            },
+          ),
 
           // =====================================================
           // OPERATIVE LOG REPORTS
@@ -41,7 +61,6 @@ class ReportsOverviewPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-
                 MaterialPageRoute(
                   builder: (_) => const MonthlyOperativeLogPage(),
                 ),
@@ -59,7 +78,6 @@ class ReportsOverviewPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-
                 MaterialPageRoute(builder: (_) => const SurgicalLogbookPage()),
               );
             },
@@ -78,7 +96,6 @@ class ReportsOverviewPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-
                 MaterialPageRoute(
                   builder: (_) => const TrainingSummaryReportPage(),
                 ),
@@ -99,7 +116,6 @@ class ReportsOverviewPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-
                 MaterialPageRoute(
                   builder: (_) => const ProcedureExposurePage(),
                 ),
@@ -117,7 +133,6 @@ class ReportsOverviewPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-
                 MaterialPageRoute(
                   builder: (_) => const TechnicalSkillReportPage(),
                 ),
