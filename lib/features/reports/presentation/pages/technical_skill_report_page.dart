@@ -6,10 +6,11 @@ import 'package:surgitrack/features/reports/domain/technical_skill_report.dart';
 
 import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
 import 'package:surgitrack/features/reports/data/pdf/technical_skill_pdf_generator.dart';
+
 import 'package:surgitrack/features/reports/data/export/export_repository.dart';
+import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
 
 import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
-import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
 
 class TechnicalSkillReportPage extends ConsumerWidget {
   const TechnicalSkillReportPage({super.key});
@@ -26,6 +27,17 @@ class TechnicalSkillReportPage extends ConsumerWidget {
     await ReportExportService.exportPdf(
       bytes: bytes,
       fileName: "SurgiTrack_Technical_Skills.pdf",
+    );
+  }
+
+  Future<void> exportExcel(List<TechnicalSkillReport> reports) async {
+    final repository = ExportRepository();
+
+    final bytes = await repository.exportTechnicalSkillReport(reports);
+
+    await ReportExportService.exportExcel(
+      bytes: bytes,
+      fileName: "SurgiTrack_Technical_Skills.xlsx",
     );
   }
 
@@ -61,7 +73,7 @@ class TechnicalSkillReportPage extends ConsumerWidget {
       body: report.when(
         loading: () => const Center(child: CircularProgressIndicator()),
 
-        error: (error, stack) => Center(child: Text(error.toString())),
+        error: (error, _) => Center(child: Text(error.toString())),
 
         data: (skills) {
           if (skills.isEmpty) {
@@ -70,14 +82,41 @@ class TechnicalSkillReportPage extends ConsumerWidget {
             );
           }
 
-          return ListView.builder(
+          return ListView(
             padding: const EdgeInsets.all(12),
 
-            itemCount: skills.length,
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
 
-            itemBuilder: (context, index) {
-              return TechnicalSkillCard(report: skills[index]);
-            },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    children: [
+                      const Text(
+                        "Technical Skill Portfolio",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Text(
+                        "Total Technical Steps Logged: "
+                        "${skills.length}",
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              ...skills.map((skill) => TechnicalSkillCard(report: skill)),
+            ],
           );
         },
       ),
@@ -112,7 +151,7 @@ class TechnicalSkillCard extends StatelessWidget {
 
             Text("Exposure: ${report.exposure}"),
 
-            const SizedBox(height: 8),
+            const Divider(),
 
             SkillExposureRow(label: "Observed", value: report.observed),
 
@@ -130,6 +169,7 @@ class TechnicalSkillCard extends StatelessWidget {
 
 class SkillExposureRow extends StatelessWidget {
   final String label;
+
   final int value;
 
   const SkillExposureRow({super.key, required this.label, required this.value});
@@ -137,7 +177,7 @@ class SkillExposureRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
+      padding: const EdgeInsets.symmetric(vertical: 3),
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,15 +186,4 @@ class SkillExposureRow extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<void> exportExcel(List<TechnicalSkillReport> reports) async {
-  final repository = ExportRepository();
-
-  final bytes = await repository.exportTechnicalSkillReport(reports);
-
-  await ReportExportService.exportExcel(
-    bytes: bytes,
-    fileName: "SurgiTrack_Technical_Skills.xlsx",
-  );
 }

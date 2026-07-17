@@ -76,8 +76,8 @@ class ReportRepository {
           hospitalId: patient?.hospitalId ?? "-",
 
           ageSex:
-              "${_calculateAge(patient?.dateOfBirth)} / "
-              "NA",
+              "${_calculateAge(patient?.dateOfBirth) ?? "-"} / "
+              "${patient?.sex ?? "-"}",
 
           admissionDate: patient?.admissionDate,
 

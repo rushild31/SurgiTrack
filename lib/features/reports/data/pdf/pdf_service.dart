@@ -5,11 +5,21 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 class PdfService {
-  Future<Uint8List> generatePdf({required List<pw.Widget> content}) async {
-    final pdf = pw.Document();
+  Future<Uint8List> generatePdf({
+    required List<pw.Widget> content,
+    String? title,
+  }) async {
+    final pdf = pw.Document(
+      title: title ?? "SurgiTrack Report",
+      author: "SurgiTrack",
+    );
 
     pdf.addPage(
-      pw.MultiPage(pageFormat: PdfPageFormat.a4, build: (context) => content),
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(32),
+        build: (context) => content,
+      ),
     );
 
     return pdf.save();

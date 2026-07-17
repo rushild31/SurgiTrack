@@ -12,35 +12,57 @@ import 'package:surgitrack/features/reports/presentation/pages/portfolio_snapsho
 class ReportsOverviewPage extends StatelessWidget {
   const ReportsOverviewPage({super.key});
 
+  Widget sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, bottom: 8),
+
+      child: Text(
+        title,
+
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Reports & Export")),
+      appBar: AppBar(title: const Text("Reports & Portfolio")),
 
       body: ListView(
         padding: const EdgeInsets.all(16),
 
         children: [
           const Text(
-            "Generate portfolio reports",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            "Surgical Training Portfolio",
+
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 4),
+
+          const Text(
+            "Track operative exposure, competency progression and training milestones",
+
+            style: TextStyle(color: Colors.grey),
+          ),
 
           // =====================================================
-          // PORTFOLIO OVERVIEW
+          // OVERVIEW
           // =====================================================
+          sectionTitle("Overview"),
+
           ReportCard(
             title: "Portfolio Snapshot",
 
             description: "Overall residency exposure and competency summary",
 
-            icon: Icons.dashboard,
+            icon: Icons.dashboard_outlined,
 
             onTap: () {
               Navigator.push(
                 context,
+
                 MaterialPageRoute(
                   builder: (_) => const PortfolioSnapshotReportPage(),
                 ),
@@ -49,18 +71,22 @@ class ReportsOverviewPage extends StatelessWidget {
           ),
 
           // =====================================================
-          // OPERATIVE LOG REPORTS
+          // OPERATIVE RECORDS
           // =====================================================
+          sectionTitle("Operative Records"),
+
           ReportCard(
             title: "Monthly Operative Log",
 
-            description: "Date-wise patient and surgery record",
+            description:
+                "Date-wise patient, procedure and operative role record",
 
-            icon: Icons.table_chart,
+            icon: Icons.table_chart_outlined,
 
             onTap: () {
               Navigator.push(
                 context,
+
                 MaterialPageRoute(
                   builder: (_) => const MonthlyOperativeLogPage(),
                 ),
@@ -71,51 +97,36 @@ class ReportsOverviewPage extends StatelessWidget {
           ReportCard(
             title: "Surgical Logbook",
 
-            description: "Complete operative case listing",
+            description: "Complete operative case listing and details",
 
-            icon: Icons.menu_book,
+            icon: Icons.menu_book_outlined,
 
             onTap: () {
               Navigator.push(
                 context,
+
                 MaterialPageRoute(builder: (_) => const SurgicalLogbookPage()),
               );
             },
           ),
 
           // =====================================================
-          // TRAINING ANALYTICS
+          // COMPETENCY TRACKING
           // =====================================================
-          ReportCard(
-            title: "Training Summary",
+          sectionTitle("Competency Tracking"),
 
-            description: "Monthly and residency progress",
-
-            icon: Icons.timeline,
-
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const TrainingSummaryReportPage(),
-                ),
-              );
-            },
-          ),
-
-          // =====================================================
-          // PROCEDURE COMPETENCY
-          // =====================================================
           ReportCard(
             title: "Procedure Exposure",
 
-            description: "Procedure-wise operative experience",
+            description:
+                "Procedure-wise operative experience and role distribution",
 
-            icon: Icons.analytics,
+            icon: Icons.analytics_outlined,
 
             onTap: () {
               Navigator.push(
                 context,
+
                 MaterialPageRoute(
                   builder: (_) => const ProcedureExposurePage(),
                 ),
@@ -126,19 +137,45 @@ class ReportsOverviewPage extends StatelessWidget {
           ReportCard(
             title: "Technical Skills",
 
-            description: "Technical step exposure",
+            description: "Technical step exposure and skill progression",
 
-            icon: Icons.build,
+            icon: Icons.build_outlined,
 
             onTap: () {
               Navigator.push(
                 context,
+
                 MaterialPageRoute(
                   builder: (_) => const TechnicalSkillReportPage(),
                 ),
               );
             },
           ),
+
+          // =====================================================
+          // SUMMARY REPORTS
+          // =====================================================
+          sectionTitle("Training Reports"),
+
+          ReportCard(
+            title: "Training Summary",
+
+            description: "Periodic residency progress and exposure summary",
+
+            icon: Icons.timeline_outlined,
+
+            onTap: () {
+              Navigator.push(
+                context,
+
+                MaterialPageRoute(
+                  builder: (_) => const TrainingSummaryReportPage(),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 20),
         ],
       ),
     );

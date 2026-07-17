@@ -9,7 +9,9 @@ import 'tables/procedures.dart';
 import 'tables/surgical_cases.dart';
 import 'tables/case_procedures.dart';
 import 'tables/case_attachments.dart';
+import 'tables/surgeon_profile.dart';
 
+import 'dao/surgeon_profile_dao.dart';
 import 'dao/patient_dao.dart';
 import 'dao/patient_attachment_dao.dart';
 import 'dao/procedure_dao.dart';
@@ -34,6 +36,7 @@ part 'app_database.g.dart';
     CaseAttachments,
     ProcedureSteps,
     CaseProcedureSteps,
+    SurgeonProfile,
   ],
   daos: [
     PatientDao,
@@ -45,6 +48,7 @@ part 'app_database.g.dart';
     DashboardDao,
     ProcedureStepsDao,
     CaseProcedureStepsDao,
+    SurgeonProfileDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

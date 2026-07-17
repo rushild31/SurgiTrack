@@ -5660,6 +5660,905 @@ class CaseProcedureStepsCompanion
   }
 }
 
+class $SurgeonProfileTable extends SurgeonProfile
+    with TableInfo<$SurgeonProfileTable, SurgeonProfileData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SurgeonProfileTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+    'email',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
+  @override
+  late final GeneratedColumn<String> phone = GeneratedColumn<String>(
+    'phone',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _profilePhotoPathMeta = const VerificationMeta(
+    'profilePhotoPath',
+  );
+  @override
+  late final GeneratedColumn<String> profilePhotoPath = GeneratedColumn<String>(
+    'profile_photo_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _specialtyMeta = const VerificationMeta(
+    'specialty',
+  );
+  @override
+  late final GeneratedColumn<String> specialty = GeneratedColumn<String>(
+    'specialty',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _departmentMeta = const VerificationMeta(
+    'department',
+  );
+  @override
+  late final GeneratedColumn<String> department = GeneratedColumn<String>(
+    'department',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _institutionMeta = const VerificationMeta(
+    'institution',
+  );
+  @override
+  late final GeneratedColumn<String> institution = GeneratedColumn<String>(
+    'institution',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _trainingYearMeta = const VerificationMeta(
+    'trainingYear',
+  );
+  @override
+  late final GeneratedColumn<String> trainingYear = GeneratedColumn<String>(
+    'training_year',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _residencyStartDateMeta =
+      const VerificationMeta('residencyStartDate');
+  @override
+  late final GeneratedColumn<DateTime> residencyStartDate =
+      GeneratedColumn<DateTime>(
+        'residency_start_date',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _residencyEndDateMeta = const VerificationMeta(
+    'residencyEndDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> residencyEndDate =
+      GeneratedColumn<DateTime>(
+        'residency_end_date',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _registrationNumberMeta =
+      const VerificationMeta('registrationNumber');
+  @override
+  late final GeneratedColumn<String> registrationNumber =
+      GeneratedColumn<String>(
+        'registration_number',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _membershipsMeta = const VerificationMeta(
+    'memberships',
+  );
+  @override
+  late final GeneratedColumn<String> memberships = GeneratedColumn<String>(
+    'memberships',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    email,
+    phone,
+    profilePhotoPath,
+    specialty,
+    department,
+    institution,
+    trainingYear,
+    residencyStartDate,
+    residencyEndDate,
+    registrationNumber,
+    memberships,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'surgeon_profile';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SurgeonProfileData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+        _emailMeta,
+        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
+      );
+    }
+    if (data.containsKey('phone')) {
+      context.handle(
+        _phoneMeta,
+        phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta),
+      );
+    }
+    if (data.containsKey('profile_photo_path')) {
+      context.handle(
+        _profilePhotoPathMeta,
+        profilePhotoPath.isAcceptableOrUnknown(
+          data['profile_photo_path']!,
+          _profilePhotoPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('specialty')) {
+      context.handle(
+        _specialtyMeta,
+        specialty.isAcceptableOrUnknown(data['specialty']!, _specialtyMeta),
+      );
+    }
+    if (data.containsKey('department')) {
+      context.handle(
+        _departmentMeta,
+        department.isAcceptableOrUnknown(data['department']!, _departmentMeta),
+      );
+    }
+    if (data.containsKey('institution')) {
+      context.handle(
+        _institutionMeta,
+        institution.isAcceptableOrUnknown(
+          data['institution']!,
+          _institutionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('training_year')) {
+      context.handle(
+        _trainingYearMeta,
+        trainingYear.isAcceptableOrUnknown(
+          data['training_year']!,
+          _trainingYearMeta,
+        ),
+      );
+    }
+    if (data.containsKey('residency_start_date')) {
+      context.handle(
+        _residencyStartDateMeta,
+        residencyStartDate.isAcceptableOrUnknown(
+          data['residency_start_date']!,
+          _residencyStartDateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('residency_end_date')) {
+      context.handle(
+        _residencyEndDateMeta,
+        residencyEndDate.isAcceptableOrUnknown(
+          data['residency_end_date']!,
+          _residencyEndDateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('registration_number')) {
+      context.handle(
+        _registrationNumberMeta,
+        registrationNumber.isAcceptableOrUnknown(
+          data['registration_number']!,
+          _registrationNumberMeta,
+        ),
+      );
+    }
+    if (data.containsKey('memberships')) {
+      context.handle(
+        _membershipsMeta,
+        memberships.isAcceptableOrUnknown(
+          data['memberships']!,
+          _membershipsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SurgeonProfileData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SurgeonProfileData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      email: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}email'],
+      ),
+      phone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phone'],
+      ),
+      profilePhotoPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_photo_path'],
+      ),
+      specialty: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}specialty'],
+      ),
+      department: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}department'],
+      ),
+      institution: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}institution'],
+      ),
+      trainingYear: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}training_year'],
+      ),
+      residencyStartDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}residency_start_date'],
+      ),
+      residencyEndDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}residency_end_date'],
+      ),
+      registrationNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}registration_number'],
+      ),
+      memberships: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}memberships'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $SurgeonProfileTable createAlias(String alias) {
+    return $SurgeonProfileTable(attachedDatabase, alias);
+  }
+}
+
+class SurgeonProfileData extends DataClass
+    implements Insertable<SurgeonProfileData> {
+  final int id;
+  final String name;
+  final String? email;
+  final String? phone;
+  final String? profilePhotoPath;
+  final String? specialty;
+  final String? department;
+  final String? institution;
+  final String? trainingYear;
+  final DateTime? residencyStartDate;
+  final DateTime? residencyEndDate;
+  final String? registrationNumber;
+  final String? memberships;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const SurgeonProfileData({
+    required this.id,
+    required this.name,
+    this.email,
+    this.phone,
+    this.profilePhotoPath,
+    this.specialty,
+    this.department,
+    this.institution,
+    this.trainingYear,
+    this.residencyStartDate,
+    this.residencyEndDate,
+    this.registrationNumber,
+    this.memberships,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
+    if (!nullToAbsent || phone != null) {
+      map['phone'] = Variable<String>(phone);
+    }
+    if (!nullToAbsent || profilePhotoPath != null) {
+      map['profile_photo_path'] = Variable<String>(profilePhotoPath);
+    }
+    if (!nullToAbsent || specialty != null) {
+      map['specialty'] = Variable<String>(specialty);
+    }
+    if (!nullToAbsent || department != null) {
+      map['department'] = Variable<String>(department);
+    }
+    if (!nullToAbsent || institution != null) {
+      map['institution'] = Variable<String>(institution);
+    }
+    if (!nullToAbsent || trainingYear != null) {
+      map['training_year'] = Variable<String>(trainingYear);
+    }
+    if (!nullToAbsent || residencyStartDate != null) {
+      map['residency_start_date'] = Variable<DateTime>(residencyStartDate);
+    }
+    if (!nullToAbsent || residencyEndDate != null) {
+      map['residency_end_date'] = Variable<DateTime>(residencyEndDate);
+    }
+    if (!nullToAbsent || registrationNumber != null) {
+      map['registration_number'] = Variable<String>(registrationNumber);
+    }
+    if (!nullToAbsent || memberships != null) {
+      map['memberships'] = Variable<String>(memberships);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  SurgeonProfileCompanion toCompanion(bool nullToAbsent) {
+    return SurgeonProfileCompanion(
+      id: Value(id),
+      name: Value(name),
+      email: email == null && nullToAbsent
+          ? const Value.absent()
+          : Value(email),
+      phone: phone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(phone),
+      profilePhotoPath: profilePhotoPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profilePhotoPath),
+      specialty: specialty == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specialty),
+      department: department == null && nullToAbsent
+          ? const Value.absent()
+          : Value(department),
+      institution: institution == null && nullToAbsent
+          ? const Value.absent()
+          : Value(institution),
+      trainingYear: trainingYear == null && nullToAbsent
+          ? const Value.absent()
+          : Value(trainingYear),
+      residencyStartDate: residencyStartDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(residencyStartDate),
+      residencyEndDate: residencyEndDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(residencyEndDate),
+      registrationNumber: registrationNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(registrationNumber),
+      memberships: memberships == null && nullToAbsent
+          ? const Value.absent()
+          : Value(memberships),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory SurgeonProfileData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SurgeonProfileData(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      email: serializer.fromJson<String?>(json['email']),
+      phone: serializer.fromJson<String?>(json['phone']),
+      profilePhotoPath: serializer.fromJson<String?>(json['profilePhotoPath']),
+      specialty: serializer.fromJson<String?>(json['specialty']),
+      department: serializer.fromJson<String?>(json['department']),
+      institution: serializer.fromJson<String?>(json['institution']),
+      trainingYear: serializer.fromJson<String?>(json['trainingYear']),
+      residencyStartDate: serializer.fromJson<DateTime?>(
+        json['residencyStartDate'],
+      ),
+      residencyEndDate: serializer.fromJson<DateTime?>(
+        json['residencyEndDate'],
+      ),
+      registrationNumber: serializer.fromJson<String?>(
+        json['registrationNumber'],
+      ),
+      memberships: serializer.fromJson<String?>(json['memberships']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'email': serializer.toJson<String?>(email),
+      'phone': serializer.toJson<String?>(phone),
+      'profilePhotoPath': serializer.toJson<String?>(profilePhotoPath),
+      'specialty': serializer.toJson<String?>(specialty),
+      'department': serializer.toJson<String?>(department),
+      'institution': serializer.toJson<String?>(institution),
+      'trainingYear': serializer.toJson<String?>(trainingYear),
+      'residencyStartDate': serializer.toJson<DateTime?>(residencyStartDate),
+      'residencyEndDate': serializer.toJson<DateTime?>(residencyEndDate),
+      'registrationNumber': serializer.toJson<String?>(registrationNumber),
+      'memberships': serializer.toJson<String?>(memberships),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  SurgeonProfileData copyWith({
+    int? id,
+    String? name,
+    Value<String?> email = const Value.absent(),
+    Value<String?> phone = const Value.absent(),
+    Value<String?> profilePhotoPath = const Value.absent(),
+    Value<String?> specialty = const Value.absent(),
+    Value<String?> department = const Value.absent(),
+    Value<String?> institution = const Value.absent(),
+    Value<String?> trainingYear = const Value.absent(),
+    Value<DateTime?> residencyStartDate = const Value.absent(),
+    Value<DateTime?> residencyEndDate = const Value.absent(),
+    Value<String?> registrationNumber = const Value.absent(),
+    Value<String?> memberships = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => SurgeonProfileData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    email: email.present ? email.value : this.email,
+    phone: phone.present ? phone.value : this.phone,
+    profilePhotoPath: profilePhotoPath.present
+        ? profilePhotoPath.value
+        : this.profilePhotoPath,
+    specialty: specialty.present ? specialty.value : this.specialty,
+    department: department.present ? department.value : this.department,
+    institution: institution.present ? institution.value : this.institution,
+    trainingYear: trainingYear.present ? trainingYear.value : this.trainingYear,
+    residencyStartDate: residencyStartDate.present
+        ? residencyStartDate.value
+        : this.residencyStartDate,
+    residencyEndDate: residencyEndDate.present
+        ? residencyEndDate.value
+        : this.residencyEndDate,
+    registrationNumber: registrationNumber.present
+        ? registrationNumber.value
+        : this.registrationNumber,
+    memberships: memberships.present ? memberships.value : this.memberships,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  SurgeonProfileData copyWithCompanion(SurgeonProfileCompanion data) {
+    return SurgeonProfileData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      email: data.email.present ? data.email.value : this.email,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      profilePhotoPath: data.profilePhotoPath.present
+          ? data.profilePhotoPath.value
+          : this.profilePhotoPath,
+      specialty: data.specialty.present ? data.specialty.value : this.specialty,
+      department: data.department.present
+          ? data.department.value
+          : this.department,
+      institution: data.institution.present
+          ? data.institution.value
+          : this.institution,
+      trainingYear: data.trainingYear.present
+          ? data.trainingYear.value
+          : this.trainingYear,
+      residencyStartDate: data.residencyStartDate.present
+          ? data.residencyStartDate.value
+          : this.residencyStartDate,
+      residencyEndDate: data.residencyEndDate.present
+          ? data.residencyEndDate.value
+          : this.residencyEndDate,
+      registrationNumber: data.registrationNumber.present
+          ? data.registrationNumber.value
+          : this.registrationNumber,
+      memberships: data.memberships.present
+          ? data.memberships.value
+          : this.memberships,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurgeonProfileData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('email: $email, ')
+          ..write('phone: $phone, ')
+          ..write('profilePhotoPath: $profilePhotoPath, ')
+          ..write('specialty: $specialty, ')
+          ..write('department: $department, ')
+          ..write('institution: $institution, ')
+          ..write('trainingYear: $trainingYear, ')
+          ..write('residencyStartDate: $residencyStartDate, ')
+          ..write('residencyEndDate: $residencyEndDate, ')
+          ..write('registrationNumber: $registrationNumber, ')
+          ..write('memberships: $memberships, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    email,
+    phone,
+    profilePhotoPath,
+    specialty,
+    department,
+    institution,
+    trainingYear,
+    residencyStartDate,
+    residencyEndDate,
+    registrationNumber,
+    memberships,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SurgeonProfileData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.email == this.email &&
+          other.phone == this.phone &&
+          other.profilePhotoPath == this.profilePhotoPath &&
+          other.specialty == this.specialty &&
+          other.department == this.department &&
+          other.institution == this.institution &&
+          other.trainingYear == this.trainingYear &&
+          other.residencyStartDate == this.residencyStartDate &&
+          other.residencyEndDate == this.residencyEndDate &&
+          other.registrationNumber == this.registrationNumber &&
+          other.memberships == this.memberships &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String?> email;
+  final Value<String?> phone;
+  final Value<String?> profilePhotoPath;
+  final Value<String?> specialty;
+  final Value<String?> department;
+  final Value<String?> institution;
+  final Value<String?> trainingYear;
+  final Value<DateTime?> residencyStartDate;
+  final Value<DateTime?> residencyEndDate;
+  final Value<String?> registrationNumber;
+  final Value<String?> memberships;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const SurgeonProfileCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.email = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.profilePhotoPath = const Value.absent(),
+    this.specialty = const Value.absent(),
+    this.department = const Value.absent(),
+    this.institution = const Value.absent(),
+    this.trainingYear = const Value.absent(),
+    this.residencyStartDate = const Value.absent(),
+    this.residencyEndDate = const Value.absent(),
+    this.registrationNumber = const Value.absent(),
+    this.memberships = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  SurgeonProfileCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.email = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.profilePhotoPath = const Value.absent(),
+    this.specialty = const Value.absent(),
+    this.department = const Value.absent(),
+    this.institution = const Value.absent(),
+    this.trainingYear = const Value.absent(),
+    this.residencyStartDate = const Value.absent(),
+    this.residencyEndDate = const Value.absent(),
+    this.registrationNumber = const Value.absent(),
+    this.memberships = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+  }) : name = Value(name),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<SurgeonProfileData> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? email,
+    Expression<String>? phone,
+    Expression<String>? profilePhotoPath,
+    Expression<String>? specialty,
+    Expression<String>? department,
+    Expression<String>? institution,
+    Expression<String>? trainingYear,
+    Expression<DateTime>? residencyStartDate,
+    Expression<DateTime>? residencyEndDate,
+    Expression<String>? registrationNumber,
+    Expression<String>? memberships,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (email != null) 'email': email,
+      if (phone != null) 'phone': phone,
+      if (profilePhotoPath != null) 'profile_photo_path': profilePhotoPath,
+      if (specialty != null) 'specialty': specialty,
+      if (department != null) 'department': department,
+      if (institution != null) 'institution': institution,
+      if (trainingYear != null) 'training_year': trainingYear,
+      if (residencyStartDate != null)
+        'residency_start_date': residencyStartDate,
+      if (residencyEndDate != null) 'residency_end_date': residencyEndDate,
+      if (registrationNumber != null) 'registration_number': registrationNumber,
+      if (memberships != null) 'memberships': memberships,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  SurgeonProfileCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String?>? email,
+    Value<String?>? phone,
+    Value<String?>? profilePhotoPath,
+    Value<String?>? specialty,
+    Value<String?>? department,
+    Value<String?>? institution,
+    Value<String?>? trainingYear,
+    Value<DateTime?>? residencyStartDate,
+    Value<DateTime?>? residencyEndDate,
+    Value<String?>? registrationNumber,
+    Value<String?>? memberships,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+  }) {
+    return SurgeonProfileCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
+      specialty: specialty ?? this.specialty,
+      department: department ?? this.department,
+      institution: institution ?? this.institution,
+      trainingYear: trainingYear ?? this.trainingYear,
+      residencyStartDate: residencyStartDate ?? this.residencyStartDate,
+      residencyEndDate: residencyEndDate ?? this.residencyEndDate,
+      registrationNumber: registrationNumber ?? this.registrationNumber,
+      memberships: memberships ?? this.memberships,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    if (profilePhotoPath.present) {
+      map['profile_photo_path'] = Variable<String>(profilePhotoPath.value);
+    }
+    if (specialty.present) {
+      map['specialty'] = Variable<String>(specialty.value);
+    }
+    if (department.present) {
+      map['department'] = Variable<String>(department.value);
+    }
+    if (institution.present) {
+      map['institution'] = Variable<String>(institution.value);
+    }
+    if (trainingYear.present) {
+      map['training_year'] = Variable<String>(trainingYear.value);
+    }
+    if (residencyStartDate.present) {
+      map['residency_start_date'] = Variable<DateTime>(
+        residencyStartDate.value,
+      );
+    }
+    if (residencyEndDate.present) {
+      map['residency_end_date'] = Variable<DateTime>(residencyEndDate.value);
+    }
+    if (registrationNumber.present) {
+      map['registration_number'] = Variable<String>(registrationNumber.value);
+    }
+    if (memberships.present) {
+      map['memberships'] = Variable<String>(memberships.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurgeonProfileCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('email: $email, ')
+          ..write('phone: $phone, ')
+          ..write('profilePhotoPath: $profilePhotoPath, ')
+          ..write('specialty: $specialty, ')
+          ..write('department: $department, ')
+          ..write('institution: $institution, ')
+          ..write('trainingYear: $trainingYear, ')
+          ..write('residencyStartDate: $residencyStartDate, ')
+          ..write('residencyEndDate: $residencyEndDate, ')
+          ..write('registrationNumber: $registrationNumber, ')
+          ..write('memberships: $memberships, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -5676,6 +6575,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ProcedureStepsTable procedureSteps = $ProcedureStepsTable(this);
   late final $CaseProcedureStepsTable caseProcedureSteps =
       $CaseProcedureStepsTable(this);
+  late final $SurgeonProfileTable surgeonProfile = $SurgeonProfileTable(this);
   late final PatientDao patientDao = PatientDao(this as AppDatabase);
   late final PatientAttachmentDao patientAttachmentDao = PatientAttachmentDao(
     this as AppDatabase,
@@ -5696,6 +6596,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final CaseProcedureStepsDao caseProcedureStepsDao =
       CaseProcedureStepsDao(this as AppDatabase);
+  late final SurgeonProfileDao surgeonProfileDao = SurgeonProfileDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5710,6 +6613,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     caseAttachments,
     procedureSteps,
     caseProcedureSteps,
+    surgeonProfile,
   ];
 }
 
@@ -8448,6 +9352,412 @@ typedef $$CaseProcedureStepsTableProcessedTableManager =
       CaseProcedureStepData,
       PrefetchHooks Function()
     >;
+typedef $$SurgeonProfileTableCreateCompanionBuilder =
+    SurgeonProfileCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<String?> email,
+      Value<String?> phone,
+      Value<String?> profilePhotoPath,
+      Value<String?> specialty,
+      Value<String?> department,
+      Value<String?> institution,
+      Value<String?> trainingYear,
+      Value<DateTime?> residencyStartDate,
+      Value<DateTime?> residencyEndDate,
+      Value<String?> registrationNumber,
+      Value<String?> memberships,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+    });
+typedef $$SurgeonProfileTableUpdateCompanionBuilder =
+    SurgeonProfileCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String?> email,
+      Value<String?> phone,
+      Value<String?> profilePhotoPath,
+      Value<String?> specialty,
+      Value<String?> department,
+      Value<String?> institution,
+      Value<String?> trainingYear,
+      Value<DateTime?> residencyStartDate,
+      Value<DateTime?> residencyEndDate,
+      Value<String?> registrationNumber,
+      Value<String?> memberships,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+    });
+
+class $$SurgeonProfileTableFilterComposer
+    extends Composer<_$AppDatabase, $SurgeonProfileTable> {
+  $$SurgeonProfileTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get profilePhotoPath => $composableBuilder(
+    column: $table.profilePhotoPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get specialty => $composableBuilder(
+    column: $table.specialty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get department => $composableBuilder(
+    column: $table.department,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get institution => $composableBuilder(
+    column: $table.institution,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get trainingYear => $composableBuilder(
+    column: $table.trainingYear,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get residencyStartDate => $composableBuilder(
+    column: $table.residencyStartDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get residencyEndDate => $composableBuilder(
+    column: $table.residencyEndDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get registrationNumber => $composableBuilder(
+    column: $table.registrationNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get memberships => $composableBuilder(
+    column: $table.memberships,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SurgeonProfileTableOrderingComposer
+    extends Composer<_$AppDatabase, $SurgeonProfileTable> {
+  $$SurgeonProfileTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get profilePhotoPath => $composableBuilder(
+    column: $table.profilePhotoPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get specialty => $composableBuilder(
+    column: $table.specialty,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get department => $composableBuilder(
+    column: $table.department,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get institution => $composableBuilder(
+    column: $table.institution,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get trainingYear => $composableBuilder(
+    column: $table.trainingYear,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get residencyStartDate => $composableBuilder(
+    column: $table.residencyStartDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get residencyEndDate => $composableBuilder(
+    column: $table.residencyEndDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get registrationNumber => $composableBuilder(
+    column: $table.registrationNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get memberships => $composableBuilder(
+    column: $table.memberships,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SurgeonProfileTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SurgeonProfileTable> {
+  $$SurgeonProfileTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
+
+  GeneratedColumn<String> get phone =>
+      $composableBuilder(column: $table.phone, builder: (column) => column);
+
+  GeneratedColumn<String> get profilePhotoPath => $composableBuilder(
+    column: $table.profilePhotoPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get specialty =>
+      $composableBuilder(column: $table.specialty, builder: (column) => column);
+
+  GeneratedColumn<String> get department => $composableBuilder(
+    column: $table.department,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get institution => $composableBuilder(
+    column: $table.institution,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get trainingYear => $composableBuilder(
+    column: $table.trainingYear,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get residencyStartDate => $composableBuilder(
+    column: $table.residencyStartDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get residencyEndDate => $composableBuilder(
+    column: $table.residencyEndDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get registrationNumber => $composableBuilder(
+    column: $table.registrationNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get memberships => $composableBuilder(
+    column: $table.memberships,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$SurgeonProfileTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SurgeonProfileTable,
+          SurgeonProfileData,
+          $$SurgeonProfileTableFilterComposer,
+          $$SurgeonProfileTableOrderingComposer,
+          $$SurgeonProfileTableAnnotationComposer,
+          $$SurgeonProfileTableCreateCompanionBuilder,
+          $$SurgeonProfileTableUpdateCompanionBuilder,
+          (
+            SurgeonProfileData,
+            BaseReferences<
+              _$AppDatabase,
+              $SurgeonProfileTable,
+              SurgeonProfileData
+            >,
+          ),
+          SurgeonProfileData,
+          PrefetchHooks Function()
+        > {
+  $$SurgeonProfileTableTableManager(
+    _$AppDatabase db,
+    $SurgeonProfileTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SurgeonProfileTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SurgeonProfileTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SurgeonProfileTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> email = const Value.absent(),
+                Value<String?> phone = const Value.absent(),
+                Value<String?> profilePhotoPath = const Value.absent(),
+                Value<String?> specialty = const Value.absent(),
+                Value<String?> department = const Value.absent(),
+                Value<String?> institution = const Value.absent(),
+                Value<String?> trainingYear = const Value.absent(),
+                Value<DateTime?> residencyStartDate = const Value.absent(),
+                Value<DateTime?> residencyEndDate = const Value.absent(),
+                Value<String?> registrationNumber = const Value.absent(),
+                Value<String?> memberships = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => SurgeonProfileCompanion(
+                id: id,
+                name: name,
+                email: email,
+                phone: phone,
+                profilePhotoPath: profilePhotoPath,
+                specialty: specialty,
+                department: department,
+                institution: institution,
+                trainingYear: trainingYear,
+                residencyStartDate: residencyStartDate,
+                residencyEndDate: residencyEndDate,
+                registrationNumber: registrationNumber,
+                memberships: memberships,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<String?> email = const Value.absent(),
+                Value<String?> phone = const Value.absent(),
+                Value<String?> profilePhotoPath = const Value.absent(),
+                Value<String?> specialty = const Value.absent(),
+                Value<String?> department = const Value.absent(),
+                Value<String?> institution = const Value.absent(),
+                Value<String?> trainingYear = const Value.absent(),
+                Value<DateTime?> residencyStartDate = const Value.absent(),
+                Value<DateTime?> residencyEndDate = const Value.absent(),
+                Value<String?> registrationNumber = const Value.absent(),
+                Value<String?> memberships = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+              }) => SurgeonProfileCompanion.insert(
+                id: id,
+                name: name,
+                email: email,
+                phone: phone,
+                profilePhotoPath: profilePhotoPath,
+                specialty: specialty,
+                department: department,
+                institution: institution,
+                trainingYear: trainingYear,
+                residencyStartDate: residencyStartDate,
+                residencyEndDate: residencyEndDate,
+                registrationNumber: registrationNumber,
+                memberships: memberships,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SurgeonProfileTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SurgeonProfileTable,
+      SurgeonProfileData,
+      $$SurgeonProfileTableFilterComposer,
+      $$SurgeonProfileTableOrderingComposer,
+      $$SurgeonProfileTableAnnotationComposer,
+      $$SurgeonProfileTableCreateCompanionBuilder,
+      $$SurgeonProfileTableUpdateCompanionBuilder,
+      (
+        SurgeonProfileData,
+        BaseReferences<_$AppDatabase, $SurgeonProfileTable, SurgeonProfileData>,
+      ),
+      SurgeonProfileData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -8470,4 +9780,6 @@ class $AppDatabaseManager {
       $$ProcedureStepsTableTableManager(_db, _db.procedureSteps);
   $$CaseProcedureStepsTableTableManager get caseProcedureSteps =>
       $$CaseProcedureStepsTableTableManager(_db, _db.caseProcedureSteps);
+  $$SurgeonProfileTableTableManager get surgeonProfile =>
+      $$SurgeonProfileTableTableManager(_db, _db.surgeonProfile);
 }
