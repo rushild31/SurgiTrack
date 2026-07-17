@@ -39,9 +39,9 @@ class PatientDatabaseReportPage extends ConsumerWidget {
               return IconButton(
                 icon: const Icon(Icons.table_chart),
 
-                onPressed: () {
-                  exportExcel(data);
-                },
+                tooltip: "Export Excel",
+
+                onPressed: () => exportExcel(data),
               );
             },
           ),
@@ -86,7 +86,7 @@ class PatientDatabaseReportPage extends ConsumerWidget {
                       columns: const [
                         DataColumn(label: Text("Sr")),
 
-                        DataColumn(label: Text("Patient Name")),
+                        DataColumn(label: Text("Patient")),
 
                         DataColumn(label: Text("Hospital ID")),
 
@@ -97,6 +97,8 @@ class PatientDatabaseReportPage extends ConsumerWidget {
                         DataColumn(label: Text("Comorbidities")),
 
                         DataColumn(label: Text("Address")),
+
+                        DataColumn(label: Text("Admission")),
                       ],
 
                       rows: List.generate(data.length, (index) {
@@ -117,6 +119,16 @@ class PatientDatabaseReportPage extends ConsumerWidget {
                             DataCell(Text(patient.comorbidities.join(", "))),
 
                             DataCell(Text(patient.address ?? "-")),
+
+                            DataCell(
+                              Text(
+                                patient.admissionDate
+                                        ?.toString()
+                                        .split(" ")
+                                        .first ??
+                                    "-",
+                              ),
+                            ),
                           ],
                         );
                       }),
