@@ -5717,6 +5717,17 @@ class $SurgeonProfileTable extends SurgeonProfile
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _qualificationMeta = const VerificationMeta(
+    'qualification',
+  );
+  @override
+  late final GeneratedColumn<String> qualification = GeneratedColumn<String>(
+    'qualification',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _specialtyMeta = const VerificationMeta(
     'specialty',
   );
@@ -5835,6 +5846,7 @@ class $SurgeonProfileTable extends SurgeonProfile
     email,
     phone,
     profilePhotoPath,
+    qualification,
     specialty,
     department,
     institution,
@@ -5887,6 +5899,15 @@ class $SurgeonProfileTable extends SurgeonProfile
         profilePhotoPath.isAcceptableOrUnknown(
           data['profile_photo_path']!,
           _profilePhotoPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('qualification')) {
+      context.handle(
+        _qualificationMeta,
+        qualification.isAcceptableOrUnknown(
+          data['qualification']!,
+          _qualificationMeta,
         ),
       );
     }
@@ -6001,6 +6022,10 @@ class $SurgeonProfileTable extends SurgeonProfile
         DriftSqlType.string,
         data['${effectivePrefix}profile_photo_path'],
       ),
+      qualification: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}qualification'],
+      ),
       specialty: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}specialty'],
@@ -6057,6 +6082,7 @@ class SurgeonProfileData extends DataClass
   final String? email;
   final String? phone;
   final String? profilePhotoPath;
+  final String? qualification;
   final String? specialty;
   final String? department;
   final String? institution;
@@ -6073,6 +6099,7 @@ class SurgeonProfileData extends DataClass
     this.email,
     this.phone,
     this.profilePhotoPath,
+    this.qualification,
     this.specialty,
     this.department,
     this.institution,
@@ -6097,6 +6124,9 @@ class SurgeonProfileData extends DataClass
     }
     if (!nullToAbsent || profilePhotoPath != null) {
       map['profile_photo_path'] = Variable<String>(profilePhotoPath);
+    }
+    if (!nullToAbsent || qualification != null) {
+      map['qualification'] = Variable<String>(qualification);
     }
     if (!nullToAbsent || specialty != null) {
       map['specialty'] = Variable<String>(specialty);
@@ -6140,6 +6170,9 @@ class SurgeonProfileData extends DataClass
       profilePhotoPath: profilePhotoPath == null && nullToAbsent
           ? const Value.absent()
           : Value(profilePhotoPath),
+      qualification: qualification == null && nullToAbsent
+          ? const Value.absent()
+          : Value(qualification),
       specialty: specialty == null && nullToAbsent
           ? const Value.absent()
           : Value(specialty),
@@ -6180,6 +6213,7 @@ class SurgeonProfileData extends DataClass
       email: serializer.fromJson<String?>(json['email']),
       phone: serializer.fromJson<String?>(json['phone']),
       profilePhotoPath: serializer.fromJson<String?>(json['profilePhotoPath']),
+      qualification: serializer.fromJson<String?>(json['qualification']),
       specialty: serializer.fromJson<String?>(json['specialty']),
       department: serializer.fromJson<String?>(json['department']),
       institution: serializer.fromJson<String?>(json['institution']),
@@ -6207,6 +6241,7 @@ class SurgeonProfileData extends DataClass
       'email': serializer.toJson<String?>(email),
       'phone': serializer.toJson<String?>(phone),
       'profilePhotoPath': serializer.toJson<String?>(profilePhotoPath),
+      'qualification': serializer.toJson<String?>(qualification),
       'specialty': serializer.toJson<String?>(specialty),
       'department': serializer.toJson<String?>(department),
       'institution': serializer.toJson<String?>(institution),
@@ -6226,6 +6261,7 @@ class SurgeonProfileData extends DataClass
     Value<String?> email = const Value.absent(),
     Value<String?> phone = const Value.absent(),
     Value<String?> profilePhotoPath = const Value.absent(),
+    Value<String?> qualification = const Value.absent(),
     Value<String?> specialty = const Value.absent(),
     Value<String?> department = const Value.absent(),
     Value<String?> institution = const Value.absent(),
@@ -6244,6 +6280,9 @@ class SurgeonProfileData extends DataClass
     profilePhotoPath: profilePhotoPath.present
         ? profilePhotoPath.value
         : this.profilePhotoPath,
+    qualification: qualification.present
+        ? qualification.value
+        : this.qualification,
     specialty: specialty.present ? specialty.value : this.specialty,
     department: department.present ? department.value : this.department,
     institution: institution.present ? institution.value : this.institution,
@@ -6270,6 +6309,9 @@ class SurgeonProfileData extends DataClass
       profilePhotoPath: data.profilePhotoPath.present
           ? data.profilePhotoPath.value
           : this.profilePhotoPath,
+      qualification: data.qualification.present
+          ? data.qualification.value
+          : this.qualification,
       specialty: data.specialty.present ? data.specialty.value : this.specialty,
       department: data.department.present
           ? data.department.value
@@ -6305,6 +6347,7 @@ class SurgeonProfileData extends DataClass
           ..write('email: $email, ')
           ..write('phone: $phone, ')
           ..write('profilePhotoPath: $profilePhotoPath, ')
+          ..write('qualification: $qualification, ')
           ..write('specialty: $specialty, ')
           ..write('department: $department, ')
           ..write('institution: $institution, ')
@@ -6326,6 +6369,7 @@ class SurgeonProfileData extends DataClass
     email,
     phone,
     profilePhotoPath,
+    qualification,
     specialty,
     department,
     institution,
@@ -6346,6 +6390,7 @@ class SurgeonProfileData extends DataClass
           other.email == this.email &&
           other.phone == this.phone &&
           other.profilePhotoPath == this.profilePhotoPath &&
+          other.qualification == this.qualification &&
           other.specialty == this.specialty &&
           other.department == this.department &&
           other.institution == this.institution &&
@@ -6364,6 +6409,7 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
   final Value<String?> email;
   final Value<String?> phone;
   final Value<String?> profilePhotoPath;
+  final Value<String?> qualification;
   final Value<String?> specialty;
   final Value<String?> department;
   final Value<String?> institution;
@@ -6380,6 +6426,7 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
     this.email = const Value.absent(),
     this.phone = const Value.absent(),
     this.profilePhotoPath = const Value.absent(),
+    this.qualification = const Value.absent(),
     this.specialty = const Value.absent(),
     this.department = const Value.absent(),
     this.institution = const Value.absent(),
@@ -6397,6 +6444,7 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
     this.email = const Value.absent(),
     this.phone = const Value.absent(),
     this.profilePhotoPath = const Value.absent(),
+    this.qualification = const Value.absent(),
     this.specialty = const Value.absent(),
     this.department = const Value.absent(),
     this.institution = const Value.absent(),
@@ -6416,6 +6464,7 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
     Expression<String>? email,
     Expression<String>? phone,
     Expression<String>? profilePhotoPath,
+    Expression<String>? qualification,
     Expression<String>? specialty,
     Expression<String>? department,
     Expression<String>? institution,
@@ -6433,6 +6482,7 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
       if (email != null) 'email': email,
       if (phone != null) 'phone': phone,
       if (profilePhotoPath != null) 'profile_photo_path': profilePhotoPath,
+      if (qualification != null) 'qualification': qualification,
       if (specialty != null) 'specialty': specialty,
       if (department != null) 'department': department,
       if (institution != null) 'institution': institution,
@@ -6453,6 +6503,7 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
     Value<String?>? email,
     Value<String?>? phone,
     Value<String?>? profilePhotoPath,
+    Value<String?>? qualification,
     Value<String?>? specialty,
     Value<String?>? department,
     Value<String?>? institution,
@@ -6470,6 +6521,7 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
       email: email ?? this.email,
       phone: phone ?? this.phone,
       profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
+      qualification: qualification ?? this.qualification,
       specialty: specialty ?? this.specialty,
       department: department ?? this.department,
       institution: institution ?? this.institution,
@@ -6500,6 +6552,9 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
     }
     if (profilePhotoPath.present) {
       map['profile_photo_path'] = Variable<String>(profilePhotoPath.value);
+    }
+    if (qualification.present) {
+      map['qualification'] = Variable<String>(qualification.value);
     }
     if (specialty.present) {
       map['specialty'] = Variable<String>(specialty.value);
@@ -6544,6 +6599,7 @@ class SurgeonProfileCompanion extends UpdateCompanion<SurgeonProfileData> {
           ..write('email: $email, ')
           ..write('phone: $phone, ')
           ..write('profilePhotoPath: $profilePhotoPath, ')
+          ..write('qualification: $qualification, ')
           ..write('specialty: $specialty, ')
           ..write('department: $department, ')
           ..write('institution: $institution, ')
@@ -9359,6 +9415,7 @@ typedef $$SurgeonProfileTableCreateCompanionBuilder =
       Value<String?> email,
       Value<String?> phone,
       Value<String?> profilePhotoPath,
+      Value<String?> qualification,
       Value<String?> specialty,
       Value<String?> department,
       Value<String?> institution,
@@ -9377,6 +9434,7 @@ typedef $$SurgeonProfileTableUpdateCompanionBuilder =
       Value<String?> email,
       Value<String?> phone,
       Value<String?> profilePhotoPath,
+      Value<String?> qualification,
       Value<String?> specialty,
       Value<String?> department,
       Value<String?> institution,
@@ -9420,6 +9478,11 @@ class $$SurgeonProfileTableFilterComposer
 
   ColumnFilters<String> get profilePhotoPath => $composableBuilder(
     column: $table.profilePhotoPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get qualification => $composableBuilder(
+    column: $table.qualification,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -9508,6 +9571,11 @@ class $$SurgeonProfileTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get qualification => $composableBuilder(
+    column: $table.qualification,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get specialty => $composableBuilder(
     column: $table.specialty,
     builder: (column) => ColumnOrderings(column),
@@ -9582,6 +9650,11 @@ class $$SurgeonProfileTableAnnotationComposer
 
   GeneratedColumn<String> get profilePhotoPath => $composableBuilder(
     column: $table.profilePhotoPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get qualification => $composableBuilder(
+    column: $table.qualification,
     builder: (column) => column,
   );
 
@@ -9672,6 +9745,7 @@ class $$SurgeonProfileTableTableManager
                 Value<String?> email = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
                 Value<String?> profilePhotoPath = const Value.absent(),
+                Value<String?> qualification = const Value.absent(),
                 Value<String?> specialty = const Value.absent(),
                 Value<String?> department = const Value.absent(),
                 Value<String?> institution = const Value.absent(),
@@ -9688,6 +9762,7 @@ class $$SurgeonProfileTableTableManager
                 email: email,
                 phone: phone,
                 profilePhotoPath: profilePhotoPath,
+                qualification: qualification,
                 specialty: specialty,
                 department: department,
                 institution: institution,
@@ -9706,6 +9781,7 @@ class $$SurgeonProfileTableTableManager
                 Value<String?> email = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
                 Value<String?> profilePhotoPath = const Value.absent(),
+                Value<String?> qualification = const Value.absent(),
                 Value<String?> specialty = const Value.absent(),
                 Value<String?> department = const Value.absent(),
                 Value<String?> institution = const Value.absent(),
@@ -9722,6 +9798,7 @@ class $$SurgeonProfileTableTableManager
                 email: email,
                 phone: phone,
                 profilePhotoPath: profilePhotoPath,
+                qualification: qualification,
                 specialty: specialty,
                 department: department,
                 institution: institution,

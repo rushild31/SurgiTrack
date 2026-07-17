@@ -12,6 +12,8 @@ class SurgeonProfile extends Table {
 
   TextColumn get profilePhotoPath => text().nullable()();
 
+  TextColumn get qualification => text().nullable()();
+
   TextColumn get specialty => text().nullable()();
 
   TextColumn get department => text().nullable()();

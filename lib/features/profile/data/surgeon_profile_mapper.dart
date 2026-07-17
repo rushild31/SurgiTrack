@@ -17,6 +17,8 @@ class SurgeonProfileMapper {
 
       profilePhotoPath: data.profilePhotoPath,
 
+      qualification: data.qualification,
+
       specialty: data.specialty,
 
       department: data.department,
@@ -50,6 +52,8 @@ class SurgeonProfileMapper {
       phone: Value(profile.phone),
 
       profilePhotoPath: Value(profile.profilePhotoPath),
+
+      qualification: Value(profile.qualification),
 
       specialty: Value(profile.specialty),
 

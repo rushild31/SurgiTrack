@@ -9,6 +9,8 @@ class SurgeonProfile {
 
   final String? profilePhotoPath;
 
+  final String? qualification;
+
   final String? specialty;
 
   final String? department;
@@ -31,19 +33,35 @@ class SurgeonProfile {
 
   const SurgeonProfile({
     this.id,
+
     required this.name,
+
     this.email,
+
     this.phone,
+
     this.profilePhotoPath,
+
+    this.qualification,
+
     this.specialty,
+
     this.department,
+
     this.institution,
+
     this.trainingYear,
+
     this.residencyStartDate,
+
     this.residencyEndDate,
+
     this.registrationNumber,
+
     this.memberships,
+
     required this.createdAt,
+
     required this.updatedAt,
   });
 }
