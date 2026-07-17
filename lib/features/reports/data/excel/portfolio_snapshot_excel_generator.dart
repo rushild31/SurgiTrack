@@ -1,36 +1,6 @@
 import 'package:excel/excel.dart';
 
-class PortfolioSnapshotData {
-  final String traineeName;
-
-  final String trainingProgram;
-
-  final String trainingPeriod;
-
-  final int totalCases;
-
-  final int totalPatients;
-
-  final int totalProcedures;
-
-  final int cardiacCases;
-
-  final int thoracicCases;
-
-  final int vascularCases;
-
-  const PortfolioSnapshotData({
-    required this.traineeName,
-    required this.trainingProgram,
-    required this.trainingPeriod,
-    required this.totalCases,
-    required this.totalPatients,
-    required this.totalProcedures,
-    required this.cardiacCases,
-    required this.thoracicCases,
-    required this.vascularCases,
-  });
-}
+import 'package:surgitrack/features/reports/domain/portfolio_snapshot_data.dart';
 
 class PortfolioSnapshotExcelGenerator {
   Excel build(PortfolioSnapshotData data) {
@@ -41,27 +11,25 @@ class PortfolioSnapshotExcelGenerator {
     sheet.appendRow([TextCellValue('Parameter'), TextCellValue('Value')]);
 
     final rows = [
-      ['Trainee', data.traineeName],
+      ['Total Cases', data.totalCases],
+      ['Total Patients', data.totalPatients],
+      ['Total Procedures', data.totalProcedures],
 
-      ['Training Program', data.trainingProgram],
+      ['Cardiac Cases', data.cardiacCases],
+      ['Thoracic Cases', data.thoracicCases],
+      ['Vascular Cases', data.vascularCases],
 
-      ['Training Period', data.trainingPeriod],
-
-      ['Total Cases', data.totalCases.toString()],
-
-      ['Total Patients', data.totalPatients.toString()],
-
-      ['Total Procedures', data.totalProcedures.toString()],
-
-      ['Cardiac Cases', data.cardiacCases.toString()],
-
-      ['Thoracic Cases', data.thoracicCases.toString()],
-
-      ['Vascular Cases', data.vascularCases.toString()],
+      ['Independent Cases', data.independentCases],
+      ['Supervised Cases', data.supervisedCases],
+      ['Assisted Cases', data.assistedCases],
+      ['Observed Cases', data.observedCases],
     ];
 
     for (final row in rows) {
-      sheet.appendRow([TextCellValue(row[0]), TextCellValue(row[1])]);
+      sheet.appendRow([
+        TextCellValue(row[0].toString()),
+        IntCellValue(row[1] as int),
+      ]);
     }
 
     return excel;

@@ -13,6 +13,7 @@ import 'package:surgitrack/features/reports/domain/procedure_exposure_report.dar
 import 'package:surgitrack/features/reports/domain/training_period_report.dart';
 
 import 'package:surgitrack/features/patients/domain/patient.dart';
+import 'package:surgitrack/features/reports/domain/portfolio_snapshot_data.dart';
 
 class ExportRepository {
   final ExcelService _excelService = ExcelService();
