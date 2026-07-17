@@ -4,15 +4,50 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:surgitrack/features/reports/providers/report_provider.dart';
 import 'package:surgitrack/features/reports/domain/surgical_logbook_report.dart';
 
+import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
+import 'package:surgitrack/features/reports/data/pdf/surgical_logbook_pdf_generator.dart';
+
+import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
+
 class SurgicalLogbookPage extends ConsumerWidget {
   const SurgicalLogbookPage({super.key});
+
+  Future<void> exportPdf(List<SurgicalLogbookEntry> entries) async {
+    final generator = SurgicalLogbookPdfGenerator();
+
+    final widgets = generator.build(entries);
+
+    final pdfService = PdfService();
+
+    final bytes = await pdfService.generatePdf(content: widgets);
+
+    await pdfService.previewPdf(pdfBytes: bytes);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final report = ref.watch(surgicalLogbookReportProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Surgical Logbook")),
+      appBar: AppBar(
+        title: const Text("Surgical Logbook"),
+
+        actions: [
+          report.when(
+            loading: () => const SizedBox(),
+
+            error: (_, _) => const SizedBox(),
+
+            data: (entries) {
+              if (entries.isEmpty) {
+                return const SizedBox();
+              }
+
+              return ExportButton(onPdfExport: () => exportPdf(entries));
+            },
+          ),
+        ],
+      ),
 
       body: report.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -70,10 +105,7 @@ class SurgicalLogbookCard extends StatelessWidget {
 
             const SizedBox(height: 4),
 
-            Text(
-              "Procedure: "
-              "${entry.procedures.join(", ")}",
-            ),
+            Text("Procedure: ${entry.procedures.join(", ")}"),
 
             const SizedBox(height: 4),
 
@@ -82,6 +114,8 @@ class SurgicalLogbookCard extends StatelessWidget {
             Text("Role: ${entry.operativeRole}"),
 
             Text("Approach: ${entry.approach}"),
+
+            Text("Case Type: ${entry.caseType}"),
 
             Text("Complexity: ${entry.complexity}"),
           ],
