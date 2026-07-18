@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:surgitrack/features/dashboard/providers/dashboard_provider.dart';
 
@@ -9,9 +10,6 @@ import 'package:surgitrack/features/dashboard/presentation/widgets/recent_cases_
 import 'package:surgitrack/features/dashboard/presentation/widgets/monthly_case_chart.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/specialty_breakdown_card.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/operative_role_card.dart';
-
-import 'package:surgitrack/features/patients/presentation/patient_form_screen.dart';
-import 'package:surgitrack/features/patients/presentation/patient_list_screen.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -56,25 +54,33 @@ class DashboardScreen extends ConsumerWidget {
               children: [
                 CoreKpiCard(
                   title: "Total Cases",
+
                   value: stats.totalCases,
+
                   icon: Icons.local_hospital_outlined,
                 ),
 
                 CoreKpiCard(
                   title: "Total Patients",
+
                   value: stats.totalPatients,
+
                   icon: Icons.people_outline,
                 ),
 
                 CoreKpiCard(
                   title: "Total Procedures",
+
                   value: stats.totalProcedures,
+
                   icon: Icons.medical_services_outlined,
                 ),
 
                 CoreKpiCard(
                   title: "Cases This Month",
+
                   value: stats.casesThisMonth,
+
                   icon: Icons.calendar_month_outlined,
                 ),
 
@@ -82,6 +88,7 @@ class DashboardScreen extends ConsumerWidget {
 
                 Text(
                   "Quick Actions",
+
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
 
@@ -96,13 +103,7 @@ class DashboardScreen extends ConsumerWidget {
                         icon: Icons.person_add,
 
                         onTap: () {
-                          Navigator.push(
-                            context,
-
-                            MaterialPageRoute(
-                              builder: (_) => const PatientFormScreen(),
-                            ),
-                          );
+                          context.push('/patients/add');
                         },
                       ),
                     ),
@@ -111,18 +112,12 @@ class DashboardScreen extends ConsumerWidget {
 
                     Expanded(
                       child: QuickActionButton(
-                        label: "View Patients",
+                        label: "Add Case",
 
-                        icon: Icons.people_outline,
+                        icon: Icons.assignment_add,
 
                         onTap: () {
-                          Navigator.push(
-                            context,
-
-                            MaterialPageRoute(
-                              builder: (_) => const PatientListScreen(),
-                            ),
-                          );
+                          context.push('/cases/add');
                         },
                       ),
                     ),
@@ -131,43 +126,51 @@ class DashboardScreen extends ConsumerWidget {
 
                 const SizedBox(height: 24),
 
+                Text(
+                  "Recent Cases",
+
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+
+                const SizedBox(height: 12),
+
                 recentCases.when(
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
 
                   error: (error, stack) => Text(error.toString()),
 
-                  data: (cases) {
-                    return Column(
-                      children: [
-                        RecentCasesCard(cases: cases),
+                  data: (cases) => RecentCasesCard(cases: cases),
+                ),
 
-                        specialty.when(
-                          loading: () => const CircularProgressIndicator(),
+                const SizedBox(height: 16),
 
-                          error: (error, stack) => Text(error.toString()),
+                specialty.when(
+                  loading: () => const CircularProgressIndicator(),
 
-                          data: (data) => SpecialtyBreakdownCard(data: data),
-                        ),
+                  error: (error, stack) => Text(error.toString()),
 
-                        operative.when(
-                          loading: () => const CircularProgressIndicator(),
+                  data: (data) => SpecialtyBreakdownCard(data: data),
+                ),
 
-                          error: (error, stack) => Text(error.toString()),
+                const SizedBox(height: 16),
 
-                          data: (data) => OperativeRoleCard(data: data),
-                        ),
+                operative.when(
+                  loading: () => const CircularProgressIndicator(),
 
-                        monthly.when(
-                          loading: () => const CircularProgressIndicator(),
+                  error: (error, stack) => Text(error.toString()),
 
-                          error: (error, stack) => Text(error.toString()),
+                  data: (data) => OperativeRoleCard(distribution: data),
+                ),
 
-                          data: (data) => MonthlyCaseChart(data: data),
-                        ),
-                      ],
-                    );
-                  },
+                const SizedBox(height: 16),
+
+                monthly.when(
+                  loading: () => const CircularProgressIndicator(),
+
+                  error: (error, stack) => Text(error.toString()),
+
+                  data: (data) => MonthlyCaseChart(data: data),
                 ),
               ],
             ),

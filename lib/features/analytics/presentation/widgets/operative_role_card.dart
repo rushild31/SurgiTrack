@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:surgitrack/core/widgets/app_card.dart';
+import 'package:surgitrack/core/widgets/empty_state.dart';
+
 import 'package:surgitrack/features/analytics/domain/operative_role_distribution.dart';
 
 class OperativeRoleCard extends StatelessWidget {
@@ -17,32 +20,36 @@ class OperativeRoleCard extends StatelessWidget {
     ];
 
     final sortedDistribution = [...distribution]
-      ..sort((a, b) {
-        return orderedRoles
+      ..sort(
+        (a, b) => orderedRoles
             .indexOf(a.role)
-            .compareTo(orderedRoles.indexOf(b.role));
-      });
+            .compareTo(orderedRoles.indexOf(b.role)),
+      );
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Operative Role Distribution",
 
-          children: [
-            Text(
-              "Operative Role Distribution",
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
 
-            const SizedBox(height: 16),
+          const SizedBox(height: 16),
 
+          if (sortedDistribution.isEmpty)
+            const EmptyState(
+              icon: Icons.assignment_outlined,
+              title: "No operative data",
+              message: "Operative roles will appear after cases are logged",
+            )
+          else
             ...sortedDistribution.map(
               (item) => _roleRow(context, item.role, item.count),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -60,7 +67,9 @@ class OperativeRoleCard extends StatelessWidget {
           Text(
             count.toString(),
 
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
         ],
       ),

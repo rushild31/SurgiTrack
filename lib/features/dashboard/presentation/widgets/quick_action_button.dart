@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 
 class QuickActionButton extends StatelessWidget {
   final String label;
+
   final IconData icon;
+
   final VoidCallback onTap;
 
   const QuickActionButton({
     super.key,
+
     required this.label,
+
     required this.icon,
+
     required this.onTap,
   });
 
