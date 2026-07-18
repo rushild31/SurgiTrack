@@ -51,10 +51,22 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
   ProcedureSelection selection = const ProcedureSelection();
 
+  bool cardiopulmonaryBypassUsed = false;
+
+  final bypassTimeController = TextEditingController();
+
+  final crossClampTimeController = TextEditingController();
+
+  final complicationsController = TextEditingController();
+
   @override
   void dispose() {
     diagnosisController.dispose();
     notesController.dispose();
+
+    bypassTimeController.dispose();
+    crossClampTimeController.dispose();
+    complicationsController.dispose();
 
     super.dispose();
   }
@@ -274,6 +286,40 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
               },
             ),
 
+            SwitchListTile(
+              title: const Text("Cardiopulmonary Bypass Used"),
+
+              value: cardiopulmonaryBypassUsed,
+
+              onChanged: (value) {
+                setState(() {
+                  cardiopulmonaryBypassUsed = value;
+                });
+              },
+            ),
+
+            if (cardiopulmonaryBypassUsed) ...[
+              TextFormField(
+                controller: bypassTimeController,
+
+                keyboardType: TextInputType.number,
+
+                decoration: const InputDecoration(
+                  labelText: "Bypass Time (minutes)",
+                ),
+              ),
+
+              TextFormField(
+                controller: crossClampTimeController,
+
+                keyboardType: TextInputType.number,
+
+                decoration: const InputDecoration(
+                  labelText: "Cross Clamp Time (minutes)",
+                ),
+              ),
+            ],
+
             DropdownButtonFormField<Outcome>(
               initialValue: outcome,
 
@@ -293,6 +339,14 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
             ),
 
             const SizedBox(height: 12),
+
+            TextFormField(
+              controller: complicationsController,
+
+              maxLines: 3,
+
+              decoration: const InputDecoration(labelText: "Complications"),
+            ),
 
             TextFormField(
               controller: notesController,
@@ -329,7 +383,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
     final newCase = SurgicalCase(
       patientId: widget.patient.id!,
 
-      caseId: "CTVS-${now.millisecondsSinceEpoch}",
+      caseId: await ref.read(surgicalCaseRepositoryProvider).generateCaseId(),
 
       surgeryDate: surgeryDate,
 
