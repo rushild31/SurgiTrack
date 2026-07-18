@@ -49,7 +49,7 @@ final GoRouter appRouter = GoRouter(
 
             FilledButton(
               onPressed: () {
-                context.go('/dashboard');
+                context.go('AppRoutes.dashboard');
               },
 
               child: const Text("Go to Dashboard"),

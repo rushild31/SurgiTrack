@@ -10,12 +10,17 @@ class SurgiTrackApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'SurgiTrack',
-
       debugShowCheckedModeBanner: false,
 
       theme: AppTheme.lightTheme,
 
       routerConfig: appRouter,
+
+      restorationScopeId: 'surgitrack',
+
+      themeAnimationDuration: const Duration(milliseconds: 200),
+
+      themeAnimationCurve: Curves.easeInOut,
     );
   }
 }
