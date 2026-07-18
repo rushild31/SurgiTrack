@@ -43,13 +43,8 @@ class ReportsOverviewPage extends StatelessWidget {
 
           const Text(
             "Track operative exposure, competency progression and training milestones",
-
-            style: TextStyle(color: Colors.grey),
           ),
 
-          // =====================================================
-          // OVERVIEW
-          // =====================================================
           sectionTitle("Overview"),
 
           ReportCard(
@@ -70,9 +65,6 @@ class ReportsOverviewPage extends StatelessWidget {
             },
           ),
 
-          // =====================================================
-          // OPERATIVE RECORDS
-          // =====================================================
           sectionTitle("Operative Records"),
 
           ReportCard(
@@ -110,9 +102,6 @@ class ReportsOverviewPage extends StatelessWidget {
             },
           ),
 
-          // =====================================================
-          // COMPETENCY TRACKING
-          // =====================================================
           sectionTitle("Competency Tracking"),
 
           ReportCard(
@@ -152,9 +141,6 @@ class ReportsOverviewPage extends StatelessWidget {
             },
           ),
 
-          // =====================================================
-          // SUMMARY REPORTS
-          // =====================================================
           sectionTitle("Training Reports"),
 
           ReportCard(

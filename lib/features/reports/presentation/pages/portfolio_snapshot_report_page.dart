@@ -3,13 +3,43 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/reports/providers/portfolio_snapshot_provider.dart';
 
-import 'package:surgitrack/features/reports/data/export/export_repository.dart';
-
 import 'package:surgitrack/features/reports/domain/portfolio_snapshot_data.dart';
+
+import 'package:surgitrack/features/reports/data/export/export_repository.dart';
 import 'package:surgitrack/features/reports/data/export/report_export_service.dart';
+
+import 'package:surgitrack/features/reports/data/pdf/pdf_service.dart';
+import 'package:surgitrack/features/reports/data/pdf/portfolio_snapshot_pdf_generator.dart';
+
+import 'package:surgitrack/features/reports/presentation/widgets/export_button.dart';
 
 class PortfolioSnapshotReportPage extends ConsumerWidget {
   const PortfolioSnapshotReportPage({super.key});
+
+  Future<void> exportPdf(
+    BuildContext context,
+    PortfolioSnapshotData data,
+  ) async {
+    final generator = PortfolioSnapshotPdfGenerator();
+
+    final content = generator.build(data);
+
+    final bytes = await PdfService().generatePdf(
+      content: content,
+      title: "SurgiTrack Portfolio Snapshot",
+    );
+
+    await ReportExportService.exportPdf(
+      bytes: bytes,
+      fileName: "SurgiTrack_Portfolio_Snapshot.pdf",
+    );
+
+    if (!context.mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Portfolio Snapshot PDF generated")),
+    );
+  }
 
   Future<void> exportExcel(
     BuildContext context,
@@ -21,7 +51,6 @@ class PortfolioSnapshotReportPage extends ConsumerWidget {
 
     await ReportExportService.exportExcel(
       bytes: bytes,
-
       fileName: "SurgiTrack_Portfolio_Snapshot.xlsx",
     );
 
@@ -47,12 +76,10 @@ class PortfolioSnapshotReportPage extends ConsumerWidget {
             error: (_, _) => const SizedBox(),
 
             data: (data) {
-              return IconButton(
-                icon: const Icon(Icons.table_chart),
+              return ExportButton(
+                onPdfExport: () => exportPdf(context, data),
 
-                tooltip: "Export Excel",
-
-                onPressed: () => exportExcel(context, data),
+                onExcelExport: () => exportExcel(context, data),
               );
             },
           ),
@@ -71,7 +98,6 @@ class PortfolioSnapshotReportPage extends ConsumerWidget {
             children: [
               const Text(
                 "Training Portfolio Overview",
-
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
 
@@ -113,12 +139,12 @@ class PortfolioSnapshotReportPage extends ConsumerWidget {
 
                 rows: [
                   SnapshotRow(
-                    label: "Independent",
+                    label: "Performed Independently",
                     value: snapshot.independentCases,
                   ),
 
                   SnapshotRow(
-                    label: "Supervised",
+                    label: "Performed Under Supervision",
                     value: snapshot.supervisedCases,
                   ),
 
@@ -154,7 +180,6 @@ class SnapshotCard extends StatelessWidget {
           children: [
             Text(
               title,
-
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
 
@@ -167,7 +192,14 @@ class SnapshotCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                  children: [Text(row.label), Text(row.value.toString())],
+                  children: [
+                    Text(row.label),
+
+                    Text(
+                      row.value.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
