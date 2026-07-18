@@ -3,8 +3,6 @@ import 'package:surgitrack/core/database/app_database.dart';
 import 'package:surgitrack/features/dashboard/domain/dashboard_statistics.dart';
 import 'package:surgitrack/features/dashboard/domain/monthly_case_data.dart';
 
-import 'package:surgitrack/features/analytics/domain/operative_role_distribution.dart';
-
 class DashboardRepository {
   final AppDatabase database;
 
@@ -15,11 +13,8 @@ class DashboardRepository {
 
     return DashboardStatistics(
       totalPatients: await dao.patientCount(),
-
       totalCases: await dao.caseCount(),
-
       totalProcedures: await dao.procedureCount(),
-
       casesThisMonth: await dao.caseCountThisMonth(),
     );
   }
@@ -32,7 +27,6 @@ class DashboardRepository {
     return database.dashboardDao.getAllCases();
   }
 
-  /// Cases grouped by specialty
   Future<Map<String, int>> getSpecialtyBreakdown() async {
     final cases = await getAllCases();
 
@@ -45,8 +39,7 @@ class DashboardRepository {
     return result;
   }
 
-  /// Cases grouped by operative role
-  Future<List<OperativeRoleDistribution>> getOperativeRoleDistribution() async {
+  Future<Map<String, int>> getOperativeRoleBreakdown() async {
     final cases = await getAllCases();
 
     final Map<String, int> result = {};
@@ -55,12 +48,9 @@ class DashboardRepository {
       result[c.operativeRole] = (result[c.operativeRole] ?? 0) + 1;
     }
 
-    return result.entries.map((entry) {
-      return OperativeRoleDistribution(role: entry.key, count: entry.value);
-    }).toList();
+    return result;
   }
 
-  /// Monthly case volume
   Future<List<MonthlyCaseData>> getMonthlyCaseData() async {
     final cases = await getAllCases();
 
@@ -68,14 +58,13 @@ class DashboardRepository {
 
     for (final c in cases) {
       final month =
-          "${c.surgeryDate.year}-"
-          "${c.surgeryDate.month.toString().padLeft(2, '0')}";
+          "${c.surgeryDate.year}-${c.surgeryDate.month.toString().padLeft(2, '0')}";
 
       monthly[month] = (monthly[month] ?? 0) + 1;
     }
 
-    return monthly.entries.map((entry) {
-      return MonthlyCaseData(month: entry.key, count: entry.value);
+    return monthly.entries.map((e) {
+      return MonthlyCaseData(month: e.key, count: e.value);
     }).toList();
   }
 }

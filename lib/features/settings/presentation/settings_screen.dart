@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'pages/about_page.dart';
 import 'pages/app_preferences_page.dart';
@@ -23,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
 
         children: [
           const Text(
-            "Profile & Personalization",
+            "Profile & Account",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
@@ -32,11 +33,18 @@ class SettingsScreen extends StatelessWidget {
           SettingsTile(
             icon: Icons.person,
             title: "Surgeon Profile",
-            subtitle: "Manage professional information",
+            subtitle: "Professional details and portfolio identity",
             onTap: () {
-              // Existing Surgeon Profile module
-              // Navigation will be connected
-              // after route integration
+              context.push('/profile');
+            },
+          ),
+
+          SettingsTile(
+            icon: Icons.cloud,
+            title: "Cloud Account",
+            subtitle: "Supabase sync and account management",
+            onTap: () {
+              context.push('/cloud');
             },
           ),
 
@@ -50,7 +58,7 @@ class SettingsScreen extends StatelessWidget {
           SettingsTile(
             icon: Icons.backup,
             title: "Backup & Restore",
-            subtitle: "Create, import and restore backups",
+            subtitle: "Export and restore SurgiTrack data",
             onTap: () {
               _showComingSoon(context, "Backup & Restore");
             },
@@ -84,51 +92,33 @@ class SettingsScreen extends StatelessWidget {
           const SizedBox(height: 20),
 
           const Text(
-            "Library & Reports",
+            "Library & Preferences",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
           SettingsTile(
             icon: Icons.library_books,
             title: "Library Management",
-            subtitle: "Procedures and specialty packs",
+            subtitle: "Procedure library and specialty packs",
             onTap: () {
               _showComingSoon(context, "Library Management");
             },
           ),
 
           SettingsTile(
-            icon: Icons.description,
-            title: "Report Preferences",
-            subtitle: "Automatic reports and export settings",
+            icon: Icons.tune,
+            title: "App Preferences",
+            subtitle: "Notifications and application settings",
             onTap: () {
-              _showComingSoon(context, "Report Preferences");
+              navigate(context, const AppPreferencesPage());
             },
           ),
 
           const SizedBox(height: 20),
 
           const Text(
-            "Account & Application",
+            "Application",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-
-          SettingsTile(
-            icon: Icons.cloud,
-            title: "Cloud Account",
-            subtitle: "Supabase sync and account management",
-            onTap: () {
-              _showComingSoon(context, "Cloud Account");
-            },
-          ),
-
-          SettingsTile(
-            icon: Icons.notifications,
-            title: "Notifications",
-            subtitle: "In-app alerts and reminders",
-            onTap: () {
-              navigate(context, const AppPreferencesPage());
-            },
           ),
 
           SettingsTile(
@@ -162,22 +152,15 @@ class SettingsScreen extends StatelessWidget {
 
 class SettingsTile extends StatelessWidget {
   final IconData icon;
-
   final String title;
-
   final String subtitle;
-
   final VoidCallback onTap;
 
   const SettingsTile({
     super.key,
-
     required this.icon,
-
     required this.title,
-
     required this.subtitle,
-
     required this.onTap,
   });
 

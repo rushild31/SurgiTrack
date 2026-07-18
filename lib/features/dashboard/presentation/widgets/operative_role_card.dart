@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:surgitrack/features/analytics/domain/operative_role_distribution.dart';
-
 class OperativeRoleCard extends StatelessWidget {
-  final List<OperativeRoleDistribution> distribution;
+  final Map<String, int> data;
 
-  const OperativeRoleCard({super.key, required this.distribution});
+  const OperativeRoleCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +14,11 @@ class OperativeRoleCard extends StatelessWidget {
       'performed_independently',
     ];
 
-    final sortedDistribution = [...distribution]
-      ..sort((a, b) {
-        return orderedRoles
-            .indexOf(a.role)
-            .compareTo(orderedRoles.indexOf(b.role));
-      });
+    final sortedEntries = data.entries.toList()
+      ..sort(
+        (a, b) =>
+            orderedRoles.indexOf(a.key).compareTo(orderedRoles.indexOf(b.key)),
+      );
 
     return Card(
       child: Padding(
@@ -38,23 +35,23 @@ class OperativeRoleCard extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            if (sortedDistribution.isEmpty)
-              const Text("No cases recorded yet")
+            if (sortedEntries.isEmpty)
+              const Text("No operative data recorded yet")
             else
-              ...sortedDistribution.map(
-                (item) => Padding(
+              ...sortedEntries.map(
+                (entry) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
 
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                     children: [
-                      Flexible(child: Text(_formatRole(item.role))),
+                      Flexible(child: Text(_formatRole(entry.key))),
 
                       Text(
-                        item.count.toString(),
+                        entry.value.toString(),
 
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

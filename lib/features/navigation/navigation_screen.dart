@@ -17,7 +17,6 @@ class NavigationScreen extends StatelessWidget {
         onDestinationSelected: (index) {
           navigationShell.goBranch(
             index,
-
             initialLocation: index == navigationShell.currentIndex,
           );
         },
@@ -25,49 +24,37 @@ class NavigationScreen extends StatelessWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.dashboard_outlined),
-
             selectedIcon: Icon(Icons.dashboard),
-
             label: 'Dashboard',
           ),
 
           NavigationDestination(
             icon: Icon(Icons.people_outline),
-
             selectedIcon: Icon(Icons.people),
-
             label: 'Patients',
           ),
 
           NavigationDestination(
             icon: Icon(Icons.assignment_outlined),
-
             selectedIcon: Icon(Icons.assignment),
-
             label: 'Cases',
           ),
 
           NavigationDestination(
             icon: Icon(Icons.analytics_outlined),
-
             selectedIcon: Icon(Icons.analytics),
-
             label: 'Analytics',
           ),
 
           NavigationDestination(
             icon: Icon(Icons.description_outlined),
-
             selectedIcon: Icon(Icons.description),
-
             label: 'Reports',
           ),
 
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
-
             selectedIcon: Icon(Icons.settings),
-
             label: 'Settings',
           ),
         ],

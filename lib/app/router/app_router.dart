@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-
+import 'package:flutter/material.dart';
 import 'package:surgitrack/features/navigation/navigation_screen.dart';
 
 import 'package:surgitrack/features/dashboard/dashboard_screen.dart';
@@ -21,6 +21,37 @@ import 'package:surgitrack/features/profile/presentation/surgeon_profile_screen.
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/dashboard',
+
+  errorBuilder: (context, state) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Page Not Found")),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.error_outline, size: 64),
+
+            const SizedBox(height: 16),
+
+            Text(
+              "The page you are looking for does not exist.",
+              style: Theme.of(context).textTheme.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 16),
+
+            FilledButton(
+              onPressed: () {
+                context.go('/dashboard');
+              },
+              child: const Text("Go to Dashboard"),
+            ),
+          ],
+        ),
+      ),
+    );
+  },
 
   routes: [
     StatefulShellRoute.indexedStack(

@@ -54,33 +54,25 @@ class DashboardScreen extends ConsumerWidget {
               children: [
                 CoreKpiCard(
                   title: "Total Cases",
-
                   value: stats.totalCases,
-
                   icon: Icons.local_hospital_outlined,
                 ),
 
                 CoreKpiCard(
                   title: "Total Patients",
-
                   value: stats.totalPatients,
-
                   icon: Icons.people_outline,
                 ),
 
                 CoreKpiCard(
                   title: "Total Procedures",
-
                   value: stats.totalProcedures,
-
                   icon: Icons.medical_services_outlined,
                 ),
 
                 CoreKpiCard(
                   title: "Cases This Month",
-
                   value: stats.casesThisMonth,
-
                   icon: Icons.calendar_month_outlined,
                 ),
 
@@ -88,7 +80,6 @@ class DashboardScreen extends ConsumerWidget {
 
                 Text(
                   "Quick Actions",
-
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
 
@@ -112,12 +103,12 @@ class DashboardScreen extends ConsumerWidget {
 
                     Expanded(
                       child: QuickActionButton(
-                        label: "Add Case",
+                        label: "Patients",
 
-                        icon: Icons.assignment_add,
+                        icon: Icons.people_outline,
 
                         onTap: () {
-                          context.push('/cases/add');
+                          context.go('/patients');
                         },
                       ),
                     ),
@@ -126,19 +117,10 @@ class DashboardScreen extends ConsumerWidget {
 
                 const SizedBox(height: 24),
 
-                Text(
-                  "Recent Cases",
-
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-
-                const SizedBox(height: 12),
-
                 recentCases.when(
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
 
-                  error: (error, stack) => Text(error.toString()),
+                  error: (e, s) => Text(e.toString()),
 
                   data: (cases) => RecentCasesCard(cases: cases),
                 ),
@@ -148,7 +130,7 @@ class DashboardScreen extends ConsumerWidget {
                 specialty.when(
                   loading: () => const CircularProgressIndicator(),
 
-                  error: (error, stack) => Text(error.toString()),
+                  error: (e, s) => Text(e.toString()),
 
                   data: (data) => SpecialtyBreakdownCard(data: data),
                 ),
@@ -160,7 +142,7 @@ class DashboardScreen extends ConsumerWidget {
 
                   error: (error, stack) => Text(error.toString()),
 
-                  data: (data) => OperativeRoleCard(distribution: data),
+                  data: (roleData) => OperativeRoleCard(data: roleData),
                 ),
 
                 const SizedBox(height: 16),
@@ -168,7 +150,7 @@ class DashboardScreen extends ConsumerWidget {
                 monthly.when(
                   loading: () => const CircularProgressIndicator(),
 
-                  error: (error, stack) => Text(error.toString()),
+                  error: (e, s) => Text(e.toString()),
 
                   data: (data) => MonthlyCaseChart(data: data),
                 ),
