@@ -103,12 +103,12 @@ class DashboardScreen extends ConsumerWidget {
 
                     Expanded(
                       child: QuickActionButton(
-                        label: "Patients",
+                        label: "View Cases",
 
-                        icon: Icons.people_outline,
+                        icon: Icons.assignment_outlined,
 
                         onTap: () {
-                          context.go('/patients');
+                          context.go('/cases');
                         },
                       ),
                     ),
@@ -116,6 +116,13 @@ class DashboardScreen extends ConsumerWidget {
                 ),
 
                 const SizedBox(height: 24),
+
+                Text(
+                  "Recent Cases",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+
+                const SizedBox(height: 12),
 
                 recentCases.when(
                   loading: () => const CircularProgressIndicator(),
@@ -140,7 +147,7 @@ class DashboardScreen extends ConsumerWidget {
                 operative.when(
                   loading: () => const CircularProgressIndicator(),
 
-                  error: (error, stack) => Text(error.toString()),
+                  error: (e, s) => Text(e.toString()),
 
                   data: (roleData) => OperativeRoleCard(data: roleData),
                 ),

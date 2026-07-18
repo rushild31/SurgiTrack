@@ -25,13 +25,27 @@ class SurgicalCaseMapper {
 
       surgicalApproach: data.surgicalApproach,
 
+      approach: data.approach,
+
+      caseType: data.caseType,
+
+      complexity: data.complexity,
+
       operativeRole: data.operativeRole,
 
       technicalSteps: data.technicalSteps,
 
+      cardiopulmonaryBypassUsed: data.cardiopulmonaryBypassUsed,
+
+      bypassTimeMinutes: data.bypassTimeMinutes,
+
+      crossClampTimeMinutes: data.crossClampTimeMinutes,
+
       graftConduitImplant: data.graftConduitImplant,
 
       outcome: data.outcome,
+
+      complications: data.complications,
 
       notes: data.notes,
 
@@ -65,13 +79,27 @@ class SurgicalCaseMapper {
 
       surgicalApproach: Value(surgicalCase.surgicalApproach),
 
+      approach: Value(surgicalCase.approach),
+
+      caseType: Value(surgicalCase.caseType),
+
+      complexity: Value(surgicalCase.complexity),
+
       operativeRole: Value(surgicalCase.operativeRole),
 
       technicalSteps: Value(surgicalCase.technicalSteps),
 
+      cardiopulmonaryBypassUsed: Value(surgicalCase.cardiopulmonaryBypassUsed),
+
+      bypassTimeMinutes: Value(surgicalCase.bypassTimeMinutes),
+
+      crossClampTimeMinutes: Value(surgicalCase.crossClampTimeMinutes),
+
       graftConduitImplant: Value(surgicalCase.graftConduitImplant),
 
       outcome: Value(surgicalCase.outcome),
+
+      complications: Value(surgicalCase.complications),
 
       notes: Value(surgicalCase.notes),
 

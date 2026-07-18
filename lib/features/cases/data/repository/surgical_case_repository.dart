@@ -22,55 +22,98 @@ class SurgicalCaseRepository {
   Future<domain.SurgicalCase?> getCaseById(int id) async {
     final row = await database.surgicalCaseDao.getCaseById(id);
 
-    if (row == null) return null;
+    if (row == null) {
+      return null;
+    }
 
     return SurgicalCaseMapper.fromData(row);
+  }
+
+  /// Generates SurgiTrack portfolio ID
+  ///
+  /// Format:
+  /// CTVS-2026-0001
+  ///
+  /// Sequence is based on highest existing case number
+  /// to prevent duplicate IDs after deletion.
+  Future<String> generateCaseId() async {
+    final year = DateTime.now().year;
+
+    final cases = await database.surgicalCaseDao.getAllCases();
+
+    var nextSequence = 1;
+
+    for (final surgicalCase in cases) {
+      final existingId = surgicalCase.caseId;
+
+      if (!existingId.startsWith("CTVS-$year-")) {
+        continue;
+      }
+
+      final parts = existingId.split("-");
+
+      if (parts.length != 3) {
+        continue;
+      }
+
+      final number = int.tryParse(parts[2]);
+
+      if (number != null && number >= nextSequence) {
+        nextSequence = number + 1;
+      }
+    }
+
+    final formattedNumber = nextSequence.toString().padLeft(4, "0");
+
+    return "CTVS-$year-$formattedNumber";
   }
 
   Future<void> addCase(
     domain.SurgicalCase surgicalCase,
     ProcedureSelection selection,
   ) async {
-    final caseId = await database.surgicalCaseDao.insertCase(
-      SurgicalCaseMapper.toCompanion(surgicalCase),
-    );
-
-    final primary = selection.primaryProcedure;
-
-    if (primary != null) {
-      await database.caseProcedureDao.insertCaseProcedure(
-        CaseProceduresCompanion(
-          caseId: Value(caseId),
-
-          procedureId: Value(primary.id!),
-
-          type: const Value("PRIMARY"),
-        ),
+    await database.transaction(() async {
+      final caseId = await database.surgicalCaseDao.insertCase(
+        SurgicalCaseMapper.toCompanion(surgicalCase),
       );
-    }
 
-    for (final procedure in selection.associatedProcedures) {
-      await database.caseProcedureDao.insertCaseProcedure(
-        CaseProceduresCompanion(
-          caseId: Value(caseId),
+      final primary = selection.primaryProcedure;
 
-          procedureId: Value(procedure.id!),
+      if (primary != null) {
+        await database.caseProcedureDao.insertCaseProcedure(
+          CaseProceduresCompanion(
+            caseId: Value(caseId),
+            procedureId: Value(primary.id!),
+            type: const Value("PRIMARY"),
+          ),
+        );
+      }
 
-          type: const Value("ASSOCIATED"),
-        ),
-      );
-    }
+      for (final procedure in selection.associatedProcedures) {
+        await database.caseProcedureDao.insertCaseProcedure(
+          CaseProceduresCompanion(
+            caseId: Value(caseId),
+            procedureId: Value(procedure.id!),
+            type: const Value("ASSOCIATED"),
+          ),
+        );
+      }
+    });
   }
 
   Future<void> updateCase(domain.SurgicalCase surgicalCase) async {
-    await database.surgicalCaseDao.updateCase(
-      SurgicalCaseMapper.toCompanion(surgicalCase),
-    );
+    await database.transaction(() async {
+      await database.surgicalCaseDao.updateCase(
+        SurgicalCaseMapper.toCompanion(surgicalCase),
+      );
+    });
   }
 
   Future<void> deleteCase(int id) async {
-    await database.caseProcedureDao.deleteForCase(id);
+    await database.transaction(() async {
+      await database.caseProcedureDao.deleteForCase(id);
 
-    await database.surgicalCaseDao.deleteCase(id);
+      await database.surgicalCaseDao.deleteCase(id);
+    });
   }
 }

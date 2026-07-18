@@ -6,10 +6,13 @@ class SurgicalCase extends Equatable {
   /// Link to patient table
   final int patientId;
 
-  /// Internal case identifier
+  /// Internal SurgiTrack case identifier
   final String caseId;
 
-  /// Surgery details
+  // =========================
+  // Surgery Details
+  // =========================
+
   final DateTime surgeryDate;
 
   final String diagnosis;
@@ -20,23 +23,54 @@ class SurgicalCase extends Equatable {
 
   final String specialty;
 
-  /// Linked procedures stored in CaseProcedures table
   final List<int> procedureIds;
 
   final String? surgicalApproach;
 
-  /// Resident participation
+  final String? caseType;
+
+  final String? complexity;
+
+  final String? approach;
+
+  // =========================
+  // Resident Participation
+  // =========================
+
   final String operativeRole;
 
   /// JSON encoded technical steps
   final String? technicalSteps;
 
-  /// Graft / conduit / implant details
+  // =========================
+  // Perfusion Details
+  // =========================
+
+  final bool cardiopulmonaryBypassUsed;
+
+  final int? bypassTimeMinutes;
+
+  final int? crossClampTimeMinutes;
+
+  // =========================
+  // Graft / Implant
+  // =========================
+
   final String? graftConduitImplant;
+
+  // =========================
+  // Outcome
+  // =========================
 
   final String outcome;
 
+  final String? complications;
+
   final String? notes;
+
+  // =========================
+  // Metadata
+  // =========================
 
   final DateTime createdAt;
 
@@ -63,13 +97,27 @@ class SurgicalCase extends Equatable {
 
     this.surgicalApproach,
 
+    this.approach,
+
+    this.caseType,
+
+    this.complexity,
+
     required this.operativeRole,
 
     this.technicalSteps,
 
+    required this.cardiopulmonaryBypassUsed,
+
+    this.bypassTimeMinutes,
+
+    this.crossClampTimeMinutes,
+
     this.graftConduitImplant,
 
     required this.outcome,
+
+    this.complications,
 
     this.notes,
 
@@ -90,10 +138,17 @@ class SurgicalCase extends Equatable {
     specialty,
     procedureIds,
     surgicalApproach,
+    approach,
+    caseType,
+    complexity,
     operativeRole,
     technicalSteps,
+    cardiopulmonaryBypassUsed,
+    bypassTimeMinutes,
+    crossClampTimeMinutes,
     graftConduitImplant,
     outcome,
+    complications,
     notes,
     createdAt,
     updatedAt,

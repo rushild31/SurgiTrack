@@ -403,7 +403,17 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
       graftConduitImplant: null,
 
+      cardiopulmonaryBypassUsed: cardiopulmonaryBypassUsed,
+
+      bypassTimeMinutes: int.tryParse(bypassTimeController.text),
+
+      crossClampTimeMinutes: int.tryParse(crossClampTimeController.text),
+
       outcome: outcome.name,
+
+      complications: complicationsController.text.trim().isEmpty
+          ? null
+          : complicationsController.text.trim(),
 
       notes: notesController.text.trim().isEmpty
           ? null

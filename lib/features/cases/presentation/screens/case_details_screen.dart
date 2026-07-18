@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/cases/domain/surgical_case.dart';
 import 'package:surgitrack/features/cases/providers/case_procedure_provider.dart';
+
 import 'package:surgitrack/features/cases/presentation/widgets/case_actions.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/case_attachments_section.dart';
 
@@ -30,7 +31,6 @@ class CaseDetailsScreen extends ConsumerWidget {
             onPressed: () {
               Navigator.push(
                 context,
-
                 MaterialPageRoute(
                   builder: (_) => EditCaseScreen(surgicalCase: surgicalCase),
                 ),
@@ -59,6 +59,10 @@ class CaseDetailsScreen extends ConsumerWidget {
 
             _field("Specialty", surgicalCase.specialty),
 
+            _field("Case Type", surgicalCase.caseType ?? "-"),
+
+            _field("Complexity", surgicalCase.complexity ?? "-"),
+
             _field("Surgery Type", surgicalCase.surgeryType),
 
             _field("Urgency", surgicalCase.urgency),
@@ -69,7 +73,31 @@ class CaseDetailsScreen extends ConsumerWidget {
           ]),
 
           _section("Operative Details", [
-            _field("Surgical Approach", surgicalCase.surgicalApproach ?? ""),
+            _field(
+              "Approach",
+              surgicalCase.approach ?? surgicalCase.surgicalApproach ?? "",
+            ),
+
+            _field(
+              "CPB Used",
+              surgicalCase.cardiopulmonaryBypassUsed ? "Yes" : "No",
+            ),
+
+            if (surgicalCase.cardiopulmonaryBypassUsed)
+              _field(
+                "Bypass Time",
+                surgicalCase.bypassTimeMinutes == null
+                    ? "-"
+                    : "${surgicalCase.bypassTimeMinutes} min",
+              ),
+
+            if (surgicalCase.cardiopulmonaryBypassUsed)
+              _field(
+                "Cross Clamp Time",
+                surgicalCase.crossClampTimeMinutes == null
+                    ? "-"
+                    : "${surgicalCase.crossClampTimeMinutes} min",
+              ),
 
             _field("Technical Steps", surgicalCase.technicalSteps ?? ""),
 
@@ -78,6 +106,10 @@ class CaseDetailsScreen extends ConsumerWidget {
               surgicalCase.graftConduitImplant ?? "",
             ),
           ]),
+
+          if (surgicalCase.complications != null &&
+              surgicalCase.complications!.isNotEmpty)
+            _section("Complications", [Text(surgicalCase.complications!)]),
 
           _section("Procedures", [
             if (procedures == null)
@@ -95,17 +127,21 @@ class CaseDetailsScreen extends ConsumerWidget {
 
                   return Column(
                     children: items.map((item) {
+                      final primary = item.caseProcedure.type == "PRIMARY";
+
                       return ListTile(
                         contentPadding: EdgeInsets.zero,
 
-                        leading: const Icon(Icons.medical_services),
+                        leading: Icon(
+                          primary ? Icons.star : Icons.medical_services,
+                        ),
 
                         title: Text(item.procedure.name),
 
                         subtitle: Text(
-                          item.caseProcedure.type == "PRIMARY"
+                          primary
                               ? "Primary Procedure"
-                              : "Additional Procedure",
+                              : "Associated Procedure",
                         ),
                       );
                     }).toList(),
@@ -117,7 +153,8 @@ class CaseDetailsScreen extends ConsumerWidget {
           if (surgicalCase.notes != null && surgicalCase.notes!.isNotEmpty)
             _section("Additional Notes", [Text(surgicalCase.notes!)]),
 
-          CaseAttachmentsSection(caseId: surgicalCase.id!),
+          if (surgicalCase.id != null)
+            CaseAttachmentsSection(caseId: surgicalCase.id!),
         ],
       ),
     );
@@ -143,6 +180,13 @@ class CaseDetailsScreen extends ConsumerWidget {
             const SizedBox(height: 8),
 
             Text(_date(surgicalCase.surgeryDate)),
+
+            const SizedBox(height: 8),
+
+            Text(
+              "${surgicalCase.specialty} • "
+              "${surgicalCase.operativeRole}",
+            ),
           ],
         ),
       ),

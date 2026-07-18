@@ -5,6 +5,8 @@ import 'package:surgitrack/features/cases/domain/surgical_case.dart';
 import 'package:surgitrack/features/cases/providers/surgical_case_provider.dart';
 
 import 'package:surgitrack/core/enums/surgeon_role.dart';
+import 'package:surgitrack/core/enums/surgical_approach.dart';
+
 import 'package:surgitrack/features/cases/presentation/widgets/operative_role_selector.dart';
 
 class EditCaseScreen extends ConsumerStatefulWidget {
@@ -20,18 +22,22 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController diagnosisController;
-
   late TextEditingController notesController;
+  late TextEditingController bypassTimeController;
+  late TextEditingController crossClampTimeController;
+  late TextEditingController complicationsController;
 
   late DateTime surgeryDate;
 
   late String specialty;
-
   late String surgeryType;
-
   late String urgency;
 
   late SurgeonRole operativeRole;
+
+  late SurgicalApproach surgicalApproach;
+
+  late bool cardiopulmonaryBypassUsed;
 
   String? outcome;
 
@@ -45,6 +51,18 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
     notesController = TextEditingController(text: c.notes ?? "");
 
+    bypassTimeController = TextEditingController(
+      text: c.bypassTimeMinutes?.toString() ?? "",
+    );
+
+    crossClampTimeController = TextEditingController(
+      text: c.crossClampTimeMinutes?.toString() ?? "",
+    );
+
+    complicationsController = TextEditingController(
+      text: c.complications ?? "",
+    );
+
     surgeryDate = c.surgeryDate;
 
     specialty = c.specialty;
@@ -54,10 +72,16 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
     urgency = c.urgency;
 
     operativeRole = SurgeonRole.values.firstWhere(
-      (role) => role.label == c.operativeRole,
-
+      (e) => e.label == c.operativeRole,
       orElse: () => SurgeonRole.assisted,
     );
+
+    surgicalApproach = SurgicalApproach.values.firstWhere(
+      (e) => e.name == c.surgicalApproach,
+      orElse: () => SurgicalApproach.medianSternotomy,
+    );
+
+    cardiopulmonaryBypassUsed = c.cardiopulmonaryBypassUsed;
 
     outcome = c.outcome.isEmpty ? null : c.outcome;
   }
@@ -65,8 +89,10 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
   @override
   void dispose() {
     diagnosisController.dispose();
-
     notesController.dispose();
+    bypassTimeController.dispose();
+    crossClampTimeController.dispose();
+    complicationsController.dispose();
 
     super.dispose();
   }
@@ -88,16 +114,9 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
               decoration: const InputDecoration(labelText: "Diagnosis"),
 
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return "Enter diagnosis";
-                }
-
-                return null;
-              },
+              validator: (v) =>
+                  v == null || v.trim().isEmpty ? "Enter diagnosis" : null,
             ),
-
-            const SizedBox(height: 12),
 
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -112,68 +131,91 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
               trailing: const Icon(Icons.calendar_today),
 
-              onTap: () async {
-                final picked = await showDatePicker(
-                  context: context,
+              onTap: pickDate,
+            ),
 
-                  initialDate: surgeryDate,
+            _dropdown("Specialty", specialty, [
+              "Cardiac",
+              "Thoracic",
+              "Vascular",
+            ], (v) => specialty = v),
 
-                  firstDate: DateTime(2000),
+            _dropdown("Surgery Type", surgeryType, [
+              "Primary",
+              "Redo",
+            ], (v) => surgeryType = v),
 
-                  lastDate: DateTime.now(),
-                );
+            _dropdown("Urgency", urgency, [
+              "Planned",
+              "Emergency",
+            ], (v) => urgency = v),
 
-                if (picked != null) {
+            DropdownButtonFormField<SurgicalApproach>(
+              initialValue: surgicalApproach,
+
+              decoration: const InputDecoration(labelText: "Surgical Approach"),
+
+              items: SurgicalApproach.values
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
+                  .toList(),
+
+              onChanged: (v) {
+                if (v != null) {
                   setState(() {
-                    surgeryDate = picked;
+                    surgicalApproach = v;
                   });
                 }
-              },
-            ),
-
-            _dropdown(
-              label: "Specialty",
-              value: specialty,
-              items: const ["Cardiac", "Thoracic", "Vascular"],
-              onChanged: (v) {
-                specialty = v;
-              },
-            ),
-
-            _dropdown(
-              label: "Surgery Type",
-              value: surgeryType,
-              items: const ["Primary", "Redo"],
-              onChanged: (v) {
-                surgeryType = v;
-              },
-            ),
-
-            _dropdown(
-              label: "Urgency",
-              value: urgency,
-              items: const ["Elective", "Emergency"],
-              onChanged: (v) {
-                urgency = v;
               },
             ),
 
             OperativeRoleSelector(
               value: operativeRole,
 
-              onChanged: (value) {
+              onChanged: (v) {
                 setState(() {
-                  operativeRole = value;
+                  operativeRole = v;
                 });
               },
             ),
 
+            SwitchListTile(
+              title: const Text("Cardiopulmonary Bypass Used"),
+
+              value: cardiopulmonaryBypassUsed,
+
+              onChanged: (v) {
+                setState(() {
+                  cardiopulmonaryBypassUsed = v;
+                });
+              },
+            ),
+
+            if (cardiopulmonaryBypassUsed) ...[
+              TextFormField(
+                controller: bypassTimeController,
+
+                keyboardType: TextInputType.number,
+
+                decoration: const InputDecoration(
+                  labelText: "Bypass Time (minutes)",
+                ),
+              ),
+
+              TextFormField(
+                controller: crossClampTimeController,
+
+                keyboardType: TextInputType.number,
+
+                decoration: const InputDecoration(
+                  labelText: "Cross Clamp Time (minutes)",
+                ),
+              ),
+            ],
+
             DropdownButtonFormField<String>(
               initialValue: outcome,
 
-              decoration: const InputDecoration(
-                labelText: "Outcome (optional)",
-              ),
+              decoration: const InputDecoration(labelText: "Outcome"),
 
               items: const [
                 DropdownMenuItem(
@@ -194,11 +236,19 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
                 ),
               ],
 
-              onChanged: (value) {
+              onChanged: (v) {
                 setState(() {
-                  outcome = value;
+                  outcome = v;
                 });
               },
+            ),
+
+            TextFormField(
+              controller: complicationsController,
+
+              maxLines: 3,
+
+              decoration: const InputDecoration(labelText: "Complications"),
             ),
 
             TextFormField(
@@ -209,7 +259,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
               decoration: const InputDecoration(labelText: "Additional Notes"),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
             ElevatedButton(
               onPressed: updateCase,
@@ -222,23 +272,38 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
     );
   }
 
-  Widget _dropdown({
-    required String label,
+  Future<void> pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
 
-    required String value,
+      initialDate: surgeryDate,
 
-    required List<String> items,
+      firstDate: DateTime(2000),
 
-    required Function(String) onChanged,
-  }) {
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        surgeryDate = picked;
+      });
+    }
+  }
+
+  Widget _dropdown(
+    String label,
+    String value,
+    List<String> items,
+    Function(String) onChanged,
+  ) {
     return DropdownButtonFormField<String>(
       initialValue: value,
 
       decoration: InputDecoration(labelText: label),
 
-      items: items.map((e) {
-        return DropdownMenuItem(value: e, child: Text(e));
-      }).toList(),
+      items: items
+          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+          .toList(),
 
       onChanged: (v) {
         if (v != null) {
@@ -251,7 +316,9 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
   }
 
   Future<void> updateCase() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
 
     final c = widget.surgicalCase;
 
@@ -272,15 +339,33 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
       specialty: specialty,
 
-      surgicalApproach: c.surgicalApproach,
+      procedureIds: c.procedureIds,
+
+      surgicalApproach: surgicalApproach.name,
+
+      approach: c.approach,
+
+      caseType: c.caseType,
+
+      complexity: c.complexity,
 
       operativeRole: operativeRole.label,
 
       technicalSteps: c.technicalSteps,
 
+      cardiopulmonaryBypassUsed: cardiopulmonaryBypassUsed,
+
+      bypassTimeMinutes: int.tryParse(bypassTimeController.text),
+
+      crossClampTimeMinutes: int.tryParse(crossClampTimeController.text),
+
       graftConduitImplant: c.graftConduitImplant,
 
       outcome: outcome ?? "",
+
+      complications: complicationsController.text.trim().isEmpty
+          ? null
+          : complicationsController.text.trim(),
 
       notes: notesController.text.trim().isEmpty
           ? null

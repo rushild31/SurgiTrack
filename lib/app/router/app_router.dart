@@ -1,5 +1,6 @@
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:surgitrack/features/navigation/navigation_screen.dart';
 
 import 'package:surgitrack/features/dashboard/dashboard_screen.dart';
@@ -9,6 +10,8 @@ import 'package:surgitrack/features/patients/presentation/patient_form_screen.da
 import 'package:surgitrack/features/patients/presentation/patient_details_screen.dart';
 
 import 'package:surgitrack/features/cases/cases_screen.dart';
+
+import 'package:surgitrack/features/procedures/procedures_screen.dart';
 
 import 'package:surgitrack/features/analytics/analytics_screen.dart';
 
@@ -25,9 +28,11 @@ final GoRouter appRouter = GoRouter(
   errorBuilder: (context, state) {
     return Scaffold(
       appBar: AppBar(title: const Text("Page Not Found")),
+
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+
           children: [
             const Icon(Icons.error_outline, size: 64),
 
@@ -36,6 +41,7 @@ final GoRouter appRouter = GoRouter(
             Text(
               "The page you are looking for does not exist.",
               style: Theme.of(context).textTheme.titleMedium,
+
               textAlign: TextAlign.center,
             ),
 
@@ -45,6 +51,7 @@ final GoRouter appRouter = GoRouter(
               onPressed: () {
                 context.go('/dashboard');
               },
+
               child: const Text("Go to Dashboard"),
             ),
           ],
@@ -54,15 +61,18 @@ final GoRouter appRouter = GoRouter(
   },
 
   routes: [
+    // =====================================================
+    // MAIN APP SHELL
+    // =====================================================
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return NavigationScreen(navigationShell: navigationShell);
       },
 
       branches: [
-        // =========================
+        // =================================================
         // Dashboard
-        // =========================
+        // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -73,9 +83,9 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
-        // =========================
+        // =================================================
         // Patients
-        // =========================
+        // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -104,9 +114,9 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
-        // =========================
+        // =================================================
         // Cases
-        // =========================
+        // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -117,9 +127,9 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
-        // =========================
+        // =================================================
         // Analytics
-        // =========================
+        // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -130,9 +140,9 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
-        // =========================
+        // =================================================
         // Reports
-        // =========================
+        // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -143,9 +153,9 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
-        // =========================
+        // =================================================
         // Settings
-        // =========================
+        // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -170,6 +180,15 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
       ],
+    ),
+
+    // =====================================================
+    // Secondary Modules (outside bottom navigation)
+    // =====================================================
+    GoRoute(
+      path: '/procedures',
+
+      builder: (context, state) => const ProceduresScreen(),
     ),
   ],
 );
