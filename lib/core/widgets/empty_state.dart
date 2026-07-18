@@ -18,35 +18,53 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 420),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                radius: 42,
+                backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                child: Icon(icon, size: 42, color: theme.colorScheme.primary),
+              ),
 
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+              const SizedBox(height: 24),
 
-          children: [
-            Icon(icon, size: 64),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 12),
 
-            Text(
-              title,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
 
-            const SizedBox(height: 8),
+              if (actionLabel != null && onAction != null) ...[
+                const SizedBox(height: 28),
 
-            Text(message, textAlign: TextAlign.center),
-
-            if (actionLabel != null && onAction != null) ...[
-              const SizedBox(height: 20),
-
-              ElevatedButton(onPressed: onAction, child: Text(actionLabel!)),
+                FilledButton.icon(
+                  onPressed: onAction,
+                  icon: const Icon(Icons.add),
+                  label: Text(actionLabel!),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
