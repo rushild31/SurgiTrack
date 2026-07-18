@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DataManagementPage extends StatelessWidget {
+import 'package:surgitrack/features/settings/data/backup_repository.dart';
+import 'package:surgitrack/features/settings/providers/storage_provider.dart';
+
+class DataManagementPage extends ConsumerWidget {
   const DataManagementPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final storage = ref.watch(storageStatisticsProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text("Data Management")),
 
@@ -24,26 +30,44 @@ class DataManagementPage extends StatelessWidget {
               children: [
                 ListTile(
                   leading: const Icon(Icons.backup),
+
                   title: const Text("Create Local Backup"),
-                  subtitle: const Text("Save database backup file"),
+
+                  subtitle: const Text("Export SurgiTrack backup file"),
+
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () {},
+
+                  onTap: () async {
+                    final repository = BackupRepository();
+
+                    final file = await repository.createBackup();
+
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Backup created: ${file.path.split('/').last}",
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
 
-                ListTile(
-                  leading: const Icon(Icons.upload_file),
-                  title: const Text("Import Backup File"),
-                  subtitle: const Text("Select previous backup file"),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {},
+                const ListTile(
+                  leading: Icon(Icons.upload_file),
+
+                  title: Text("Import Backup File"),
+
+                  subtitle: Text("Available after backup sync module"),
                 ),
 
-                ListTile(
-                  leading: const Icon(Icons.restore),
-                  title: const Text("Restore Backup"),
-                  subtitle: const Text("Restore SurgiTrack database"),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {},
+                const ListTile(
+                  leading: Icon(Icons.restore),
+
+                  title: Text("Restore Backup"),
+
+                  subtitle: Text("Available after backup sync module"),
                 ),
               ],
             ),
@@ -60,25 +84,21 @@ class DataManagementPage extends StatelessWidget {
 
           Card(
             child: Column(
-              children: [
-                const ListTile(
-                  leading: Icon(Icons.cloud_done),
-                  title: Text("Supabase Sync Status"),
-                  subtitle: Text("Not connected"),
-                ),
+              children: const [
+                ListTile(
+                  leading: Icon(Icons.cloud_outlined),
 
-                const ListTile(
-                  leading: Icon(Icons.schedule),
-                  title: Text("Last Synced"),
-                  subtitle: Text("Never"),
+                  title: Text("Supabase Cloud Sync"),
+
+                  subtitle: Text("Will be enabled during deployment phase"),
                 ),
 
                 ListTile(
-                  leading: const Icon(Icons.sync),
-                  title: const Text("Manual Sync"),
-                  subtitle: const Text("Sync data with cloud"),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {},
+                  leading: Icon(Icons.sync_disabled),
+
+                  title: Text("Sync Status"),
+
+                  subtitle: Text("Not connected"),
                 ),
               ],
             ),
@@ -94,27 +114,51 @@ class DataManagementPage extends StatelessWidget {
           const SizedBox(height: 12),
 
           Card(
-            child: Column(
-              children: [
-                const ListTile(
-                  leading: Icon(Icons.storage),
-                  title: Text("Database Size"),
-                  subtitle: Text("Calculating..."),
-                ),
+            child: storage.when(
+              loading: () => const Padding(
+                padding: EdgeInsets.all(20),
+                child: CircularProgressIndicator(),
+              ),
 
-                const ListTile(
-                  leading: Icon(Icons.attach_file),
-                  title: Text("Attachments"),
-                  subtitle: Text("Manage stored attachments"),
-                ),
+              error: (error, stack) => ListTile(
+                leading: const Icon(Icons.error),
 
-                ListTile(
-                  leading: const Icon(Icons.cleaning_services),
-                  title: const Text("Storage Cleanup"),
-                  subtitle: const Text("Remove unnecessary files"),
-                  onTap: () {},
-                ),
-              ],
+                title: const Text("Unable to load storage"),
+
+                subtitle: Text(error.toString()),
+              ),
+
+              data: (stats) {
+                return Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.storage),
+
+                      title: const Text("Application Storage"),
+
+                      subtitle: Text(stats.databaseSizeFormatted),
+                    ),
+
+                    ListTile(
+                      leading: const Icon(Icons.attach_file),
+
+                      title: const Text("Attachments"),
+
+                      subtitle: Text(
+                        "${stats.attachmentCount} files • ${stats.attachmentSizeFormatted}",
+                      ),
+                    ),
+
+                    ListTile(
+                      leading: const Icon(Icons.cleaning_services),
+
+                      title: const Text("Storage Cleanup"),
+
+                      subtitle: const Text("Remove unused files"),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],
