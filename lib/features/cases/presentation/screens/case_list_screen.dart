@@ -25,6 +25,10 @@ class CaseListScreen extends ConsumerWidget {
 
         actions: [
           cases.when(
+            loading: () => const SizedBox(),
+
+            error: (_, _) => const SizedBox(),
+
             data: (list) {
               if (list.isEmpty) {
                 return const SizedBox();
@@ -34,25 +38,20 @@ class CaseListScreen extends ConsumerWidget {
                 icon: const Icon(Icons.search),
 
                 onPressed: () async {
-                  final navigatorContext = context;
-
                   final allCases = await ref.read(
                     surgicalCaseListProvider.future,
                   );
 
-                  if (!navigatorContext.mounted) {
-                    return;
-                  }
+                  if (!context.mounted) return;
 
                   final selectedCase = await showSearch<SurgicalCase?>(
-                    context: navigatorContext,
+                    context: context,
                     delegate: CaseSearchDelegate(allCases),
                   );
 
-                  if (selectedCase != null && navigatorContext.mounted) {
+                  if (selectedCase != null && context.mounted) {
                     Navigator.push(
-                      navigatorContext,
-
+                      context,
                       MaterialPageRoute(
                         builder: (_) =>
                             CaseDetailsScreen(surgicalCase: selectedCase),
@@ -62,10 +61,6 @@ class CaseListScreen extends ConsumerWidget {
                 },
               );
             },
-
-            loading: () => const SizedBox(),
-
-            error: (_, _) => const SizedBox(),
           ),
         ],
       ),
@@ -73,7 +68,7 @@ class CaseListScreen extends ConsumerWidget {
       body: cases.when(
         loading: () => const Center(child: CircularProgressIndicator()),
 
-        error: (error, stack) => Center(child: Text(error.toString())),
+        error: (error, _) => Center(child: Text(error.toString())),
 
         data: (list) {
           if (list.isEmpty) {
@@ -134,17 +129,16 @@ class CaseListScreen extends ConsumerWidget {
                                     ),
                                   );
 
-                              if (context.mounted) {
-                                Navigator.push(
-                                  context,
+                              if (!context.mounted) return;
 
-                                  MaterialPageRoute(
-                                    builder: (_) => CaseDetailsScreen(
-                                      surgicalCase: fullCase,
-                                    ),
-                                  ),
-                                );
-                              }
+                              Navigator.push(
+                                context,
+
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      CaseDetailsScreen(surgicalCase: fullCase),
+                                ),
+                              );
                             },
                           );
                         },
@@ -173,6 +167,7 @@ class _TableHeader extends StatelessWidget {
         children: [
           SizedBox(
             width: 90,
+
             child: Text(
               "Case ID",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -181,6 +176,7 @@ class _TableHeader extends StatelessWidget {
 
           Expanded(
             flex: 2,
+
             child: Text(
               "Patient",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -189,6 +185,7 @@ class _TableHeader extends StatelessWidget {
 
           Expanded(
             flex: 2,
+
             child: Text(
               "Diagnosis",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -197,6 +194,7 @@ class _TableHeader extends StatelessWidget {
 
           SizedBox(
             width: 80,
+
             child: Text(
               "Specialty",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -205,11 +203,13 @@ class _TableHeader extends StatelessWidget {
 
           SizedBox(
             width: 90,
+
             child: Text("Date", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
 
           SizedBox(
             width: 110,
+
             child: Text("Role", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
