@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class SurgicalCaseListItem extends Equatable {
+class SurgicalCaseListItem {
   final int id;
 
   final String caseId;
@@ -27,16 +25,4 @@ class SurgicalCaseListItem extends Equatable {
     required this.specialty,
     required this.operativeRole,
   });
-
-  @override
-  List<Object?> get props => [
-    id,
-    caseId,
-    patientName,
-    hospitalId,
-    surgeryDate,
-    diagnosis,
-    specialty,
-    operativeRole,
-  ];
 }
