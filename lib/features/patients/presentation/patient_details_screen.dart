@@ -9,7 +9,6 @@ import 'package:surgitrack/features/patients/presentation/patient_form_screen.da
 import 'package:surgitrack/features/patients/presentation/widgets/add_attachment_button.dart';
 import 'package:surgitrack/features/patients/presentation/widgets/patient_cases_section.dart';
 import 'package:surgitrack/features/patients/data/attachment_viewer_service.dart';
-
 import 'package:surgitrack/features/cases/presentation/screens/add_case_screen.dart';
 
 class PatientDetailsScreen extends ConsumerWidget {
@@ -231,4 +230,43 @@ class PatientDetailsScreen extends ConsumerWidget {
   );
 
   String _date(DateTime d) => "${d.day}-${d.month}-${d.year}";
+}
+
+class PatientDetailsRouteWrapper extends ConsumerWidget {
+  final String patientId;
+
+  const PatientDetailsRouteWrapper({super.key, required this.patientId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final patientFuture = ref
+        .read(patientRepositoryProvider)
+        .getPatientById(int.parse(patientId));
+
+    return FutureBuilder(
+      future: patientFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(title: const Text("Patient")),
+            body: Center(child: Text(snapshot.error.toString())),
+          );
+        }
+
+        final patient = snapshot.data;
+
+        if (patient == null) {
+          return const Scaffold(body: Center(child: Text("Patient not found")));
+        }
+
+        return PatientDetailsScreen(patient: patient);
+      },
+    );
+  }
 }

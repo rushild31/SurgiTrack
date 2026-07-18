@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:surgitrack/features/patients/providers/patient_provider.dart';
-
-import 'package:surgitrack/features/patients/presentation/patient_details_screen.dart';
-import 'package:surgitrack/features/patients/presentation/patient_form_screen.dart';
 
 import 'package:surgitrack/features/patients/presentation/widgets/patient_card.dart';
 import 'package:surgitrack/features/patients/presentation/widgets/empty_patient_state.dart';
@@ -12,6 +10,8 @@ import 'package:surgitrack/features/patients/presentation/widgets/empty_patient_
 import 'package:surgitrack/features/patients/presentation/search/patient_search_delegate.dart';
 
 import 'package:surgitrack/features/cases/presentation/screens/add_case_screen.dart';
+
+import 'package:surgitrack/features/patients/domain/patient.dart';
 
 class PatientListScreen extends ConsumerWidget {
   final bool selectionMode;
@@ -34,6 +34,7 @@ class PatientListScreen extends ConsumerWidget {
               onPressed: () {
                 showSearch(
                   context: context,
+
                   delegate: PatientSearchDelegate(ref),
                 );
               },
@@ -62,7 +63,7 @@ class PatientListScreen extends ConsumerWidget {
               itemCount: patients.length,
 
               itemBuilder: (context, index) {
-                final patient = patients[index];
+                final Patient patient = patients[index];
 
                 return PatientCard(
                   patient: patient,
@@ -77,14 +78,7 @@ class PatientListScreen extends ConsumerWidget {
                         ),
                       );
                     } else {
-                      Navigator.push(
-                        context,
-
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              PatientDetailsScreen(patient: patient),
-                        ),
-                      );
+                      context.push('/patients/${patient.id}');
                     }
                   },
                 );
@@ -101,16 +95,8 @@ class PatientListScreen extends ConsumerWidget {
 
               child: const Icon(Icons.person_add),
 
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-
-                  MaterialPageRoute(builder: (_) => const PatientFormScreen()),
-                );
-
-                if (result == true) {
-                  ref.invalidate(patientListProvider);
-                }
+              onPressed: () {
+                context.push('/patients/add');
               },
             ),
     );
