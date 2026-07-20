@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 class ConfirmationDialog {
   static Future<bool?> show({
     required BuildContext context,
+
     required String title,
+
     required String message,
+
     String confirmText = "Confirm",
+
     String cancelText = "Cancel",
   }) {
     return showDialog<bool>(
@@ -26,7 +30,7 @@ class ConfirmationDialog {
               child: Text(cancelText),
             ),
 
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 Navigator.pop(context, true);
               },

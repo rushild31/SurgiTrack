@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {
   final TextEditingController controller;
+
   final String label;
+
   final String? hint;
+
   final TextInputType? keyboardType;
+
   final bool requiredField;
+
   final int? maxLines;
+
   final bool enabled;
 
   const AppTextField({
@@ -38,13 +44,7 @@ class AppTextField extends StatelessWidget {
 
       maxLines: maxLines,
 
-      decoration: InputDecoration(
-        labelText: label,
-
-        hintText: hint,
-
-        border: const OutlineInputBorder(),
-      ),
+      decoration: InputDecoration(labelText: label, hintText: hint),
 
       validator: requiredField
           ? (value) {

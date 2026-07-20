@@ -9,11 +9,16 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final card = Card(
-      elevation: 2,
       margin: EdgeInsets.zero,
 
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: theme.cardTheme.elevation,
+
+      color: theme.cardTheme.color,
+
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
 
       child: Padding(
         padding: padding ?? const EdgeInsets.all(16),
@@ -27,8 +32,10 @@ class AppCard extends StatelessWidget {
     }
 
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(16),
+
       onTap: onTap,
+
       child: card,
     );
   }

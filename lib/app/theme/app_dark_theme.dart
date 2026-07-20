@@ -3,18 +3,24 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_text_styles.dart';
 
-class AppTheme {
-  static ThemeData get lightTheme {
+class AppDarkTheme {
+  static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
 
-      scaffoldBackgroundColor: AppColors.background,
+      brightness: Brightness.dark,
+
+      scaffoldBackgroundColor: const Color(0xFF0F172A),
 
       colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primary,
-        primary: AppColors.primary,
+        brightness: Brightness.dark,
+        seedColor: AppColors.secondary,
+
+        primary: const Color(0xFF2B5D85),
+
         secondary: AppColors.secondary,
-        surface: AppColors.surface,
+
+        surface: const Color(0xFF1E293B),
       ),
 
       textTheme: const TextTheme(
@@ -29,9 +35,9 @@ class AppTheme {
         labelMedium: AppTextStyles.caption,
       ),
 
-      // Global Card Styling
+      // Cards
       cardTheme: CardThemeData(
-        color: AppColors.surface,
+        color: const Color(0xFF1E293B),
 
         elevation: 1,
 
@@ -40,22 +46,22 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
 
-      // Input Fields
+      // Input fields
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
 
-        fillColor: AppColors.surface,
+        fillColor: const Color(0xFF1E293B),
 
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
 
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: const BorderSide(color: Color(0xFF334155)),
         ),
 
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
 
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: const BorderSide(color: Color(0xFF334155)),
         ),
 
         focusedBorder: OutlineInputBorder(
@@ -70,10 +76,10 @@ class AppTheme {
         ),
       ),
 
-      // Primary Buttons
+      // Buttons
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.secondary,
 
           foregroundColor: Colors.white,
 
@@ -87,14 +93,13 @@ class AppTheme {
         ),
       ),
 
-      // Secondary Buttons
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.primary,
+          foregroundColor: AppColors.secondary,
+
+          side: const BorderSide(color: AppColors.secondary),
 
           minimumSize: const Size(double.infinity, 48),
-
-          side: const BorderSide(color: AppColors.primary),
 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -108,43 +113,46 @@ class AppTheme {
 
         elevation: 0,
 
-        backgroundColor: AppColors.primary,
+        backgroundColor: Color(0xFF0F172A),
 
         foregroundColor: Colors.white,
 
         titleTextStyle: TextStyle(
           fontSize: 20,
+
           fontWeight: FontWeight.w600,
+
           color: Colors.white,
         ),
       ),
 
-      // Bottom Navigation
+      // Navigation
       navigationBarTheme: NavigationBarThemeData(
         height: 72,
 
-        backgroundColor: AppColors.surface,
+        backgroundColor: const Color(0xFF1E293B),
 
         elevation: 2,
 
-        indicatorColor: Color(0xFFE6F7F7),
+        indicatorColor: const Color(0xFF164E63),
 
         labelTextStyle: WidgetStateProperty.all(
           const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         ),
       ),
 
-      // Divider
-      dividerTheme: const DividerThemeData(
-        color: AppColors.border,
-        thickness: 1,
-      ),
-
       // Dialogs
       dialogTheme: DialogThemeData(
-        backgroundColor: AppColors.surface,
+        backgroundColor: const Color(0xFF1E293B),
 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+
+      // Divider
+      dividerTheme: const DividerThemeData(
+        color: Color(0xFF334155),
+
+        thickness: 1,
       ),
     );
   }

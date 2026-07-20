@@ -19,15 +19,21 @@ class StatChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
 
         child: Row(
           mainAxisSize: MainAxisSize.min,
 
           children: [
-            if (icon != null) ...[Icon(icon), const SizedBox(width: 8)],
+            if (icon != null) ...[
+              Icon(icon, color: theme.colorScheme.secondary),
+
+              const SizedBox(width: 10),
+            ],
 
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,12 +42,14 @@ class StatChip extends StatelessWidget {
                 Text(
                   value,
 
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
 
-                Text(label),
+                const SizedBox(height: 2),
+
+                Text(label, style: theme.textTheme.bodySmall),
               ],
             ),
           ],
