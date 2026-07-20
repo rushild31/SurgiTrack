@@ -23,8 +23,18 @@ class CoreKpiCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCard(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+
         children: [
-          CircleAvatar(radius: 24, child: Icon(icon)),
+          Container(
+            width: 52,
+
+            height: 52,
+
+            decoration: BoxDecoration(shape: BoxShape.circle),
+
+            child: Icon(icon, size: 28),
+          ),
 
           const SizedBox(width: 16),
 
@@ -33,14 +43,22 @@ class CoreKpiCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                Text(title, style: Theme.of(context).textTheme.bodyMedium),
+                Text(
+                  title.toUpperCase(),
 
-                const SizedBox(height: 4),
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    letterSpacing: 0.8,
+
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                const SizedBox(height: 6),
 
                 Text(
                   value.toString(),
 
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),

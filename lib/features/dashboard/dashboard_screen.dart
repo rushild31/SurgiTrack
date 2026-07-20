@@ -10,6 +10,7 @@ import 'package:surgitrack/features/dashboard/presentation/widgets/recent_cases_
 import 'package:surgitrack/features/dashboard/presentation/widgets/monthly_case_chart.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/specialty_breakdown_card.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/operative_role_card.dart';
+import 'package:surgitrack/features/dashboard/presentation/widgets/top_procedures_card.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -26,8 +27,10 @@ class DashboardScreen extends ConsumerWidget {
 
     final monthly = ref.watch(monthlyCaseDataProvider);
 
+    final topProcedures = ref.watch(topProceduresProvider);
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Dashboard")),
+      appBar: AppBar(title: const Text("SurgiTrack")),
 
       body: statistics.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -46,90 +49,183 @@ class DashboardScreen extends ConsumerWidget {
               ref.invalidate(operativeRoleBreakdownProvider);
 
               ref.invalidate(monthlyCaseDataProvider);
+
+              ref.invalidate(topProceduresProvider);
             },
 
             child: ListView(
               padding: const EdgeInsets.all(16),
 
               children: [
-                CoreKpiCard(
-                  title: "Total Cases",
-                  value: stats.totalCases,
-                  icon: Icons.local_hospital_outlined,
+                // ============================
+                // HEADER
+                // ============================
+                Text(
+                  "Welcome Dr. Rushil Dalwadi",
+
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
 
-                CoreKpiCard(
-                  title: "Total Patients",
-                  value: stats.totalPatients,
-                  icon: Icons.people_outline,
-                ),
+                const SizedBox(height: 4),
 
-                CoreKpiCard(
-                  title: "Total Procedures",
-                  value: stats.totalProcedures,
-                  icon: Icons.medical_services_outlined,
-                ),
+                Text(
+                  "CTVS Resident | Surgical Training Portfolio",
 
-                CoreKpiCard(
-                  title: "Cases This Month",
-                  value: stats.casesThisMonth,
-                  icon: Icons.calendar_month_outlined,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
 
                 const SizedBox(height: 24),
 
-                Text(
-                  "Quick Actions",
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                // ============================
+                // KPI GRID
+                // ============================
+                GridView.count(
+                  crossAxisCount: 2,
 
-                const SizedBox(height: 12),
+                  shrinkWrap: true,
 
-                Row(
+                  physics: const NeverScrollableScrollPhysics(),
+
+                  crossAxisSpacing: 12,
+
+                  mainAxisSpacing: 12,
+
+                  childAspectRatio: 1.7,
+
                   children: [
-                    Expanded(
-                      child: QuickActionButton(
-                        label: "Add Patient",
+                    CoreKpiCard(
+                      title: "Operative Cases",
 
-                        icon: Icons.person_add,
+                      value: stats.totalCases,
 
-                        onTap: () {
-                          context.push('/patients/add');
-                        },
-                      ),
+                      icon: Icons.local_hospital_outlined,
                     ),
 
-                    const SizedBox(width: 12),
+                    CoreKpiCard(
+                      title: "Patients",
 
-                    Expanded(
-                      child: QuickActionButton(
-                        label: "View Cases",
+                      value: stats.totalPatients,
 
-                        icon: Icons.assignment_outlined,
+                      icon: Icons.people_outline,
+                    ),
 
-                        onTap: () {
-                          context.go('/cases');
-                        },
-                      ),
+                    CoreKpiCard(
+                      title: "Procedures",
+
+                      value: stats.totalProcedures,
+
+                      icon: Icons.medical_services_outlined,
+                    ),
+
+                    CoreKpiCard(
+                      title: "This Month",
+
+                      value: stats.casesThisMonth,
+
+                      icon: Icons.calendar_month_outlined,
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
 
+                // ============================
+                // QUICK ACTIONS
+                // ============================
                 Text(
-                  "Recent Cases",
-                  style: Theme.of(context).textTheme.titleMedium,
+                  "Quick Actions",
+
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
 
                 const SizedBox(height: 12),
 
-                recentCases.when(
+                Wrap(
+                  spacing: 12,
+
+                  runSpacing: 12,
+
+                  children: [
+                    QuickActionButton(
+                      label: "Add Patient",
+
+                      icon: Icons.person_add_outlined,
+
+                      onTap: () => context.push('/patients/add'),
+                    ),
+
+                    QuickActionButton(
+                      label: "Cases",
+
+                      icon: Icons.assignment_outlined,
+
+                      onTap: () => context.go('/cases'),
+                    ),
+
+                    QuickActionButton(
+                      label: "Reports",
+
+                      icon: Icons.description_outlined,
+
+                      onTap: () => context.go('/reports'),
+                    ),
+
+                    QuickActionButton(
+                      label: "Analytics",
+
+                      icon: Icons.analytics_outlined,
+
+                      onTap: () => context.go('/analytics'),
+                    ),
+
+                    QuickActionButton(
+                      label: "Export",
+
+                      icon: Icons.download_outlined,
+
+                      onTap: () => context.go('/reports'),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 28),
+
+                // ============================
+                // OPERATIVE TRAINING SUMMARY
+                // ============================
+                Text(
+                  "Training Exposure Summary",
+
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                operative.when(
                   loading: () => const CircularProgressIndicator(),
 
                   error: (e, s) => Text(e.toString()),
 
-                  data: (cases) => RecentCasesCard(cases: cases),
+                  data: (data) => OperativeRoleCard(data: data),
+                ),
+
+                const SizedBox(height: 24),
+
+                // ============================
+                // ANALYTICS
+                // ============================
+                monthly.when(
+                  loading: () => const CircularProgressIndicator(),
+
+                  error: (e, s) => Text(e.toString()),
+
+                  data: (data) => MonthlyCaseChart(data: data),
                 ),
 
                 const SizedBox(height: 16),
@@ -144,22 +240,25 @@ class DashboardScreen extends ConsumerWidget {
 
                 const SizedBox(height: 16),
 
-                operative.when(
+                topProcedures.when(
                   loading: () => const CircularProgressIndicator(),
 
                   error: (e, s) => Text(e.toString()),
 
-                  data: (roleData) => OperativeRoleCard(data: roleData),
+                  data: (data) => TopProceduresCard(procedures: data),
                 ),
 
                 const SizedBox(height: 16),
 
-                monthly.when(
+                // ============================
+                // RECENT CASES
+                // ============================
+                recentCases.when(
                   loading: () => const CircularProgressIndicator(),
 
                   error: (e, s) => Text(e.toString()),
 
-                  data: (data) => MonthlyCaseChart(data: data),
+                  data: (cases) => RecentCasesCard(cases: cases),
                 ),
               ],
             ),
