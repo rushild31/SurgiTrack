@@ -12,14 +12,27 @@ import 'package:surgitrack/features/reports/presentation/pages/portfolio_snapsho
 class ReportsOverviewPage extends StatelessWidget {
   const ReportsOverviewPage({super.key});
 
-  Widget sectionTitle(String title) {
+  Widget _sectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 8),
-
+      padding: const EdgeInsets.only(top: 24, bottom: 10),
       child: Text(
         title,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.2,
+        ),
+      ),
+    );
+  }
 
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  void _openPage(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return page;
+        },
       ),
     );
   }
@@ -27,141 +40,90 @@ class ReportsOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Reports & Portfolio")),
-
+      appBar: AppBar(title: const Text('Reports & Portfolio')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
-
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
         children: [
           const Text(
-            "Surgical Training Portfolio",
-
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            'Surgical Training Portfolio',
+            style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700),
           ),
 
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
 
-          const Text(
-            "Track operative exposure, competency progression and training milestones",
+          Text(
+            'Review operative exposure, competency progression, '
+            'and training milestones.',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade700,
+              height: 1.4,
+            ),
           ),
 
-          sectionTitle("Overview"),
+          _sectionTitle('Overview'),
 
           ReportCard(
-            title: "Portfolio Snapshot",
-
-            description: "Overall residency exposure and competency summary",
-
+            title: 'Portfolio Snapshot',
+            description: 'Overall residency exposure and competency summary',
             icon: Icons.dashboard_outlined,
-
             onTap: () {
-              Navigator.push(
-                context,
-
-                MaterialPageRoute(
-                  builder: (_) => const PortfolioSnapshotReportPage(),
-                ),
-              );
+              _openPage(context, const PortfolioSnapshotReportPage());
             },
           ),
 
-          sectionTitle("Operative Records"),
+          _sectionTitle('Operative Records'),
 
           ReportCard(
-            title: "Monthly Operative Log",
-
+            title: 'Monthly Operative Log',
             description:
-                "Date-wise patient, procedure and operative role record",
-
+                'Date-wise patient, procedure and operative role record',
             icon: Icons.table_chart_outlined,
-
             onTap: () {
-              Navigator.push(
-                context,
-
-                MaterialPageRoute(
-                  builder: (_) => const MonthlyOperativeLogPage(),
-                ),
-              );
+              _openPage(context, const MonthlyOperativeLogPage());
             },
           ),
 
           ReportCard(
-            title: "Surgical Logbook",
-
-            description: "Complete operative case listing and details",
-
+            title: 'Surgical Logbook',
+            description: 'Complete operative case listing and details',
             icon: Icons.menu_book_outlined,
-
             onTap: () {
-              Navigator.push(
-                context,
-
-                MaterialPageRoute(builder: (_) => const SurgicalLogbookPage()),
-              );
+              _openPage(context, const SurgicalLogbookPage());
             },
           ),
 
-          sectionTitle("Competency Tracking"),
+          _sectionTitle('Competency Tracking'),
 
           ReportCard(
-            title: "Procedure Exposure",
-
+            title: 'Procedure Exposure',
             description:
-                "Procedure-wise operative experience and role distribution",
-
+                'Procedure-wise operative experience and role distribution',
             icon: Icons.analytics_outlined,
-
             onTap: () {
-              Navigator.push(
-                context,
-
-                MaterialPageRoute(
-                  builder: (_) => const ProcedureExposurePage(),
-                ),
-              );
+              _openPage(context, const ProcedureExposurePage());
             },
           ),
 
           ReportCard(
-            title: "Technical Skills",
-
-            description: "Technical step exposure and skill progression",
-
+            title: 'Technical Skills',
+            description: 'Technical step exposure and skill progression',
             icon: Icons.build_outlined,
-
             onTap: () {
-              Navigator.push(
-                context,
-
-                MaterialPageRoute(
-                  builder: (_) => const TechnicalSkillReportPage(),
-                ),
-              );
+              _openPage(context, const TechnicalSkillReportPage());
             },
           ),
 
-          sectionTitle("Training Reports"),
+          _sectionTitle('Training Reports'),
 
           ReportCard(
-            title: "Training Summary",
-
-            description: "Periodic residency progress and exposure summary",
-
+            title: 'Training Summary',
+            description: 'Periodic residency progress and exposure summary',
             icon: Icons.timeline_outlined,
-
             onTap: () {
-              Navigator.push(
-                context,
-
-                MaterialPageRoute(
-                  builder: (_) => const TrainingSummaryReportPage(),
-                ),
-              );
+              _openPage(context, const TrainingSummaryReportPage());
             },
           ),
-
-          const SizedBox(height: 20),
         ],
       ),
     );

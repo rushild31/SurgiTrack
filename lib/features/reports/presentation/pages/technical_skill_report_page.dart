@@ -22,22 +22,25 @@ class TechnicalSkillReportPage extends ConsumerWidget {
 
     final pdfService = PdfService();
 
-    final bytes = await pdfService.generatePdf(content: widgets);
+    final bytes = await pdfService.generatePdf(
+      content: widgets,
+      title: 'Technical Skill Exposure Report',
+    );
 
     await ReportExportService.exportPdf(
       bytes: bytes,
-      fileName: "SurgiTrack_Technical_Skills.pdf",
+      fileName: 'SurgiTrack_Technical_Skills.pdf',
     );
   }
 
   Future<void> exportExcel(List<TechnicalSkillReport> reports) async {
     final repository = ExportRepository();
 
-    final bytes = await repository.exportTechnicalSkillReport(reports);
+    final bytes = await repository.exportTechnicalSkill(reports);
 
     await ReportExportService.exportExcel(
       bytes: bytes,
-      fileName: "SurgiTrack_Technical_Skills.xlsx",
+      fileName: 'SurgiTrack_Technical_Skills.xlsx',
     );
   }
 
@@ -47,8 +50,7 @@ class TechnicalSkillReportPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Technical Skills"),
-
+        title: const Text('Technical Skills'),
         actions: [
           report.when(
             loading: () => const SizedBox(),
@@ -62,7 +64,6 @@ class TechnicalSkillReportPage extends ConsumerWidget {
 
               return ExportButton(
                 onPdfExport: () => exportPdf(skills),
-
                 onExcelExport: () => exportExcel(skills),
               );
             },
@@ -78,7 +79,7 @@ class TechnicalSkillReportPage extends ConsumerWidget {
         data: (skills) {
           if (skills.isEmpty) {
             return const Center(
-              child: Text("No technical skill exposure recorded"),
+              child: Text('No technical skill exposure recorded'),
             );
           }
 
@@ -95,7 +96,8 @@ class TechnicalSkillReportPage extends ConsumerWidget {
 
                     children: [
                       const Text(
-                        "Technical Skill Portfolio",
+                        'Technical Skill Portfolio',
+
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -105,8 +107,8 @@ class TechnicalSkillReportPage extends ConsumerWidget {
                       const SizedBox(height: 8),
 
                       Text(
-                        "Total Technical Steps Logged: "
-                        "${skills.length}",
+                        'Total Technical Steps Logged: '
+                        '${skills.length}',
                       ),
                     ],
                   ),
@@ -149,17 +151,17 @@ class TechnicalSkillCard extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            Text("Exposure: ${report.exposure}"),
+            Text('Exposure: ${report.exposure}'),
 
             const Divider(),
 
-            SkillExposureRow(label: "Observed", value: report.observed),
+            SkillExposureRow(label: 'Observed', value: report.observed),
 
-            SkillExposureRow(label: "Assisted", value: report.assisted),
+            SkillExposureRow(label: 'Assisted', value: report.assisted),
 
-            SkillExposureRow(label: "Supervised", value: report.supervised),
+            SkillExposureRow(label: 'Supervised', value: report.supervised),
 
-            SkillExposureRow(label: "Independent", value: report.independent),
+            SkillExposureRow(label: 'Independent', value: report.independent),
           ],
         ),
       ),
