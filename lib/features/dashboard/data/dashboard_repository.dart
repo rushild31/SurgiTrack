@@ -9,7 +9,7 @@ class DashboardRepository {
   DashboardRepository(this.database);
 
   // =====================================================
-  // Core KPI Statistics
+  // CORE KPI STATISTICS
   // =====================================================
 
   Future<DashboardStatistics> getStatistics() async {
@@ -27,7 +27,7 @@ class DashboardRepository {
   }
 
   // =====================================================
-  // Recent Cases
+  // RECENT CASES
   // =====================================================
 
   Future<List<SurgicalCaseData>> getRecentCases() {
@@ -35,7 +35,7 @@ class DashboardRepository {
   }
 
   // =====================================================
-  // All Cases
+  // ALL CASES
   // =====================================================
 
   Future<List<SurgicalCaseData>> getAllCases() {
@@ -43,7 +43,10 @@ class DashboardRepository {
   }
 
   // =====================================================
-  // Specialty Distribution
+  // SPECIALTY DISTRIBUTION
+  //
+  // Uses primary specialty classification
+  // No additional tags required
   //
   // Cardiac
   // Thoracic
@@ -56,16 +59,24 @@ class DashboardRepository {
     final Map<String, int> result = {};
 
     for (final c in cases) {
-      result[c.specialty] = (result[c.specialty] ?? 0) + 1;
+      final specialty = c.specialty.trim();
+
+      if (specialty.isEmpty) {
+        continue;
+      }
+
+      result[specialty] = (result[specialty] ?? 0) + 1;
     }
 
     return result;
   }
 
   // =====================================================
-  // Top 5 Procedures
+  // TOP PROCEDURE EXPOSURE
   //
   // Uses case_procedures mapping table
+  //
+  // Returns Top 5 procedures
   // =====================================================
 
   Future<Map<String, int>> getTopProcedures() async {
@@ -73,20 +84,34 @@ class DashboardRepository {
 
     final Map<String, int> procedureCount = {};
 
+    // Local cache avoids repeated procedure queries
+
+    final Map<int, String> procedureCache = {};
+
     for (final surgicalCase in cases) {
       final linkedProcedures = await (database.select(
         database.caseProcedures,
       )..where((tbl) => tbl.caseId.equals(surgicalCase.id))).get();
 
       for (final linked in linkedProcedures) {
-        final procedure = await database.procedureDao.getProcedureById(
-          linked.procedureId,
-        );
+        String? procedureName = procedureCache[linked.procedureId];
 
-        if (procedure != null) {
-          procedureCount[procedure.name] =
-              (procedureCount[procedure.name] ?? 0) + 1;
+        if (procedureName == null) {
+          final procedure = await database.procedureDao.getProcedureById(
+            linked.procedureId,
+          );
+
+          if (procedure == null) {
+            continue;
+          }
+
+          procedureName = procedure.name;
+
+          procedureCache[linked.procedureId] = procedureName;
         }
+
+        procedureCount[procedureName] =
+            (procedureCount[procedureName] ?? 0) + 1;
       }
     }
 
@@ -97,7 +122,7 @@ class DashboardRepository {
   }
 
   // =====================================================
-  // Operative Role Distribution
+  // OPERATIVE ROLE DISTRIBUTION
   // =====================================================
 
   Future<Map<String, int>> getOperativeRoleBreakdown() async {
@@ -106,32 +131,39 @@ class DashboardRepository {
     final Map<String, int> result = {};
 
     for (final c in cases) {
-      result[c.operativeRole] = (result[c.operativeRole] ?? 0) + 1;
+      final role = c.operativeRole.trim();
+
+      if (role.isEmpty) {
+        continue;
+      }
+
+      result[role] = (result[role] ?? 0) + 1;
     }
 
     return result;
   }
 
   // =====================================================
-  // Technical Skills Logged
+  // TECHNICAL SKILL LOG COUNT
   // =====================================================
 
   Future<int> getTechnicalSkillsCount() async {
     final cases = await getAllCases();
 
-    int count = 0;
-
-    for (final c in cases) {
-      if (c.technicalSteps != null && c.technicalSteps!.trim().isNotEmpty) {
-        count++;
-      }
-    }
-
-    return count;
+    return cases
+        .where(
+          (c) =>
+              c.technicalSteps != null && c.technicalSteps!.trim().isNotEmpty,
+        )
+        .length;
   }
 
   // =====================================================
-  // Monthly Case Trend
+  // MONTHLY CASE TREND
+  //
+  // Based on surgery date
+  // Format:
+  // YYYY-MM
   // =====================================================
 
   Future<List<MonthlyCaseData>> getMonthlyCaseData() async {
@@ -140,18 +172,20 @@ class DashboardRepository {
     final Map<String, int> monthly = {};
 
     for (final c in cases) {
-      final month =
-          "${c.surgeryDate.year}-"
-          "${c.surgeryDate.month.toString().padLeft(2, '0')}";
+      final date = c.surgeryDate;
 
-      monthly[month] = (monthly[month] ?? 0) + 1;
+      final key =
+          "${date.year}-"
+          "${date.month.toString().padLeft(2, '0')}";
+
+      monthly[key] = (monthly[key] ?? 0) + 1;
     }
 
-    final sortedEntries = monthly.entries.toList()
+    final sorted = monthly.entries.toList()
       ..sort((a, b) => a.key.compareTo(b.key));
 
-    return sortedEntries.map((e) {
-      return MonthlyCaseData(month: e.key, count: e.value);
+    return sorted.map((entry) {
+      return MonthlyCaseData(month: entry.key, count: entry.value);
     }).toList();
   }
 }

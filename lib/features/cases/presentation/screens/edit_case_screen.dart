@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:surgitrack/features/cases/domain/surgical_case.dart';
-import 'package:surgitrack/features/cases/providers/surgical_case_provider.dart';
-
+import 'package:surgitrack/core/enums/outcome.dart';
+import 'package:surgitrack/core/enums/specialty.dart';
 import 'package:surgitrack/core/enums/surgeon_role.dart';
 import 'package:surgitrack/core/enums/surgical_approach.dart';
 
+import 'package:surgitrack/features/cases/domain/surgical_case.dart';
+import 'package:surgitrack/features/cases/providers/surgical_case_provider.dart';
+import 'package:surgitrack/features/cases/providers/case_procedure_provider.dart';
+
+import 'package:surgitrack/features/procedures/domain/procedure.dart';
+import 'package:surgitrack/features/procedures/domain/procedure_selection.dart';
+
+import 'package:surgitrack/features/procedures/data/procedure_mapper.dart';
+
+import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/operative_role_selector.dart';
 
 class EditCaseScreen extends ConsumerStatefulWidget {
@@ -21,11 +30,11 @@ class EditCaseScreen extends ConsumerStatefulWidget {
 class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController diagnosisController;
-  late TextEditingController notesController;
-  late TextEditingController bypassTimeController;
-  late TextEditingController crossClampTimeController;
-  late TextEditingController complicationsController;
+  late final TextEditingController diagnosisController;
+  late final TextEditingController notesController;
+  late final TextEditingController complicationsController;
+  late final TextEditingController bypassTimeController;
+  late final TextEditingController crossClampTimeController;
 
   late DateTime surgeryDate;
 
@@ -34,12 +43,16 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
   late String urgency;
 
   late SurgeonRole operativeRole;
-
   late SurgicalApproach surgicalApproach;
 
   late bool cardiopulmonaryBypassUsed;
 
   String? outcome;
+
+  ProcedureSelection selection = const ProcedureSelection();
+
+  bool isLoadingProcedures = true;
+  bool isSaving = false;
 
   @override
   void initState() {
@@ -51,16 +64,16 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
     notesController = TextEditingController(text: c.notes ?? "");
 
+    complicationsController = TextEditingController(
+      text: c.complications ?? "",
+    );
+
     bypassTimeController = TextEditingController(
       text: c.bypassTimeMinutes?.toString() ?? "",
     );
 
     crossClampTimeController = TextEditingController(
       text: c.crossClampTimeMinutes?.toString() ?? "",
-    );
-
-    complicationsController = TextEditingController(
-      text: c.complications ?? "",
     );
 
     surgeryDate = c.surgeryDate;
@@ -84,18 +97,180 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
     cardiopulmonaryBypassUsed = c.cardiopulmonaryBypassUsed;
 
     outcome = c.outcome.isEmpty ? null : c.outcome;
+
+    _loadLinkedProcedures();
   }
+
+  // =========================================================
+  // LOAD LINKED PROCEDURES
+  // =========================================================
+
+  Future<void> _loadLinkedProcedures() async {
+    final caseId = widget.surgicalCase.id;
+
+    if (caseId == null) {
+      if (mounted) {
+        setState(() {
+          isLoadingProcedures = false;
+        });
+      }
+
+      return;
+    }
+
+    try {
+      final linked = await ref.read(caseProceduresProvider(caseId).future);
+
+      ProcedureEntity? primary;
+
+      final associated = <ProcedureEntity>[];
+
+      for (final item in linked) {
+        final procedure = ProcedureMapper.fromData(item.procedure);
+
+        if (item.caseProcedure.type == "PRIMARY") {
+          primary = procedure;
+        } else {
+          associated.add(procedure);
+        }
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        selection = ProcedureSelection(
+          primaryProcedure: primary,
+          associatedProcedures: associated,
+        );
+
+        isLoadingProcedures = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+
+      setState(() {
+        isLoadingProcedures = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Unable to load linked procedures.")),
+      );
+    }
+  }
+
+  // =========================================================
+  // ADD PROCEDURE
+  // =========================================================
+
+  void addProcedure(ProcedureEntity procedure) {
+    final primary = selection.primaryProcedure;
+
+    if (primary == null) {
+      setState(() {
+        selection = ProcedureSelection(
+          primaryProcedure: procedure,
+          associatedProcedures: const [],
+        );
+      });
+
+      return;
+    }
+
+    if (primary.id == procedure.id) {
+      return;
+    }
+
+    final alreadyAssociated = selection.associatedProcedures.any(
+      (e) => e.id == procedure.id,
+    );
+
+    if (alreadyAssociated) {
+      return;
+    }
+
+    setState(() {
+      selection = ProcedureSelection(
+        primaryProcedure: primary,
+        associatedProcedures: [...selection.associatedProcedures, procedure],
+      );
+    });
+  }
+
+  // =========================================================
+  // REMOVE PROCEDURE
+  // =========================================================
+
+  void removeProcedure(ProcedureEntity procedure) {
+    setState(() {
+      if (selection.primaryProcedure?.id == procedure.id) {
+        selection = ProcedureSelection(
+          primaryProcedure: null,
+          associatedProcedures: selection.associatedProcedures,
+        );
+      } else {
+        selection = ProcedureSelection(
+          primaryProcedure: selection.primaryProcedure,
+          associatedProcedures: selection.associatedProcedures
+              .where((e) => e.id != procedure.id)
+              .toList(),
+        );
+      }
+    });
+  }
+
+  // =========================================================
+  // MAKE ASSOCIATED PROCEDURE PRIMARY
+  // =========================================================
+
+  void makePrimary(ProcedureEntity procedure) {
+    final currentPrimary = selection.primaryProcedure;
+
+    if (currentPrimary?.id == procedure.id) {
+      return;
+    }
+
+    final updatedAssociated = <ProcedureEntity>[
+      ?currentPrimary,
+
+      ...selection.associatedProcedures.where((e) => e.id != procedure.id),
+    ];
+
+    setState(() {
+      selection = ProcedureSelection(
+        primaryProcedure: procedure,
+        associatedProcedures: updatedAssociated,
+      );
+    });
+  }
+
+  List<ProcedureEntity> get selectedProcedures => [
+    if (selection.primaryProcedure != null) selection.primaryProcedure!,
+
+    ...selection.associatedProcedures,
+  ];
+
+  // =========================================================
+  // DISPOSE
+  // =========================================================
 
   @override
   void dispose() {
     diagnosisController.dispose();
+
     notesController.dispose();
-    bypassTimeController.dispose();
-    crossClampTimeController.dispose();
+
     complicationsController.dispose();
+
+    bypassTimeController.dispose();
+
+    crossClampTimeController.dispose();
 
     super.dispose();
   }
+
+  // =========================================================
+  // BUILD
+  // =========================================================
 
   @override
   Widget build(BuildContext context) {
@@ -109,15 +284,119 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
           padding: const EdgeInsets.all(16),
 
           children: [
+            // =================================================
+            // DIAGNOSIS
+            // =================================================
             TextFormField(
               controller: diagnosisController,
 
               decoration: const InputDecoration(labelText: "Diagnosis"),
 
-              validator: (v) =>
-                  v == null || v.trim().isEmpty ? "Enter diagnosis" : null,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return "Enter diagnosis";
+                }
+
+                return null;
+              },
             ),
 
+            const SizedBox(height: 20),
+
+            // =================================================
+            // PROCEDURES
+            // =================================================
+            const Text(
+              "Procedures",
+
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 12),
+
+            if (isLoadingProcedures)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            else ...[
+              ProcedureSelector(
+                selected: null,
+
+                onChanged: (procedure) {
+                  if (procedure != null) {
+                    addProcedure(procedure);
+                  }
+                },
+              ),
+
+              const SizedBox(height: 12),
+
+              if (selectedProcedures.isEmpty)
+                const Text(
+                  "No procedures selected.",
+
+                  style: TextStyle(color: Colors.grey),
+                )
+              else
+                Column(
+                  children: selectedProcedures.map((procedure) {
+                    final isPrimary =
+                        procedure.id == selection.primaryProcedure?.id;
+
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 8),
+
+                      child: ListTile(
+                        leading: Icon(
+                          isPrimary ? Icons.star : Icons.medical_services,
+                        ),
+
+                        title: Text(procedure.name),
+
+                        subtitle: Text(
+                          isPrimary
+                              ? "Primary Procedure"
+                              : "Associated Procedure",
+                        ),
+
+                        trailing: PopupMenuButton<String>(
+                          onSelected: (value) {
+                            if (value == "primary") {
+                              makePrimary(procedure);
+                            }
+
+                            if (value == "remove") {
+                              removeProcedure(procedure);
+                            }
+                          },
+
+                          itemBuilder: (context) => [
+                            if (!isPrimary)
+                              const PopupMenuItem(
+                                value: "primary",
+                                child: Text("Make Primary"),
+                              ),
+
+                            const PopupMenuItem(
+                              value: "remove",
+                              child: Text("Remove"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+            ],
+
+            const SizedBox(height: 20),
+
+            // =================================================
+            // SURGERY DATE
+            // =================================================
             ListTile(
               contentPadding: EdgeInsets.zero,
 
@@ -134,58 +413,102 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
               onTap: pickDate,
             ),
 
-            _dropdown("Specialty", specialty, [
-              "Cardiac",
-              "Thoracic",
-              "Vascular",
-            ], (v) => specialty = v),
+            // =================================================
+            // SPECIALTY
+            // =================================================
+            DropdownButtonFormField<String>(
+              initialValue: specialty,
 
-            _dropdown("Surgery Type", surgeryType, [
-              "Primary",
-              "Redo",
-            ], (v) => surgeryType = v),
+              decoration: const InputDecoration(labelText: "Specialty"),
 
-            _dropdown("Urgency", urgency, [
-              "Planned",
-              "Emergency",
-            ], (v) => urgency = v),
+              items: Specialty.values.map((e) {
+                return DropdownMenuItem(
+                  value: e.name,
 
-            DropdownButtonFormField<SurgicalApproach>(
-              initialValue: surgicalApproach,
+                  child: Text(e.name[0].toUpperCase() + e.name.substring(1)),
+                );
+              }).toList(),
 
-              decoration: const InputDecoration(labelText: "Surgical Approach"),
-
-              items: SurgicalApproach.values
-                  .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
-                  .toList(),
-
-              onChanged: (v) {
-                if (v != null) {
+              onChanged: (value) {
+                if (value != null) {
                   setState(() {
-                    surgicalApproach = v;
+                    specialty = value;
                   });
                 }
               },
             ),
 
+            // =================================================
+            // SURGERY TYPE
+            // =================================================
+            _dropdown("Surgery Type", surgeryType, const ["primary", "redo"], (
+              value,
+            ) {
+              surgeryType = value;
+            }),
+
+            // =================================================
+            // URGENCY
+            // =================================================
+            _dropdown("Urgency", urgency, const ["planned", "emergency"], (
+              value,
+            ) {
+              urgency = value;
+            }),
+
+            // =================================================
+            // SURGICAL APPROACH
+            // =================================================
+            DropdownButtonFormField<SurgicalApproach>(
+              initialValue: surgicalApproach,
+
+              decoration: const InputDecoration(labelText: "Surgical Approach"),
+
+              items: SurgicalApproach.values.map((e) {
+                return DropdownMenuItem(value: e, child: Text(e.name));
+              }).toList(),
+
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    surgicalApproach = value;
+                  });
+                }
+              },
+            ),
+
+            const SizedBox(height: 12),
+
+            // =================================================
+            // OPERATIVE ROLE
+            // =================================================
             OperativeRoleSelector(
               value: operativeRole,
 
-              onChanged: (v) {
+              onChanged: (role) {
                 setState(() {
-                  operativeRole = v;
+                  operativeRole = role;
                 });
               },
             ),
 
+            // =================================================
+            // CPB
+            // =================================================
             SwitchListTile(
               title: const Text("Cardiopulmonary Bypass Used"),
 
               value: cardiopulmonaryBypassUsed,
 
-              onChanged: (v) {
+              onChanged: (value) {
                 setState(() {
-                  cardiopulmonaryBypassUsed = v;
+                  cardiopulmonaryBypassUsed = value;
+
+                  if (!value) {
+                    bypassTimeController.clear();
+
+                    crossClampTimeController.clear();
+                  }
                 });
               },
             ),
@@ -212,37 +535,28 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
               ),
             ],
 
+            // =================================================
+            // OUTCOME
+            // =================================================
             DropdownButtonFormField<String>(
               initialValue: outcome,
 
               decoration: const InputDecoration(labelText: "Outcome"),
 
-              items: const [
-                DropdownMenuItem(
-                  value: "Successful",
-                  child: Text("Successful"),
-                ),
+              items: Outcome.values.map((e) {
+                return DropdownMenuItem(value: e.name, child: Text(e.name));
+              }).toList(),
 
-                DropdownMenuItem(
-                  value: "Reintervention",
-                  child: Text("Reintervention"),
-                ),
-
-                DropdownMenuItem(value: "Mortality", child: Text("Mortality")),
-
-                DropdownMenuItem(
-                  value: "Lost to Follow-up",
-                  child: Text("Lost to Follow-up"),
-                ),
-              ],
-
-              onChanged: (v) {
+              onChanged: (value) {
                 setState(() {
-                  outcome = v;
+                  outcome = value;
                 });
               },
             ),
 
+            // =================================================
+            // COMPLICATIONS
+            // =================================================
             TextFormField(
               controller: complicationsController,
 
@@ -251,6 +565,9 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
               decoration: const InputDecoration(labelText: "Complications"),
             ),
 
+            // =================================================
+            // NOTES
+            // =================================================
             TextFormField(
               controller: notesController,
 
@@ -259,18 +576,36 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
               decoration: const InputDecoration(labelText: "Additional Notes"),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
-            ElevatedButton(
-              onPressed: updateCase,
+            // =================================================
+            // UPDATE
+            // =================================================
+            SizedBox(
+              height: 50,
 
-              child: const Text("Update Case"),
+              child: ElevatedButton(
+                onPressed: isSaving ? null : updateCase,
+
+                child: isSaving
+                    ? const SizedBox(
+                        height: 22,
+                        width: 22,
+
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text("Update Case"),
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  // =========================================================
+  // DATE PICKER
+  // =========================================================
 
   Future<void> pickDate() async {
     final picked = await showDatePicker(
@@ -290,96 +625,152 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
     }
   }
 
+  // =========================================================
+  // GENERIC DROPDOWN
+  // =========================================================
+
   Widget _dropdown(
     String label,
     String value,
     List<String> items,
-    Function(String) onChanged,
+    ValueChanged<String> onChanged,
   ) {
     return DropdownButtonFormField<String>(
       initialValue: value,
 
       decoration: InputDecoration(labelText: label),
 
-      items: items
-          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-          .toList(),
+      items: items.map((item) {
+        return DropdownMenuItem(
+          value: item,
 
-      onChanged: (v) {
-        if (v != null) {
-          setState(() {
-            onChanged(v);
-          });
-        }
+          child: Text(item[0].toUpperCase() + item.substring(1)),
+        );
+      }).toList(),
+
+      onChanged: (value) {
+        if (value == null) return;
+
+        setState(() {
+          onChanged(value);
+        });
       },
     );
   }
+
+  // =========================================================
+  // UPDATE CASE
+  // =========================================================
 
   Future<void> updateCase() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    final c = widget.surgicalCase;
+    if (selection.primaryProcedure == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select a primary procedure.")),
+      );
 
-    final updated = SurgicalCase(
-      id: c.id,
+      return;
+    }
 
-      patientId: c.patientId,
+    final existing = widget.surgicalCase;
 
-      caseId: c.caseId,
+    setState(() {
+      isSaving = true;
+    });
 
-      surgeryDate: surgeryDate,
+    try {
+      final updated = SurgicalCase(
+        id: existing.id,
 
-      diagnosis: diagnosisController.text.trim(),
+        patientId: existing.patientId,
 
-      urgency: urgency,
+        caseId: existing.caseId,
 
-      surgeryType: surgeryType,
+        surgeryDate: surgeryDate,
 
-      specialty: specialty,
+        diagnosis: diagnosisController.text.trim(),
 
-      procedureIds: c.procedureIds,
+        urgency: urgency,
 
-      surgicalApproach: surgicalApproach.name,
+        surgeryType: surgeryType,
 
-      approach: c.approach,
+        specialty: specialty,
 
-      caseType: c.caseType,
+        procedureIds: selectedProcedures
+            .where((procedure) => procedure.id != null)
+            .map((procedure) => procedure.id!)
+            .toList(),
 
-      complexity: c.complexity,
+        surgicalApproach: surgicalApproach.name,
 
-      operativeRole: operativeRole.label,
+        approach: existing.approach,
 
-      technicalSteps: c.technicalSteps,
+        caseType: existing.caseType,
 
-      cardiopulmonaryBypassUsed: cardiopulmonaryBypassUsed,
+        complexity: existing.complexity,
 
-      bypassTimeMinutes: int.tryParse(bypassTimeController.text),
+        operativeRole: operativeRole.label,
 
-      crossClampTimeMinutes: int.tryParse(crossClampTimeController.text),
+        technicalSteps: existing.technicalSteps,
 
-      graftConduitImplant: c.graftConduitImplant,
+        cardiopulmonaryBypassUsed: cardiopulmonaryBypassUsed,
 
-      outcome: outcome ?? "",
+        bypassTimeMinutes: cardiopulmonaryBypassUsed
+            ? int.tryParse(bypassTimeController.text)
+            : null,
 
-      complications: complicationsController.text.trim().isEmpty
-          ? null
-          : complicationsController.text.trim(),
+        crossClampTimeMinutes: cardiopulmonaryBypassUsed
+            ? int.tryParse(crossClampTimeController.text)
+            : null,
 
-      notes: notesController.text.trim().isEmpty
-          ? null
-          : notesController.text.trim(),
+        graftConduitImplant: existing.graftConduitImplant,
 
-      createdAt: c.createdAt,
+        outcome: outcome ?? "",
 
-      updatedAt: DateTime.now(),
-    );
+        complications: complicationsController.text.trim().isEmpty
+            ? null
+            : complicationsController.text.trim(),
 
-    await ref.read(surgicalCaseRepositoryProvider).updateCase(updated);
+        notes: notesController.text.trim().isEmpty
+            ? null
+            : notesController.text.trim(),
 
-    if (mounted) {
+        createdAt: existing.createdAt,
+
+        updatedAt: DateTime.now().toUtc(),
+      );
+
+      // Your current repository signature is:
+      //
+      // updateCase(SurgicalCase surgicalCase)
+      //
+      // Therefore the procedure selection cannot be passed here yet.
+      await ref
+          .read(surgicalCaseRepositoryProvider)
+          .updateCase(updated, selection);
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Case updated successfully")),
+      );
+
       Navigator.pop(context);
+    } catch (error) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Unable to update case: $error")));
+    } finally {
+      if (mounted) {
+        setState(() {
+          isSaving = false;
+        });
+      }
     }
   }
 }

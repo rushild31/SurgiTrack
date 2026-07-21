@@ -103,7 +103,10 @@ class SurgicalCaseMapper {
 
       notes: Value(surgicalCase.notes),
 
-      createdAt: Value(surgicalCase.createdAt),
+      // Automatic timestamp handling
+      createdAt: surgicalCase.id == null
+          ? const Value.absent()
+          : Value(surgicalCase.createdAt),
 
       updatedAt: Value(surgicalCase.updatedAt),
     );

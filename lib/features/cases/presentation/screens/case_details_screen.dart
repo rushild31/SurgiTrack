@@ -55,6 +55,8 @@ class CaseDetailsScreen extends ConsumerWidget {
           _headerCard(),
 
           _section("Clinical Details", [
+            _field("Surgery Date", _date(surgicalCase.surgeryDate)),
+
             _field("Diagnosis", surgicalCase.diagnosis),
 
             _field("Specialty", surgicalCase.specialty),

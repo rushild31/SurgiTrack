@@ -51,6 +51,8 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
   ProcedureSelection selection = const ProcedureSelection();
 
+  ProcedureEntity? currentProcedureSelection;
+
   bool cardiopulmonaryBypassUsed = false;
 
   final bypassTimeController = TextEditingController();
@@ -150,11 +152,15 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
           children: [
             ProcedureSelector(
-              selected: null,
+              selected: currentProcedureSelection,
 
               onChanged: (procedure) {
                 if (procedure != null) {
                   addProcedure(procedure);
+
+                  setState(() {
+                    currentProcedureSelection = null;
+                  });
                 }
               },
             ),
@@ -169,6 +175,11 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
                   final primary = p.id == selection.primaryProcedure?.id;
 
                   return Chip(
+                    avatar: Icon(
+                      primary ? Icons.star : Icons.add_circle_outline,
+                      size: 18,
+                    ),
+
                     label: Text(primary ? "${p.name} (Primary)" : p.name),
 
                     onDeleted: () {
@@ -378,7 +389,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
       return;
     }
 
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
 
     final newCase = SurgicalCase(
       patientId: widget.patient.id!,

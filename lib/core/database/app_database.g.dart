@@ -4201,6 +4201,10 @@ class $CaseProceduresTable extends CaseProcedures
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {caseId, procedureId},
+  ];
+  @override
   CaseProcedureData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CaseProcedureData(
@@ -4235,10 +4239,17 @@ class $CaseProceduresTable extends CaseProcedures
 
 class CaseProcedureData extends DataClass
     implements Insertable<CaseProcedureData> {
+  /// Primary key
   final int id;
+
+  /// Linked surgical case
   final int caseId;
+
+  /// Linked procedure
   final int procedureId;
   final String type;
+
+  /// Audit timestamp
   final DateTime createdAt;
   const CaseProcedureData({
     required this.id,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/procedures/domain/procedure.dart';
-
 import 'package:surgitrack/features/procedures/providers/procedure_provider.dart';
 
 class ProcedureSelector extends ConsumerWidget {
@@ -12,9 +11,7 @@ class ProcedureSelector extends ConsumerWidget {
 
   const ProcedureSelector({
     super.key,
-
     required this.selected,
-
     required this.onChanged,
   });
 
@@ -23,21 +20,28 @@ class ProcedureSelector extends ConsumerWidget {
     final proceduresAsync = ref.watch(procedureListProvider);
 
     return proceduresAsync.when(
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const Padding(
+        padding: EdgeInsets.all(12),
+        child: Center(child: CircularProgressIndicator()),
+      ),
 
-      error: (error, stack) => Text(error.toString()),
+      error: (error, stack) => Text("Unable to load procedures"),
 
       data: (procedures) {
         return DropdownButtonFormField<ProcedureEntity>(
           initialValue: selected,
 
-          decoration: const InputDecoration(labelText: "Procedure"),
+          isExpanded: true,
+
+          decoration: const InputDecoration(
+            labelText: "Select Procedure",
+            border: OutlineInputBorder(),
+          ),
 
           items: procedures.map((procedure) {
             return DropdownMenuItem<ProcedureEntity>(
               value: procedure,
-
-              child: Text(procedure.name),
+              child: Text(procedure.name, overflow: TextOverflow.ellipsis),
             );
           }).toList(),
 
