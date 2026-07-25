@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/procedure_provider.dart';
+import 'package:surgitrack/features/procedures/providers/procedure_search_provider.dart';
 
 import 'procedure_details_screen.dart';
 

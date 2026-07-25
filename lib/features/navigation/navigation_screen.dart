@@ -14,8 +14,10 @@ class NavigationScreen extends ConsumerWidget {
       index,
       initialLocation: index == navigationShell.currentIndex,
     );
+  }
 
-    Navigator.of(context).pop();
+  void _openAddPatient(BuildContext context) {
+    context.push('/patients/add');
   }
 
   @override
@@ -45,7 +47,9 @@ class NavigationScreen extends ConsumerWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Branding Header
+              // =====================================================
+              // BRANDING HEADER
+              // =====================================================
               Container(
                 width: double.infinity,
 
@@ -76,55 +80,67 @@ class NavigationScreen extends ConsumerWidget {
 
               const Divider(),
 
+              // =====================================================
+              // PRIMARY NAVIGATION
+              // =====================================================
               ListTile(
-                leading: const Icon(Icons.dashboard),
+                leading: const Icon(Icons.home_outlined),
 
-                title: const Text('Dashboard'),
-
-                onTap: () => _goToBranch(context, 0),
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.people),
-
-                title: const Text('Patients'),
-
-                onTap: () => _goToBranch(context, 1),
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.assignment),
-
-                title: const Text('Cases'),
-
-                onTap: () => _goToBranch(context, 2),
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.analytics),
-
-                title: const Text('Analytics'),
-
-                onTap: () => _goToBranch(context, 3),
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.description),
-
-                title: const Text('Reports'),
-
-                onTap: () => _goToBranch(context, 4),
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.settings),
-
-                title: const Text('Settings'),
+                title: const Text('Home'),
 
                 onTap: () {
                   Navigator.pop(context);
+                  _goToBranch(context, 0);
+                },
+              ),
 
-                  context.go('/settings');
+              ListTile(
+                leading: const Icon(Icons.assignment_outlined),
+
+                title: const Text('Cases'),
+
+                onTap: () {
+                  Navigator.pop(context);
+                  _goToBranch(context, 1);
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.description_outlined),
+
+                title: const Text('Reports'),
+
+                onTap: () {
+                  Navigator.pop(context);
+                  _goToBranch(context, 2);
+                },
+              ),
+
+              // =====================================================
+              // ADD PATIENT
+              // =====================================================
+              ListTile(
+                leading: const Icon(Icons.person_add_outlined),
+
+                title: const Text('Add Patient'),
+
+                onTap: () {
+                  Navigator.pop(context);
+                  _openAddPatient(context);
+                },
+              ),
+
+              // =====================================================
+              // SECONDARY MODULES
+              // =====================================================
+              ListTile(
+                leading: const Icon(Icons.analytics_outlined),
+
+                title: const Text('Analytics'),
+
+                onTap: () {
+                  Navigator.pop(context);
+                  context.push('/analytics');
                 },
               ),
 
@@ -132,7 +148,23 @@ class NavigationScreen extends ConsumerWidget {
 
               const Divider(),
 
-              // Dark Mode Toggle
+              // =====================================================
+              // SETTINGS
+              // =====================================================
+              ListTile(
+                leading: const Icon(Icons.settings_outlined),
+
+                title: const Text('Settings'),
+
+                onTap: () {
+                  Navigator.pop(context);
+                  _goToBranch(context, 3);
+                },
+              ),
+
+              // =====================================================
+              // DARK MODE
+              // =====================================================
               SwitchListTile(
                 secondary: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
 
@@ -157,31 +189,19 @@ class NavigationScreen extends ConsumerWidget {
         selectedIndex: navigationShell.currentIndex,
 
         onDestinationSelected: (index) {
-          navigationShell.goBranch(
-            index,
-
-            initialLocation: index == navigationShell.currentIndex,
-          );
+          _goToBranch(context, index);
         },
 
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
+        destinations: [
+          const NavigationDestination(
+            icon: Icon(Icons.home_outlined),
 
-            selectedIcon: Icon(Icons.dashboard),
+            selectedIcon: Icon(Icons.home),
 
-            label: 'Dashboard',
+            label: 'Home',
           ),
 
-          NavigationDestination(
-            icon: Icon(Icons.people_outline),
-
-            selectedIcon: Icon(Icons.people),
-
-            label: 'Patients',
-          ),
-
-          NavigationDestination(
+          const NavigationDestination(
             icon: Icon(Icons.assignment_outlined),
 
             selectedIcon: Icon(Icons.assignment),
@@ -190,14 +210,22 @@ class NavigationScreen extends ConsumerWidget {
           ),
 
           NavigationDestination(
-            icon: Icon(Icons.analytics_outlined),
+            icon: _AddPatientButton(
+              onPressed: () {
+                _openAddPatient(context);
+              },
+            ),
 
-            selectedIcon: Icon(Icons.analytics),
+            selectedIcon: _AddPatientButton(
+              onPressed: () {
+                _openAddPatient(context);
+              },
+            ),
 
-            label: 'Analytics',
+            label: '',
           ),
 
-          NavigationDestination(
+          const NavigationDestination(
             icon: Icon(Icons.description_outlined),
 
             selectedIcon: Icon(Icons.description),
@@ -205,7 +233,7 @@ class NavigationScreen extends ConsumerWidget {
             label: 'Reports',
           ),
 
-          NavigationDestination(
+          const NavigationDestination(
             icon: Icon(Icons.settings_outlined),
 
             selectedIcon: Icon(Icons.settings),
@@ -213,6 +241,43 @@ class NavigationScreen extends ConsumerWidget {
             label: 'Settings',
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _AddPatientButton extends StatelessWidget {
+  const _AddPatientButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Transform.translate(
+      offset: const Offset(0, -12),
+
+      child: Material(
+        elevation: 6,
+
+        shape: const CircleBorder(),
+
+        color: theme.colorScheme.primary,
+
+        child: InkWell(
+          onTap: onPressed,
+
+          customBorder: const CircleBorder(),
+
+          child: const SizedBox(
+            width: 58,
+
+            height: 58,
+
+            child: Icon(Icons.add, size: 32, color: Colors.white),
+          ),
+        ),
       ),
     );
   }

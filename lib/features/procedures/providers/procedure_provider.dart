@@ -2,75 +2,41 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/core/database/database_provider.dart';
 
+import 'package:surgitrack/core/database/app_database.dart';
+
 import 'package:surgitrack/features/procedures/data/procedure_repository.dart';
 
 import 'package:surgitrack/features/procedures/domain/procedure.dart';
 
 final procedureRepositoryProvider = Provider<ProcedureRepository>((ref) {
-  return ProcedureRepository(ref.watch(databaseProvider));
+  final database = ref.watch(databaseProvider);
+
+  return ProcedureRepository(database);
 });
 
-//
-// Complete procedure library stream
-//
-final procedureListProvider = StreamProvider<List<ProcedureEntity>>((ref) {
-  return ref.watch(procedureRepositoryProvider).watchProcedures();
-});
-
-//
-// Root level procedures
-//
-final rootProcedureProvider = FutureProvider<List<ProcedureEntity>>((
+final procedureListProvider = FutureProvider<List<ProcedureEntity>>((
   ref,
 ) async {
-  return ref.watch(procedureRepositoryProvider).getRootProcedures();
+  final repository = ref.watch(procedureRepositoryProvider);
+
+  return repository.getProcedures();
 });
 
-//
-// Child procedures
-//
-final childProcedureProvider =
-    FutureProvider.family<List<ProcedureEntity>, int>((ref, parentId) async {
-      return ref
-          .watch(procedureRepositoryProvider)
-          .getChildProcedures(parentId);
-    });
-
-//
-// Single procedure lookup
-//
 final procedureByIdProvider = FutureProvider.family<ProcedureEntity?, int>((
   ref,
   id,
 ) async {
-  return ref.watch(procedureRepositoryProvider).getProcedureById(id);
+  final repository = ref.watch(procedureRepositoryProvider);
+
+  return repository.getProcedureById(id);
 });
 
-//
-// Lookup by stable procedure id
-//
-// Examples:
-// CABG
-// BENTALL_PROCEDURE
-// MIDCAB
-//
-final procedureByProcedureIdProvider =
-    FutureProvider.family<ProcedureEntity?, String>((ref, procedureId) async {
-      return ref
-          .watch(procedureRepositoryProvider)
-          .getProcedureByProcedureId(procedureId);
-    });
+final procedureStepsProvider =
+    FutureProvider.family<List<ProcedureStepData>, int>((
+      ref,
+      procedureId,
+    ) async {
+      final database = ref.watch(databaseProvider);
 
-//
-// Search procedures
-//
-final procedureSearchProvider =
-    FutureProvider.family<List<ProcedureEntity>, String>((ref, query) async {
-      final repository = ref.watch(procedureRepositoryProvider);
-
-      if (query.trim().isEmpty) {
-        return repository.getProcedures();
-      }
-
-      return repository.searchProcedures(query.trim());
+      return database.procedureStepsDao.getStepsForProcedure(procedureId);
     });

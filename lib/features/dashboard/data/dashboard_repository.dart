@@ -10,19 +10,40 @@ class DashboardRepository {
 
   // =====================================================
   // CORE KPI STATISTICS
+  //
+  // Dashboard KPIs:
+  // - Total operative cases
+  // - Total cardiac cases
+  // - Total thoracic cases
+  // - Total vascular cases
+  //
+  // Specialty matching is case-insensitive.
   // =====================================================
 
   Future<DashboardStatistics> getStatistics() async {
-    final dao = database.dashboardDao;
+    final cases = await getAllCases();
+
+    int cardiacCases = 0;
+    int thoracicCases = 0;
+    int vascularCases = 0;
+
+    for (final surgicalCase in cases) {
+      final specialty = surgicalCase.specialty.trim().toLowerCase();
+
+      if (specialty == 'cardiac') {
+        cardiacCases++;
+      } else if (specialty == 'thoracic') {
+        thoracicCases++;
+      } else if (specialty == 'vascular') {
+        vascularCases++;
+      }
+    }
 
     return DashboardStatistics(
-      totalPatients: await dao.patientCount(),
-
-      totalCases: await dao.caseCount(),
-
-      totalProcedures: await dao.procedureCount(),
-
-      casesThisMonth: await dao.caseCountThisMonth(),
+      totalCases: cases.length,
+      cardiacCases: cardiacCases,
+      thoracicCases: thoracicCases,
+      vascularCases: vascularCases,
     );
   }
 
@@ -45,12 +66,7 @@ class DashboardRepository {
   // =====================================================
   // SPECIALTY DISTRIBUTION
   //
-  // Uses primary specialty classification
-  // No additional tags required
-  //
-  // Cardiac
-  // Thoracic
-  // Vascular
+  // Cardiac / Thoracic / Vascular
   // =====================================================
 
   Future<Map<String, int>> getSpecialtyBreakdown() async {
@@ -58,8 +74,8 @@ class DashboardRepository {
 
     final Map<String, int> result = {};
 
-    for (final c in cases) {
-      final specialty = c.specialty.trim();
+    for (final surgicalCase in cases) {
+      final specialty = surgicalCase.specialty.trim();
 
       if (specialty.isEmpty) {
         continue;
@@ -74,9 +90,9 @@ class DashboardRepository {
   // =====================================================
   // TOP PROCEDURE EXPOSURE
   //
-  // Uses case_procedures mapping table
+  // Uses case_procedures mapping table.
   //
-  // Returns Top 5 procedures
+  // Returns the top 5 procedures.
   // =====================================================
 
   Future<Map<String, int>> getTopProcedures() async {
@@ -84,8 +100,7 @@ class DashboardRepository {
 
     final Map<String, int> procedureCount = {};
 
-    // Local cache avoids repeated procedure queries
-
+    // Local cache avoids repeated procedure queries.
     final Map<int, String> procedureCache = {};
 
     for (final surgicalCase in cases) {
@@ -130,8 +145,8 @@ class DashboardRepository {
 
     final Map<String, int> result = {};
 
-    for (final c in cases) {
-      final role = c.operativeRole.trim();
+    for (final surgicalCase in cases) {
+      final role = surgicalCase.operativeRole.trim();
 
       if (role.isEmpty) {
         continue;
@@ -152,8 +167,9 @@ class DashboardRepository {
 
     return cases
         .where(
-          (c) =>
-              c.technicalSteps != null && c.technicalSteps!.trim().isNotEmpty,
+          (surgicalCase) =>
+              surgicalCase.technicalSteps != null &&
+              surgicalCase.technicalSteps!.trim().isNotEmpty,
         )
         .length;
   }
@@ -161,7 +177,8 @@ class DashboardRepository {
   // =====================================================
   // MONTHLY CASE TREND
   //
-  // Based on surgery date
+  // Based on surgery date.
+  //
   // Format:
   // YYYY-MM
   // =====================================================
@@ -171,12 +188,12 @@ class DashboardRepository {
 
     final Map<String, int> monthly = {};
 
-    for (final c in cases) {
-      final date = c.surgeryDate;
+    for (final surgicalCase in cases) {
+      final date = surgicalCase.surgeryDate;
 
       final key =
-          "${date.year}-"
-          "${date.month.toString().padLeft(2, '0')}";
+          '${date.year}-'
+          '${date.month.toString().padLeft(2, '0')}';
 
       monthly[key] = (monthly[key] ?? 0) + 1;
     }
@@ -184,8 +201,8 @@ class DashboardRepository {
     final sorted = monthly.entries.toList()
       ..sort((a, b) => a.key.compareTo(b.key));
 
-    return sorted.map((entry) {
-      return MonthlyCaseData(month: entry.key, count: entry.value);
-    }).toList();
+    return sorted
+        .map((entry) => MonthlyCaseData(month: entry.key, count: entry.value))
+        .toList();
   }
 }

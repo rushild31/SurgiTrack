@@ -18,6 +18,7 @@ import 'package:surgitrack/features/procedures/domain/procedure_selection.dart';
 
 import 'package:surgitrack/features/cases/presentation/widgets/procedure_selector.dart';
 import 'package:surgitrack/features/cases/presentation/widgets/operative_role_selector.dart';
+import 'package:surgitrack/features/cases/presentation/screens/technical_exposure_screen.dart';
 
 class AddCaseScreen extends ConsumerStatefulWidget {
   final Patient patient;
@@ -408,7 +409,7 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
 
       surgicalApproach: surgicalApproach.name,
 
-      operativeRole: operativeRole.label,
+      operativeRole: operativeRole.value,
 
       technicalSteps: null,
 
@@ -435,10 +436,17 @@ class _AddCaseScreenState extends ConsumerState<AddCaseScreen> {
       updatedAt: now,
     );
 
-    await ref.read(surgicalCaseRepositoryProvider).addCase(newCase, selection);
+    final caseId = await ref
+        .read(surgicalCaseRepositoryProvider)
+        .addCase(newCase, selection);
 
-    if (mounted) {
-      Navigator.pop(context);
-    }
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TechnicalExposureScreen(caseId: caseId),
+      ),
+    );
   }
 }

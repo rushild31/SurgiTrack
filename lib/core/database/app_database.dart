@@ -55,5 +55,18 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(openConnection());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (Migrator m) async {
+      await m.createAll();
+    },
+
+    onUpgrade: (Migrator m, int from, int to) async {
+      if (from < 5) {
+        await m.createTable(procedureSteps);
+        await m.createTable(caseProcedureSteps);
+      }
+    },
+  );
 }

@@ -55,6 +55,18 @@ class CaseProcedureStepsDao extends DatabaseAccessor<AppDatabase>
     return into(caseProcedureSteps).insert(companion);
   }
 
+  Future<void> insertMultipleCaseProcedureSteps(
+    List<CaseProcedureStepsCompanion> steps,
+  ) async {
+    if (steps.isEmpty) {
+      return;
+    }
+
+    await batch((batch) {
+      batch.insertAll(caseProcedureSteps, steps);
+    });
+  }
+
   Future<List<CaseProcedureStepWithDetails>> getStepsForCaseProcedure(
     int caseProcedureId,
   ) {
@@ -148,5 +160,17 @@ class CaseProcedureStepsDao extends DatabaseAccessor<AppDatabase>
     return (delete(
       caseProcedureSteps,
     )..where((tbl) => tbl.caseProcedureId.equals(caseProcedureId))).go();
+  }
+
+  Future<CaseProcedureStepData?> getCaseProcedureStep({
+    required int caseProcedureId,
+    required int procedureStepId,
+  }) {
+    return (select(caseProcedureSteps)..where(
+          (tbl) =>
+              tbl.caseProcedureId.equals(caseProcedureId) &
+              tbl.procedureStepId.equals(procedureStepId),
+        ))
+        .getSingleOrNull();
   }
 }

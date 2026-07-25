@@ -89,11 +89,11 @@ class SurgicalCaseRepository {
   // Atomic transaction
   // =====================================================
 
-  Future<void> addCase(
+  Future<int> addCase(
     domain.SurgicalCase surgicalCase,
     ProcedureSelection selection,
   ) async {
-    await database.transaction(() async {
+    return database.transaction(() async {
       final caseId = await database.surgicalCaseDao.insertCase(
         SurgicalCaseMapper.toCompanion(surgicalCase),
       );
@@ -131,6 +131,7 @@ class SurgicalCaseRepository {
           ),
         );
       }
+      return caseId;
     });
   }
 
@@ -175,6 +176,15 @@ class SurgicalCaseRepository {
       // - promote an associated procedure to primary
       //
       // -------------------------------------------------
+
+      final existingProcedures = await database.caseProcedureDao
+          .getProceduresForCase(caseId);
+
+      for (final procedure in existingProcedures) {
+        await database.caseProcedureStepsDao.deleteForCaseProcedure(
+          procedure.caseProcedure.id,
+        );
+      }
 
       await database.caseProcedureDao.deleteForCase(caseId);
 
@@ -230,6 +240,21 @@ class SurgicalCaseRepository {
       await database.caseProcedureDao.deleteForCase(id);
 
       // Then delete the surgical case
+      await database.surgicalCaseDao.deleteCase(id);
+    });
+    await database.transaction(() async {
+      final procedures = await database.caseProcedureDao.getProceduresForCase(
+        id,
+      );
+
+      for (final procedure in procedures) {
+        await database.caseProcedureStepsDao.deleteForCaseProcedure(
+          procedure.caseProcedure.id,
+        );
+      }
+
+      await database.caseProcedureDao.deleteForCase(id);
+
       await database.surgicalCaseDao.deleteCase(id);
     });
   }

@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import 'package:surgitrack/features/dashboard/providers/dashboard_provider.dart';
 
-import 'package:surgitrack/features/dashboard/presentation/widgets/core_kpi_card.dart';
-import 'package:surgitrack/features/dashboard/presentation/widgets/quick_action_button.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/recent_cases_card.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/monthly_case_chart.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/specialty_breakdown_card.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/operative_role_card.dart';
 import 'package:surgitrack/features/dashboard/presentation/widgets/top_procedures_card.dart';
+import 'package:surgitrack/features/dashboard/presentation/widgets/dashboard_header.dart';
+import 'package:surgitrack/features/dashboard/presentation/widgets/core_kpi_card.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -18,252 +18,378 @@ class DashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final statistics = ref.watch(dashboardStatisticsProvider);
-
     final recentCases = ref.watch(recentCasesProvider);
-
     final specialty = ref.watch(specialtyBreakdownProvider);
-
     final operative = ref.watch(operativeRoleBreakdownProvider);
-
     final monthly = ref.watch(monthlyCaseDataProvider);
-
     final topProcedures = ref.watch(topProceduresProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("SurgiTrack")),
-
       body: statistics.when(
         loading: () => const Center(child: CircularProgressIndicator()),
 
-        error: (error, stack) => Center(child: Text(error.toString())),
+        error: (error, stack) => _DashboardError(
+          message: error.toString(),
+          onRetry: () {
+            ref.invalidate(dashboardStatisticsProvider);
+          },
+        ),
 
         data: (stats) {
           return RefreshIndicator(
             onRefresh: () async {
               ref.invalidate(dashboardStatisticsProvider);
-
               ref.invalidate(recentCasesProvider);
-
               ref.invalidate(specialtyBreakdownProvider);
-
               ref.invalidate(operativeRoleBreakdownProvider);
-
               ref.invalidate(monthlyCaseDataProvider);
-
               ref.invalidate(topProceduresProvider);
             },
 
-            child: ListView(
-              padding: const EdgeInsets.all(16),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final isWide = constraints.maxWidth >= 900;
 
-              children: [
-                // ============================
-                // HEADER
-                // ============================
-                Text(
-                  "Welcome Dr. Rushil Dalwadi",
+                return ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
 
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isWide ? 32 : 16,
+                    vertical: 24,
                   ),
-                ),
-
-                const SizedBox(height: 4),
-
-                Text(
-                  "CTVS Resident | Surgical Training Portfolio",
-
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-
-                const SizedBox(height: 24),
-
-                // ============================
-                // KPI GRID
-                // ============================
-                GridView.count(
-                  crossAxisCount: 2,
-
-                  shrinkWrap: true,
-
-                  physics: const NeverScrollableScrollPhysics(),
-
-                  crossAxisSpacing: 12,
-
-                  mainAxisSpacing: 12,
-
-                  childAspectRatio: 1.7,
 
                   children: [
-                    CoreKpiCard(
-                      title: "Operative Cases",
+                    // ============================
+                    // ADAPTIVE GREETING HEADER
+                    // ============================
+                    const DashboardHeader(),
 
-                      value: stats.totalCases,
+                    const SizedBox(height: 28),
 
-                      icon: Icons.local_hospital_outlined,
+                    // ============================
+                    // CORE KPI SECTION
+                    // ============================
+                    _KpiSection(
+                      totalCases: stats.totalCases,
+                      cardiacCases: stats.cardiacCases,
+                      thoracicCases: stats.thoracicCases,
+                      vascularCases: stats.vascularCases,
                     ),
 
-                    CoreKpiCard(
-                      title: "Patients",
+                    const SizedBox(height: 32),
 
-                      value: stats.totalPatients,
-
-                      icon: Icons.people_outline,
+                    // ============================
+                    // TRAINING EXPOSURE
+                    // ============================
+                    _SectionHeader(
+                      title: 'Training Exposure',
+                      actionLabel: 'View Analytics',
+                      onAction: () {
+                        context.go('/analytics');
+                      },
                     ),
 
-                    CoreKpiCard(
-                      title: "Procedures",
+                    const SizedBox(height: 12),
 
-                      value: stats.totalProcedures,
+                    operative.when(
+                      loading: () => const _SectionLoading(),
 
-                      icon: Icons.medical_services_outlined,
+                      error: (e, s) => _SectionError(message: e.toString()),
+
+                      data: (data) => OperativeRoleCard(data: data),
                     ),
 
-                    CoreKpiCard(
-                      title: "This Month",
+                    const SizedBox(height: 28),
 
-                      value: stats.casesThisMonth,
-
-                      icon: Icons.calendar_month_outlined,
+                    // ============================
+                    // OPERATIVE TREND
+                    // ============================
+                    _SectionHeader(
+                      title: 'Operative Trend',
+                      actionLabel: 'View Reports',
+                      onAction: () {
+                        context.go('/reports');
+                      },
                     ),
+
+                    const SizedBox(height: 12),
+
+                    monthly.when(
+                      loading: () => const _SectionLoading(),
+
+                      error: (e, s) => _SectionError(message: e.toString()),
+
+                      data: (data) => MonthlyCaseChart(data: data),
+                    ),
+
+                    const SizedBox(height: 28),
+
+                    // ============================
+                    // SPECIALTY + TOP PROCEDURES
+                    // ============================
+                    if (isWide)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: specialty.when(
+                              loading: () => const _SectionLoading(),
+
+                              error: (e, s) =>
+                                  _SectionError(message: e.toString()),
+
+                              data: (data) =>
+                                  SpecialtyBreakdownCard(data: data),
+                            ),
+                          ),
+
+                          const SizedBox(width: 20),
+
+                          Expanded(
+                            child: topProcedures.when(
+                              loading: () => const _SectionLoading(),
+
+                              error: (e, s) =>
+                                  _SectionError(message: e.toString()),
+
+                              data: (data) =>
+                                  TopProceduresCard(procedures: data),
+                            ),
+                          ),
+                        ],
+                      )
+                    else ...[
+                      specialty.when(
+                        loading: () => const _SectionLoading(),
+
+                        error: (e, s) => _SectionError(message: e.toString()),
+
+                        data: (data) => SpecialtyBreakdownCard(data: data),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      topProcedures.when(
+                        loading: () => const _SectionLoading(),
+
+                        error: (e, s) => _SectionError(message: e.toString()),
+
+                        data: (data) => TopProceduresCard(procedures: data),
+                      ),
+                    ],
+
+                    const SizedBox(height: 28),
+
+                    // ============================
+                    // RECENT CASES
+                    // ============================
+                    _SectionHeader(
+                      title: 'Recent Cases',
+                      actionLabel: 'View All',
+                      onAction: () {
+                        context.go('/cases');
+                      },
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    recentCases.when(
+                      loading: () => const _SectionLoading(),
+
+                      error: (e, s) => _SectionError(message: e.toString()),
+
+                      data: (cases) => RecentCasesCard(cases: cases),
+                    ),
+
+                    const SizedBox(height: 32),
                   ],
-                ),
-
-                const SizedBox(height: 28),
-
-                // ============================
-                // QUICK ACTIONS
-                // ============================
-                Text(
-                  "Quick Actions",
-
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                Wrap(
-                  spacing: 12,
-
-                  runSpacing: 12,
-
-                  children: [
-                    QuickActionButton(
-                      label: "Add Patient",
-
-                      icon: Icons.person_add_outlined,
-
-                      onTap: () => context.push('/patients/add'),
-                    ),
-
-                    QuickActionButton(
-                      label: "Cases",
-
-                      icon: Icons.assignment_outlined,
-
-                      onTap: () => context.go('/cases'),
-                    ),
-
-                    QuickActionButton(
-                      label: "Reports",
-
-                      icon: Icons.description_outlined,
-
-                      onTap: () => context.go('/reports'),
-                    ),
-
-                    QuickActionButton(
-                      label: "Analytics",
-
-                      icon: Icons.analytics_outlined,
-
-                      onTap: () => context.go('/analytics'),
-                    ),
-
-                    QuickActionButton(
-                      label: "Export",
-
-                      icon: Icons.download_outlined,
-
-                      onTap: () => context.go('/reports'),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 28),
-
-                // ============================
-                // OPERATIVE TRAINING SUMMARY
-                // ============================
-                Text(
-                  "Training Exposure Summary",
-
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                operative.when(
-                  loading: () => const CircularProgressIndicator(),
-
-                  error: (e, s) => Text(e.toString()),
-
-                  data: (data) => OperativeRoleCard(data: data),
-                ),
-
-                const SizedBox(height: 24),
-
-                // ============================
-                // ANALYTICS
-                // ============================
-                monthly.when(
-                  loading: () => const CircularProgressIndicator(),
-
-                  error: (e, s) => Text(e.toString()),
-
-                  data: (data) => MonthlyCaseChart(data: data),
-                ),
-
-                const SizedBox(height: 16),
-
-                specialty.when(
-                  loading: () => const CircularProgressIndicator(),
-
-                  error: (e, s) => Text(e.toString()),
-
-                  data: (data) => SpecialtyBreakdownCard(data: data),
-                ),
-
-                const SizedBox(height: 16),
-
-                topProcedures.when(
-                  loading: () => const CircularProgressIndicator(),
-
-                  error: (e, s) => Text(e.toString()),
-
-                  data: (data) => TopProceduresCard(procedures: data),
-                ),
-
-                const SizedBox(height: 16),
-
-                // ============================
-                // RECENT CASES
-                // ============================
-                recentCases.when(
-                  loading: () => const CircularProgressIndicator(),
-
-                  error: (e, s) => Text(e.toString()),
-
-                  data: (cases) => RecentCasesCard(cases: cases),
-                ),
-              ],
+                );
+              },
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+// =====================================================
+// ADAPTIVE KPI SECTION
+// =====================================================
+
+class _KpiSection extends StatelessWidget {
+  final int totalCases;
+  final int cardiacCases;
+  final int thoracicCases;
+  final int vascularCases;
+
+  const _KpiSection({
+    required this.totalCases,
+    required this.cardiacCases,
+    required this.thoracicCases,
+    required this.vascularCases,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+
+        final crossAxisCount = width >= 1100
+            ? 4
+            : width >= 700
+            ? 4
+            : 2;
+
+        return GridView.count(
+          crossAxisCount: crossAxisCount,
+
+          shrinkWrap: true,
+
+          physics: const NeverScrollableScrollPhysics(),
+
+          crossAxisSpacing: 12,
+
+          mainAxisSpacing: 12,
+
+          childAspectRatio: width >= 700 ? 1.8 : 1.45,
+
+          children: [
+            CoreKpiCard(
+              title: 'Total Cases',
+              value: totalCases,
+              icon: Icons.local_hospital_outlined,
+            ),
+
+            CoreKpiCard(
+              title: 'Cardiac',
+              value: cardiacCases,
+              icon: Icons.favorite_border,
+            ),
+
+            CoreKpiCard(
+              title: 'Thoracic',
+              value: thoracicCases,
+              icon: Icons.air,
+            ),
+
+            CoreKpiCard(
+              title: 'Vascular',
+              value: vascularCases,
+              icon: Icons.bloodtype_outlined,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+// =====================================================
+// SECTION HEADER
+// =====================================================
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+
+  const _SectionHeader({required this.title, this.actionLabel, this.onAction});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+
+        if (actionLabel != null && onAction != null)
+          TextButton(onPressed: onAction, child: Text(actionLabel!)),
+      ],
+    );
+  }
+}
+
+// =====================================================
+// SECTION LOADING
+// =====================================================
+
+class _SectionLoading extends StatelessWidget {
+  const _SectionLoading();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      height: 120,
+      child: Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+// =====================================================
+// SECTION ERROR
+// =====================================================
+
+class _SectionError extends StatelessWidget {
+  final String message;
+
+  const _SectionError({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      message,
+      style: TextStyle(color: Theme.of(context).colorScheme.error),
+    );
+  }
+}
+
+// =====================================================
+// DASHBOARD ERROR
+// =====================================================
+
+class _DashboardError extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
+
+  const _DashboardError({required this.message, required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+
+          children: [
+            const Icon(Icons.error_outline, size: 48),
+
+            const SizedBox(height: 16),
+
+            const Text(
+              'Unable to load dashboard',
+
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(message, textAlign: TextAlign.center),
+
+            const SizedBox(height: 16),
+
+            FilledButton(onPressed: onRetry, child: const Text('Try Again')),
+          ],
+        ),
       ),
     );
   }

@@ -27,34 +27,39 @@ final GoRouter appRouter = GoRouter(
 
   errorBuilder: (context, state) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Page Not Found")),
+      appBar: AppBar(title: const Text('Page Not Found')),
 
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
 
-          children: [
-            const Icon(Icons.error_outline, size: 64),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
 
-            const SizedBox(height: 16),
+            children: [
+              const Icon(Icons.error_outline, size: 64),
 
-            Text(
-              "The page you are looking for does not exist.",
-              style: Theme.of(context).textTheme.titleMedium,
+              const SizedBox(height: 16),
 
-              textAlign: TextAlign.center,
-            ),
+              Text(
+                'The page you are looking for does not exist.',
 
-            const SizedBox(height: 16),
+                style: Theme.of(context).textTheme.titleMedium,
 
-            FilledButton(
-              onPressed: () {
-                context.go('AppRoutes.dashboard');
-              },
+                textAlign: TextAlign.center,
+              ),
 
-              child: const Text("Go to Dashboard"),
-            ),
-          ],
+              const SizedBox(height: 16),
+
+              FilledButton(
+                onPressed: () {
+                  context.go('/dashboard');
+                },
+
+                child: const Text('Go to Dashboard'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -63,6 +68,16 @@ final GoRouter appRouter = GoRouter(
   routes: [
     // =====================================================
     // MAIN APP SHELL
+    //
+    // Bottom Navigation:
+    //
+    // 0 → Home / Dashboard
+    // 1 → Cases
+    // 2 → Reports
+    // 3 → Settings
+    //
+    // The central "+" button is an action and does not
+    // represent a navigation branch.
     // =====================================================
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
@@ -71,109 +86,85 @@ final GoRouter appRouter = GoRouter(
 
       branches: [
         // =================================================
-        // Dashboard
+        // BRANCH 0 — HOME / DASHBOARD
         // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: '/dashboard',
 
-              builder: (context, state) => const DashboardScreen(),
+              builder: (context, state) {
+                return const DashboardScreen();
+              },
             ),
           ],
         ),
 
         // =================================================
-        // Patients
-        // =================================================
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/patients',
-
-              builder: (context, state) => const PatientListScreen(),
-
-              routes: [
-                GoRoute(
-                  path: 'add',
-
-                  builder: (context, state) => const PatientFormScreen(),
-                ),
-
-                GoRoute(
-                  path: ':id',
-
-                  builder: (context, state) {
-                    final id = state.pathParameters['id']!;
-
-                    return PatientDetailsRouteWrapper(patientId: id);
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-
-        // =================================================
-        // Cases
+        // BRANCH 1 — CASES
         // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: '/cases',
 
-              builder: (context, state) => const CasesScreen(),
+              builder: (context, state) {
+                return const CasesScreen();
+              },
             ),
           ],
         ),
 
         // =================================================
-        // Analytics
-        // =================================================
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/analytics',
-
-              builder: (context, state) => const AnalyticsScreen(),
-            ),
-          ],
-        ),
-
-        // =================================================
-        // Reports
+        // BRANCH 2 — REPORTS
         // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: '/reports',
 
-              builder: (context, state) => const ReportsScreen(),
+              builder: (context, state) {
+                return const ReportsScreen();
+              },
             ),
           ],
         ),
 
         // =================================================
-        // Settings
+        // BRANCH 3 — SETTINGS
         // =================================================
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: '/settings',
 
-              builder: (context, state) => const SettingsScreen(),
+              builder: (context, state) {
+                return const SettingsScreen();
+              },
 
               routes: [
+                // -----------------------------------------
+                // Surgeon Profile
+                // /settings/profile
+                // -----------------------------------------
                 GoRoute(
                   path: 'profile',
 
-                  builder: (context, state) => const SurgeonProfileScreen(),
+                  builder: (context, state) {
+                    return const SurgeonProfileScreen();
+                  },
                 ),
 
+                // -----------------------------------------
+                // Cloud Account
+                // /settings/cloud
+                // -----------------------------------------
                 GoRoute(
                   path: 'cloud',
 
-                  builder: (context, state) => const CloudAccountPage(),
+                  builder: (context, state) {
+                    return const CloudAccountPage();
+                  },
                 ),
               ],
             ),
@@ -183,12 +174,70 @@ final GoRouter appRouter = GoRouter(
     ),
 
     // =====================================================
-    // Secondary Modules (outside bottom navigation)
+    // SECONDARY MODULES
+    //
+    // These are not bottom-navigation branches.
+    // =====================================================
+
+    // =====================================================
+    // PATIENTS
+    // =====================================================
+    GoRoute(
+      path: '/patients',
+
+      builder: (context, state) {
+        return const PatientListScreen();
+      },
+
+      routes: [
+        // -----------------------------------------------
+        // Add Patient
+        // /patients/add
+        // -----------------------------------------------
+        GoRoute(
+          path: 'add',
+
+          builder: (context, state) {
+            return const PatientFormScreen();
+          },
+        ),
+
+        // -----------------------------------------------
+        // Patient Details
+        // /patients/:id
+        // -----------------------------------------------
+        GoRoute(
+          path: ':id',
+
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+
+            return PatientDetailsRouteWrapper(patientId: id);
+          },
+        ),
+      ],
+    ),
+
+    // =====================================================
+    // ANALYTICS
+    // =====================================================
+    GoRoute(
+      path: '/analytics',
+
+      builder: (context, state) {
+        return const AnalyticsScreen();
+      },
+    ),
+
+    // =====================================================
+    // PROCEDURE LIBRARY
     // =====================================================
     GoRoute(
       path: '/procedures',
 
-      builder: (context, state) => const ProceduresScreen(),
+      builder: (context, state) {
+        return const ProceduresScreen();
+      },
     ),
   ],
 );
