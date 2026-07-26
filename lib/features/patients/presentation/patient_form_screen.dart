@@ -16,32 +16,34 @@ class PatientFormScreen extends ConsumerStatefulWidget {
 class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController nameController;
-  late TextEditingController hospitalIdController;
-  late TextEditingController efController;
-  late TextEditingController addressController;
-  late TextEditingController pastHistoryController;
+  late final TextEditingController nameController;
+  late final TextEditingController hospitalIdController;
+  late final TextEditingController efController;
+  late final TextEditingController addressController;
+  late final TextEditingController pastHistoryController;
 
   DateTime? dob;
   DateTime? admissionDate;
 
   String? bloodGroup;
 
-  String sex = "Male";
+  String sex = 'Male';
+
+  bool _isSaving = false;
 
   final List<String> selectedComorbidities = [];
 
   final List<String> availableComorbidities = [
-    "Hypertension",
-    "Diabetes Mellitus",
-    "CAD",
-    "COPD",
-    "CKD",
-    "Stroke",
-    "PVD",
-    "Smoking",
-    "Alcohol",
-    "Others",
+    'Hypertension',
+    'Diabetes Mellitus',
+    'CAD',
+    'COPD',
+    'CKD',
+    'Stroke',
+    'PVD',
+    'Smoking',
+    'Alcohol',
+    'Others',
   ];
 
   bool get isEditing => widget.patient != null;
@@ -52,29 +54,26 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
 
     final patient = widget.patient;
 
-    nameController = TextEditingController(text: patient?.name ?? "");
+    nameController = TextEditingController(text: patient?.name ?? '');
 
     hospitalIdController = TextEditingController(
-      text: patient?.hospitalId ?? "",
+      text: patient?.hospitalId ?? '',
     );
 
     efController = TextEditingController(
-      text: patient?.ejectionFraction?.toString() ?? "",
+      text: patient?.ejectionFraction?.toString() ?? '',
     );
 
-    addressController = TextEditingController(text: patient?.address ?? "");
+    addressController = TextEditingController(text: patient?.address ?? '');
 
     pastHistoryController = TextEditingController(
-      text: patient?.pastOperativeHistory ?? "",
+      text: patient?.pastOperativeHistory ?? '',
     );
 
     dob = patient?.dateOfBirth;
-
     admissionDate = patient?.admissionDate;
-
     bloodGroup = patient?.bloodGroup;
-
-    sex = patient?.sex ?? "Male";
+    sex = patient?.sex ?? 'Male';
 
     selectedComorbidities.addAll(patient?.comorbidities ?? []);
   }
@@ -90,15 +89,21 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
     super.dispose();
   }
 
-  Future<void> pickDate(bool isDob) async {
+  Future<void> _pickDate({required bool isDob}) async {
+    final now = DateTime.now();
+
+    final existingDate = isDob ? dob : admissionDate;
+
     final selected = await showDatePicker(
       context: context,
       firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-      initialDate: DateTime.now(),
+      lastDate: now,
+      initialDate: existingDate ?? now,
     );
 
-    if (selected == null) return;
+    if (selected == null || !mounted) {
+      return;
+    }
 
     setState(() {
       if (isDob) {
@@ -109,16 +114,17 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
     });
   }
 
-  Future<void> savePatient() async {
+  Future<void> _savePatient() async {
+    if (_isSaving) {
+      return;
+    }
+
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     if (dob == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select date of birth")),
-      );
-
+      _showMessage('Please select the patient date of birth.');
       return;
     }
 
@@ -126,203 +132,456 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
 
     final patient = Patient(
       id: widget.patient?.id,
-
       patientId:
-          widget.patient?.patientId ??
-          DateTime.now().millisecondsSinceEpoch.toString(),
-
+          widget.patient?.patientId ?? now.millisecondsSinceEpoch.toString(),
       name: nameController.text.trim(),
-
       hospitalId: hospitalIdController.text.trim(),
-
       dateOfBirth: dob!,
-
       sex: sex,
-
       bloodGroup: bloodGroup,
-
-      comorbidities: selectedComorbidities,
-
-      address: addressController.text.trim(),
-
+      comorbidities: List.unmodifiable(selectedComorbidities),
+      address: _nullableText(addressController.text),
       admissionDate: admissionDate,
-
       ejectionFraction: double.tryParse(efController.text.trim()),
-
-      pastOperativeHistory: pastHistoryController.text.trim(),
-
+      pastOperativeHistory: _nullableText(pastHistoryController.text),
       createdAt: widget.patient?.createdAt ?? now,
-
       updatedAt: now,
     );
 
-    final repository = ref.read(patientRepositoryProvider);
+    setState(() {
+      _isSaving = true;
+    });
 
-    if (isEditing) {
-      await repository.updatePatient(patient);
-    } else {
-      await repository.addPatient(patient);
-    }
+    try {
+      final repository = ref.read(patientRepositoryProvider);
 
-    ref.invalidate(patientListProvider);
+      if (isEditing) {
+        await repository.updatePatient(patient);
+      } else {
+        await repository.addPatient(patient);
+      }
 
-    if (mounted) {
+      ref.invalidate(patientListProvider);
+
+      if (!mounted) {
+        return;
+      }
+
       Navigator.pop(context, true);
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      _showMessage('Unable to save patient. Please try again.');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
     }
+  }
+
+  String? _nullableText(String value) {
+    final trimmed = value.trim();
+
+    return trimmed.isEmpty ? null : trimmed;
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day.toString().padLeft(2, '0')}/'
+        '${date.month.toString().padLeft(2, '0')}/'
+        '${date.year}';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? "Edit Patient" : "Add Patient")),
-
+      appBar: AppBar(title: Text(isEditing ? 'Edit Patient' : 'Add Patient')),
       body: Form(
         key: _formKey,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth >= 900;
 
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-
-          children: [
-            TextFormField(
-              controller: nameController,
-
-              decoration: const InputDecoration(labelText: "Patient Name"),
-
-              validator: (v) =>
-                  v == null || v.isEmpty ? "Enter patient name" : null,
-            ),
-
-            TextFormField(
-              controller: hospitalIdController,
-
-              decoration: const InputDecoration(labelText: "Hospital ID / MRD"),
-            ),
-
-            ListTile(
-              title: Text(
-                dob == null
-                    ? "Select DOB"
-                    : "${dob!.day}-${dob!.month}-${dob!.year}",
+            return ListView(
+              padding: EdgeInsets.symmetric(
+                horizontal: isWide ? 32 : 16,
+                vertical: 24,
               ),
+              children: [
+                _FormIntro(isEditing: isEditing),
 
-              trailing: const Icon(Icons.calendar_today),
+                const SizedBox(height: 24),
 
-              onTap: () => pickDate(true),
-            ),
+                _FormSection(
+                  title: 'Patient Identity',
+                  icon: Icons.person_outline,
+                  children: [
+                    TextFormField(
+                      controller: nameController,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                        labelText: 'Patient Name',
+                        hintText: 'Enter full name',
+                        prefixIcon: Icon(Icons.person_outline),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Enter patient name';
+                        }
 
-            DropdownButtonFormField<String>(
-              initialValue: sex,
+                        return null;
+                      },
+                    ),
 
-              decoration: const InputDecoration(labelText: "Sex"),
+                    const SizedBox(height: 16),
 
-              items: const [
-                DropdownMenuItem(value: "Male", child: Text("Male")),
-                DropdownMenuItem(value: "Female", child: Text("Female")),
-                DropdownMenuItem(value: "Other", child: Text("Other")),
+                    TextFormField(
+                      controller: hospitalIdController,
+                      decoration: const InputDecoration(
+                        labelText: 'Hospital ID / MRD',
+                        hintText: 'Enter hospital identifier',
+                        prefixIcon: Icon(Icons.badge_outlined),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                _FormSection(
+                  title: 'Demographics',
+                  icon: Icons.person_search_outlined,
+                  children: [
+                    _DateField(
+                      label: 'Date of Birth',
+                      value: dob == null ? null : _formatDate(dob!),
+                      icon: Icons.cake_outlined,
+                      onTap: () => _pickDate(isDob: true),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    DropdownButtonFormField<String>(
+                      initialValue: sex,
+                      decoration: const InputDecoration(
+                        labelText: 'Sex',
+                        prefixIcon: Icon(Icons.wc_outlined),
+                      ),
+                      items: const [
+                        DropdownMenuItem(value: 'Male', child: Text('Male')),
+                        DropdownMenuItem(
+                          value: 'Female',
+                          child: Text('Female'),
+                        ),
+                        DropdownMenuItem(value: 'Other', child: Text('Other')),
+                      ],
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+
+                        setState(() {
+                          sex = value;
+                        });
+                      },
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    DropdownButtonFormField<String>(
+                      initialValue: bloodGroup,
+                      decoration: const InputDecoration(
+                        labelText: 'Blood Group',
+                        prefixIcon: Icon(Icons.bloodtype_outlined),
+                      ),
+                      items:
+                          const [
+                                'A+',
+                                'A-',
+                                'B+',
+                                'B-',
+                                'AB+',
+                                'AB-',
+                                'O+',
+                                'O-',
+                                'Unknown',
+                              ]
+                              .map(
+                                (group) => DropdownMenuItem(
+                                  value: group,
+                                  child: Text(group),
+                                ),
+                              )
+                              .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          bloodGroup = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                _FormSection(
+                  title: 'Clinical Information',
+                  icon: Icons.medical_information_outlined,
+                  children: [
+                    const Text(
+                      'Comorbidities',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: availableComorbidities.map((item) {
+                        return FilterChip(
+                          label: Text(item),
+                          selected: selectedComorbidities.contains(item),
+                          onSelected: (selected) {
+                            setState(() {
+                              if (selected) {
+                                if (!selectedComorbidities.contains(item)) {
+                                  selectedComorbidities.add(item);
+                                }
+                              } else {
+                                selectedComorbidities.remove(item);
+                              }
+                            });
+                          },
+                        );
+                      }).toList(),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    TextFormField(
+                      controller: efController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: const InputDecoration(
+                        labelText: 'Ejection Fraction',
+                        hintText: 'Example: 55',
+                        suffixText: '%',
+                        prefixIcon: Icon(Icons.favorite_border),
+                      ),
+                      validator: (value) {
+                        final text = value?.trim() ?? '';
+
+                        if (text.isEmpty) {
+                          return null;
+                        }
+
+                        final ef = double.tryParse(text);
+
+                        if (ef == null) {
+                          return 'Enter a valid number';
+                        }
+
+                        if (ef < 0 || ef > 100) {
+                          return 'Enter a value between 0 and 100';
+                        }
+
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    TextFormField(
+                      controller: addressController,
+                      textCapitalization: TextCapitalization.sentences,
+                      maxLines: 2,
+                      decoration: const InputDecoration(
+                        labelText: 'Address',
+                        prefixIcon: Icon(Icons.location_on_outlined),
+                        alignLabelWithHint: true,
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    _DateField(
+                      label: 'Admission Date',
+                      value: admissionDate == null
+                          ? null
+                          : _formatDate(admissionDate!),
+                      icon: Icons.event_outlined,
+                      onTap: () => _pickDate(isDob: false),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    TextFormField(
+                      controller: pastHistoryController,
+                      textCapitalization: TextCapitalization.sentences,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        labelText: 'Past Operative History',
+                        hintText: 'Add relevant previous operations',
+                        prefixIcon: Icon(Icons.history_outlined),
+                        alignLabelWithHint: true,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 28),
+
+                SizedBox(
+                  height: 52,
+                  child: FilledButton.icon(
+                    onPressed: _isSaving ? null : _savePatient,
+                    icon: _isSaving
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Icon(
+                            isEditing
+                                ? Icons.save_outlined
+                                : Icons.person_add_outlined,
+                          ),
+                    label: Text(
+                      _isSaving
+                          ? 'Saving...'
+                          : isEditing
+                          ? 'Update Patient'
+                          : 'Save Patient',
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
               ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
 
-              onChanged: (value) {
-                if (value == null) return;
+class _FormIntro extends StatelessWidget {
+  final bool isEditing;
 
-                setState(() {
-                  sex = value;
-                });
-              },
+  const _FormIntro({required this.isEditing});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          isEditing ? 'Update patient information' : 'Create a patient record',
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          isEditing
+              ? 'Review and update the patient details below.'
+              : 'Add the patient details required for your surgical logbook.',
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _FormSection extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final List<Widget> children;
+
+  const _FormSection({
+    required this.title,
+    required this.icon,
+    required this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: theme.colorScheme.primary),
+                const SizedBox(width: 10),
+                Text(
+                  title,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-
-            DropdownButtonFormField<String>(
-              initialValue: bloodGroup,
-
-              decoration: const InputDecoration(labelText: "Blood Group"),
-
-              items: const [
-                "A+",
-                "A-",
-                "B+",
-                "B-",
-                "AB+",
-                "AB-",
-                "O+",
-                "O-",
-                "Unknown",
-              ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-
-              onChanged: (value) {
-                setState(() {
-                  bloodGroup = value;
-                });
-              },
-            ),
-
-            const SizedBox(height: 12),
-
-            const Text(
-              "Comorbidities",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-
-            Wrap(
-              spacing: 8,
-
-              children: availableComorbidities.map((item) {
-                return FilterChip(
-                  label: Text(item),
-
-                  selected: selectedComorbidities.contains(item),
-
-                  onSelected: (selected) {
-                    setState(() {
-                      selected
-                          ? selectedComorbidities.add(item)
-                          : selectedComorbidities.remove(item);
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-
-            TextFormField(
-              controller: efController,
-
-              keyboardType: TextInputType.number,
-
-              decoration: const InputDecoration(labelText: "EF (%)"),
-            ),
-
-            TextFormField(
-              controller: addressController,
-
-              decoration: const InputDecoration(labelText: "Address"),
-            ),
-
-            ListTile(
-              title: Text(
-                admissionDate == null
-                    ? "Select Admission Date"
-                    : "${admissionDate!.day}-${admissionDate!.month}-${admissionDate!.year}",
-              ),
-
-              onTap: () => pickDate(false),
-            ),
-
-            TextFormField(
-              controller: pastHistoryController,
-
-              maxLines: 3,
-
-              decoration: const InputDecoration(
-                labelText: "Past Operative History",
-              ),
-            ),
-
             const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: savePatient,
-
-              child: Text(isEditing ? "Update Patient" : "Save Patient"),
-            ),
+            ...children,
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DateField extends StatelessWidget {
+  final String label;
+  final String? value;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _DateField({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon),
+          suffixIcon: const Icon(Icons.calendar_today_outlined),
+        ),
+        child: Text(
+          value ?? 'Select date',
+          style: TextStyle(
+            color: value == null
+                ? Theme.of(context).colorScheme.onSurfaceVariant
+                : null,
+          ),
         ),
       ),
     );

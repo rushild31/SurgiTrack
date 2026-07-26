@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
-import '../app_database.dart';
-import '../tables/patients.dart';
+import 'package:surgitrack/core/database/app_database.dart';
+import 'package:surgitrack/core/database/tables/patients.dart';
 
 part 'patient_dao.g.dart';
 
