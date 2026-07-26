@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 
 import 'package:surgitrack/core/database/app_database.dart';
 
-import '../domain/surgeon_profile.dart';
+import 'package:surgitrack/features/profile/domain/surgeon_profile.dart';
 
 class SurgeonProfileMapper {
   static SurgeonProfile fromData(SurgeonProfileData data) {

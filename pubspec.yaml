@@ -64,7 +64,7 @@ dependencies:
 
 
   # Media / Attachments
-  image_picker: ^1.2.0
+  image_picker: ^1.2.3
   file_picker: ^10.3.2
   open_filex: ^4.7.0
 
