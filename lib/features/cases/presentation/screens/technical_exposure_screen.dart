@@ -26,7 +26,14 @@ class TechnicalExposureScreen extends ConsumerStatefulWidget {
 
 class _TechnicalExposureScreenState
     extends ConsumerState<TechnicalExposureScreen> {
-  final Map<int, SurgeonRole> selectedRoles = {};
+  /// Structure:
+  ///
+  /// caseProcedureId
+  ///        |
+  ///        |
+  /// procedureStepId -> SurgeonRole
+  ///
+  final Map<int, Map<int, SurgeonRole>> selectedRoles = {};
 
   bool isLoading = true;
 
@@ -47,14 +54,18 @@ class _TechnicalExposureScreenState
     final repository = ref.read(caseProcedureStepsRepositoryProvider);
 
     for (final item in procedures) {
+      final procedureSelections = <int, SurgeonRole>{};
+
       final existingSteps = await repository.getStepsForCaseProcedure(
         item.caseProcedure.id,
       );
 
       for (final existing in existingSteps) {
-        selectedRoles[existing.procedureStep.id] =
+        procedureSelections[existing.procedureStep.id] =
             SurgeonRoleExtension.fromString(existing.caseStep.role);
       }
+
+      selectedRoles[item.caseProcedure.id] = procedureSelections;
     }
 
     if (!mounted) {
@@ -66,11 +77,12 @@ class _TechnicalExposureScreenState
     });
   }
 
-  void _onRolesChanged(Map<int, SurgeonRole> updatedRoles) {
+  void _onRolesChanged(
+    int caseProcedureId,
+    Map<int, SurgeonRole> updatedRoles,
+  ) {
     setState(() {
-      selectedRoles
-        ..clear()
-        ..addAll(updatedRoles);
+      selectedRoles[caseProcedureId] = updatedRoles;
     });
   }
 
@@ -87,23 +99,16 @@ class _TechnicalExposureScreenState
       final repository = ref.read(caseProcedureStepsRepositoryProvider);
 
       for (final item in procedures) {
-        final steps = await ref.read(
-          procedureStepsProvider(item.procedure.id).future,
+        final procedureRoles = selectedRoles[item.caseProcedure.id] ?? {};
+
+        final stepRoles = procedureRoles.map(
+          (stepId, role) => MapEntry(stepId, role.value),
         );
-
-        final selectedForProcedure = <int, String>{};
-
-        for (final step in steps) {
-          final role = selectedRoles[step.id];
-
-          if (role != null) {
-            selectedForProcedure[step.id] = role.value;
-          }
-        }
 
         await repository.saveTechnicalExposure(
           caseProcedureId: item.caseProcedure.id,
-          stepRoles: selectedForProcedure,
+
+          stepRoles: stepRoles,
         );
       }
 
@@ -156,8 +161,11 @@ class _TechnicalExposureScreenState
               ...procedures.map(
                 (item) => _ProcedureTechnicalExposureSection(
                   item: item,
-                  selectedRoles: selectedRoles,
-                  onChanged: _onRolesChanged,
+
+                  selectedRoles: selectedRoles[item.caseProcedure.id] ?? {},
+
+                  onChanged: (updatedRoles) =>
+                      _onRolesChanged(item.caseProcedure.id, updatedRoles),
                 ),
               ),
 
@@ -165,13 +173,16 @@ class _TechnicalExposureScreenState
 
               SizedBox(
                 width: double.infinity,
+
                 child: ElevatedButton(
                   onPressed: isSaving ? null : _saveExposure,
 
                   child: isSaving
                       ? const SizedBox(
                           height: 20,
+
                           width: 20,
+
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Text('Save Technical Exposure'),
@@ -194,7 +205,9 @@ class _ProcedureTechnicalExposureSection extends ConsumerWidget {
 
   const _ProcedureTechnicalExposureSection({
     required this.item,
+
     required this.selectedRoles,
+
     required this.onChanged,
   });
 
@@ -216,6 +229,7 @@ class _ProcedureTechnicalExposureSection extends ConsumerWidget {
           children: [
             Text(
               item.procedure.name,
+
               style: Theme.of(context).textTheme.titleLarge,
             ),
 
@@ -227,13 +241,13 @@ class _ProcedureTechnicalExposureSection extends ConsumerWidget {
               error: (error, stack) =>
                   const Text('Unable to load technical steps.'),
 
-              data: (steps) {
-                return TechnicalStepsWidget(
-                  steps: steps,
-                  selectedRoles: selectedRoles,
-                  onChanged: onChanged,
-                );
-              },
+              data: (steps) => TechnicalStepsWidget(
+                steps: steps,
+
+                selectedRoles: selectedRoles,
+
+                onChanged: onChanged,
+              ),
             ),
           ],
         ),

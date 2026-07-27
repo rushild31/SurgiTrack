@@ -62,18 +62,18 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
     diagnosisController = TextEditingController(text: c.diagnosis);
 
-    notesController = TextEditingController(text: c.notes ?? "");
+    notesController = TextEditingController(text: c.notes ?? '');
 
     complicationsController = TextEditingController(
-      text: c.complications ?? "",
+      text: c.complications ?? '',
     );
 
     bypassTimeController = TextEditingController(
-      text: c.bypassTimeMinutes?.toString() ?? "",
+      text: c.bypassTimeMinutes?.toString() ?? '',
     );
 
     crossClampTimeController = TextEditingController(
-      text: c.crossClampTimeMinutes?.toString() ?? "",
+      text: c.crossClampTimeMinutes?.toString() ?? '',
     );
 
     surgeryDate = c.surgeryDate;
@@ -84,10 +84,22 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
     urgency = c.urgency;
 
-    operativeRole = SurgeonRole.values.firstWhere(
-      (e) => e.label == c.operativeRole,
-      orElse: () => SurgeonRole.assisted,
-    );
+    // =========================================================
+    // RESTORE OPERATIVE ROLE
+    //
+    // Supports both:
+    // - canonical database values
+    // - legacy/human-readable values
+    //
+    // Examples:
+    // observed
+    // assisted
+    // performed_under_supervision
+    // Performed under Supervision
+    // PS
+    // =========================================================
+
+    operativeRole = SurgeonRoleExtension.fromString(c.operativeRole);
 
     surgicalApproach = SurgicalApproach.values.firstWhere(
       (e) => e.name == c.surgicalApproach,
@@ -128,14 +140,16 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
       for (final item in linked) {
         final procedure = ProcedureMapper.fromData(item.procedure);
 
-        if (item.caseProcedure.type == "PRIMARY") {
+        if (item.caseProcedure.type == 'PRIMARY') {
           primary = procedure;
         } else {
           associated.add(procedure);
         }
       }
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       setState(() {
         selection = ProcedureSelection(
@@ -146,14 +160,16 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
         isLoadingProcedures = false;
       });
     } catch (_) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       setState(() {
         isLoadingProcedures = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Unable to load linked procedures.")),
+        const SnackBar(content: Text('Unable to load linked procedures.')),
       );
     }
   }
@@ -275,7 +291,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Surgical Case")),
+      appBar: AppBar(title: const Text('Edit Surgical Case')),
 
       body: Form(
         key: _formKey,
@@ -290,11 +306,11 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             TextFormField(
               controller: diagnosisController,
 
-              decoration: const InputDecoration(labelText: "Diagnosis"),
+              decoration: const InputDecoration(labelText: 'Diagnosis'),
 
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return "Enter diagnosis";
+                  return 'Enter diagnosis';
                 }
 
                 return null;
@@ -307,7 +323,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             // PROCEDURES
             // =================================================
             const Text(
-              "Procedures",
+              'Procedures',
 
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -318,6 +334,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
               const Center(
                 child: Padding(
                   padding: EdgeInsets.all(16),
+
                   child: CircularProgressIndicator(),
                 ),
               )
@@ -336,7 +353,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
               if (selectedProcedures.isEmpty)
                 const Text(
-                  "No procedures selected.",
+                  'No procedures selected.',
 
                   style: TextStyle(color: Colors.grey),
                 )
@@ -358,17 +375,17 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
                         subtitle: Text(
                           isPrimary
-                              ? "Primary Procedure"
-                              : "Associated Procedure",
+                              ? 'Primary Procedure'
+                              : 'Associated Procedure',
                         ),
 
                         trailing: PopupMenuButton<String>(
                           onSelected: (value) {
-                            if (value == "primary") {
+                            if (value == 'primary') {
                               makePrimary(procedure);
                             }
 
-                            if (value == "remove") {
+                            if (value == 'remove') {
                               removeProcedure(procedure);
                             }
                           },
@@ -376,13 +393,15 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
                           itemBuilder: (context) => [
                             if (!isPrimary)
                               const PopupMenuItem(
-                                value: "primary",
-                                child: Text("Make Primary"),
+                                value: 'primary',
+
+                                child: Text('Make Primary'),
                               ),
 
                             const PopupMenuItem(
-                              value: "remove",
-                              child: Text("Remove"),
+                              value: 'remove',
+
+                              child: Text('Remove'),
                             ),
                           ],
                         ),
@@ -400,12 +419,12 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             ListTile(
               contentPadding: EdgeInsets.zero,
 
-              title: const Text("Surgery Date"),
+              title: const Text('Surgery Date'),
 
               subtitle: Text(
-                "${surgeryDate.day}/"
-                "${surgeryDate.month}/"
-                "${surgeryDate.year}",
+                '${surgeryDate.day}/'
+                '${surgeryDate.month}/'
+                '${surgeryDate.year}',
               ),
 
               trailing: const Icon(Icons.calendar_today),
@@ -419,7 +438,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             DropdownButtonFormField<String>(
               initialValue: specialty,
 
-              decoration: const InputDecoration(labelText: "Specialty"),
+              decoration: const InputDecoration(labelText: 'Specialty'),
 
               items: Specialty.values.map((e) {
                 return DropdownMenuItem(
@@ -441,7 +460,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             // =================================================
             // SURGERY TYPE
             // =================================================
-            _dropdown("Surgery Type", surgeryType, const ["primary", "redo"], (
+            _dropdown('Surgery Type', surgeryType, const ['primary', 'redo'], (
               value,
             ) {
               surgeryType = value;
@@ -450,7 +469,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             // =================================================
             // URGENCY
             // =================================================
-            _dropdown("Urgency", urgency, const ["planned", "emergency"], (
+            _dropdown('Urgency', urgency, const ['planned', 'emergency'], (
               value,
             ) {
               urgency = value;
@@ -462,7 +481,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             DropdownButtonFormField<SurgicalApproach>(
               initialValue: surgicalApproach,
 
-              decoration: const InputDecoration(labelText: "Surgical Approach"),
+              decoration: const InputDecoration(labelText: 'Surgical Approach'),
 
               items: SurgicalApproach.values.map((e) {
                 return DropdownMenuItem(value: e, child: Text(e.name));
@@ -496,7 +515,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             // CPB
             // =================================================
             SwitchListTile(
-              title: const Text("Cardiopulmonary Bypass Used"),
+              title: const Text('Cardiopulmonary Bypass Used'),
 
               value: cardiopulmonaryBypassUsed,
 
@@ -520,7 +539,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
                 keyboardType: TextInputType.number,
 
                 decoration: const InputDecoration(
-                  labelText: "Bypass Time (minutes)",
+                  labelText: 'Bypass Time (minutes)',
                 ),
               ),
 
@@ -530,7 +549,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
                 keyboardType: TextInputType.number,
 
                 decoration: const InputDecoration(
-                  labelText: "Cross Clamp Time (minutes)",
+                  labelText: 'Cross Clamp Time (minutes)',
                 ),
               ),
             ],
@@ -541,7 +560,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
             DropdownButtonFormField<String>(
               initialValue: outcome,
 
-              decoration: const InputDecoration(labelText: "Outcome"),
+              decoration: const InputDecoration(labelText: 'Outcome'),
 
               items: Outcome.values.map((e) {
                 return DropdownMenuItem(value: e.name, child: Text(e.name));
@@ -562,7 +581,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
               maxLines: 3,
 
-              decoration: const InputDecoration(labelText: "Complications"),
+              decoration: const InputDecoration(labelText: 'Complications'),
             ),
 
             // =================================================
@@ -573,7 +592,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
               maxLines: 4,
 
-              decoration: const InputDecoration(labelText: "Additional Notes"),
+              decoration: const InputDecoration(labelText: 'Additional Notes'),
             ),
 
             const SizedBox(height: 24),
@@ -590,11 +609,12 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
                 child: isSaving
                     ? const SizedBox(
                         height: 22,
+
                         width: 22,
 
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text("Update Case"),
+                    : const Text('Update Case'),
               ),
             ),
           ],
@@ -649,7 +669,9 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
       }).toList(),
 
       onChanged: (value) {
-        if (value == null) return;
+        if (value == null) {
+          return;
+        }
 
         setState(() {
           onChanged(value);
@@ -669,7 +691,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
     if (selection.primaryProcedure == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select a primary procedure.")),
+        const SnackBar(content: Text('Please select a primary procedure.')),
       );
 
       return;
@@ -712,7 +734,10 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
         complexity: existing.complexity,
 
-        operativeRole: operativeRole.label,
+        // =====================================================
+        // CANONICAL DATABASE VALUE
+        // =====================================================
+        operativeRole: operativeRole.value,
 
         technicalSteps: existing.technicalSteps,
 
@@ -728,7 +753,7 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
 
         graftConduitImplant: existing.graftConduitImplant,
 
-        outcome: outcome ?? "",
+        outcome: outcome ?? '',
 
         complications: complicationsController.text.trim().isEmpty
             ? null
@@ -743,28 +768,27 @@ class _EditCaseScreenState extends ConsumerState<EditCaseScreen> {
         updatedAt: DateTime.now().toUtc(),
       );
 
-      // Your current repository signature is:
-      //
-      // updateCase(SurgicalCase surgicalCase)
-      //
-      // Therefore the procedure selection cannot be passed here yet.
       await ref
           .read(surgicalCaseRepositoryProvider)
           .updateCase(updated, selection);
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Case updated successfully")),
+        const SnackBar(content: Text('Case updated successfully')),
       );
 
       Navigator.pop(context);
     } catch (error) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Unable to update case: $error")));
+      ).showSnackBar(SnackBar(content: Text('Unable to update case: $error')));
     } finally {
       if (mounted) {
         setState(() {

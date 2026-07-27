@@ -10,9 +10,15 @@ class ProcedureStepsDao extends DatabaseAccessor<AppDatabase>
     with _$ProcedureStepsDaoMixin {
   ProcedureStepsDao(super.db);
 
-  /// Get all technical steps for a procedure
+  // =====================================================
+  // GET ALL TECHNICAL STEPS FOR A PROCEDURE
+  // =====================================================
+
+  /// Returns all technical steps belonging to a procedure,
+  /// ordered by their defined sequence.
   ///
   /// Example:
+  ///
   /// CABG
   ///  ├── LIMA Harvest
   ///  ├── Distal Anastomosis
@@ -24,7 +30,11 @@ class ProcedureStepsDao extends DatabaseAccessor<AppDatabase>
         .get();
   }
 
-  /// Reactive stream for procedure step list
+  // =====================================================
+  // WATCH TECHNICAL STEPS FOR A PROCEDURE
+  // =====================================================
+
+  /// Reactive stream for procedure-specific technical steps.
   Stream<List<ProcedureStepData>> watchStepsForProcedure(int procedureId) {
     return (select(procedureSteps)
           ..where((tbl) => tbl.procedureId.equals(procedureId))
@@ -32,33 +42,59 @@ class ProcedureStepsDao extends DatabaseAccessor<AppDatabase>
         .watch();
   }
 
-  /// Single step lookup
+  // =====================================================
+  // GET SINGLE TECHNICAL STEP
+  // =====================================================
+
   Future<ProcedureStepData?> getStepById(int id) {
     return (select(
       procedureSteps,
     )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
   }
 
-  /// Insert technical step into library
+  // =====================================================
+  // INSERT TECHNICAL STEP
+  // =====================================================
+
   Future<int> insertStep(ProcedureStepsCompanion companion) {
     return into(procedureSteps).insert(companion);
   }
 
-  /// Insert multiple steps during JSON import
+  // =====================================================
+  // INSERT MULTIPLE TECHNICAL STEPS
+  // =====================================================
+
+  /// Used during procedure-library import and refresh.
   Future<void> insertMultipleSteps(List<ProcedureStepsCompanion> steps) async {
+    if (steps.isEmpty) {
+      return;
+    }
+
     await batch((batch) {
       batch.insertAll(procedureSteps, steps);
     });
   }
 
-  /// Update step
+  // =====================================================
+  // UPDATE TECHNICAL STEP
+  // =====================================================
+
   Future<bool> updateStep(ProcedureStepsCompanion step) {
     return update(procedureSteps).replace(step);
   }
 
-  /// Delete all steps belonging to a procedure
+  // =====================================================
+  // DELETE ALL STEPS FOR A PROCEDURE
+  // =====================================================
+
+  /// Deletes all technical-step definitions belonging to
+  /// a procedure.
   ///
-  /// Useful during procedure library refresh
+  /// This is intended for procedure-library refresh/import
+  /// operations.
+  ///
+  /// Case-specific exposure records must be removed first
+  /// before deleting procedure-step definitions.
   Future<int> deleteStepsForProcedure(int procedureId) {
     return (delete(
       procedureSteps,

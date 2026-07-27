@@ -56,11 +56,11 @@ class SurgicalCaseRepository {
     for (final surgicalCase in cases) {
       final id = surgicalCase.caseId;
 
-      if (!id.startsWith("CTVS-$year-")) {
+      if (!id.startsWith('CTVS-$year-')) {
         continue;
       }
 
-      final parts = id.split("-");
+      final parts = id.split('-');
 
       if (parts.length != 3) {
         continue;
@@ -75,7 +75,59 @@ class SurgicalCaseRepository {
 
     final nextNumber = highestNumber + 1;
 
-    return "CTVS-$year-${nextNumber.toString().padLeft(4, "0")}";
+    return 'CTVS-$year-${nextNumber.toString().padLeft(4, '0')}';
+  }
+
+  // =====================================================
+  // INSERT PROCEDURE LINKS
+  //
+  // Creates:
+  // 1. One PRIMARY procedure link
+  // 2. Zero or more ASSOCIATED procedure links
+  //
+  // This method is used by both ADD and UPDATE operations
+  // to keep procedure-link logic consistent.
+  // =====================================================
+
+  Future<void> _insertProcedureLinks({
+    required int caseId,
+    required ProcedureSelection selection,
+  }) async {
+    // -------------------------------------------------
+    // PRIMARY PROCEDURE
+    // -------------------------------------------------
+
+    final primary = selection.primaryProcedure;
+
+    if (primary != null && primary.id != null) {
+      await database.caseProcedureDao.insertCaseProcedure(
+        CaseProceduresCompanion(
+          caseId: Value(caseId),
+          procedureId: Value(primary.id!),
+          type: const Value('PRIMARY'),
+        ),
+      );
+    }
+
+    // -------------------------------------------------
+    // ASSOCIATED PROCEDURES
+    // -------------------------------------------------
+
+    for (final procedure in selection.associatedProcedures) {
+      final procedureId = procedure.id;
+
+      if (procedureId == null) {
+        continue;
+      }
+
+      await database.caseProcedureDao.insertCaseProcedure(
+        CaseProceduresCompanion(
+          caseId: Value(caseId),
+          procedureId: Value(procedureId),
+          type: const Value('ASSOCIATED'),
+        ),
+      );
+    }
   }
 
   // =====================================================
@@ -98,39 +150,8 @@ class SurgicalCaseRepository {
         SurgicalCaseMapper.toCompanion(surgicalCase),
       );
 
-      // -------------------------------------------------
-      // PRIMARY PROCEDURE
-      // -------------------------------------------------
+      await _insertProcedureLinks(caseId: caseId, selection: selection);
 
-      final primary = selection.primaryProcedure;
-
-      if (primary != null && primary.id != null) {
-        await database.caseProcedureDao.insertCaseProcedure(
-          CaseProceduresCompanion(
-            caseId: Value(caseId),
-            procedureId: Value(primary.id!),
-            type: const Value("PRIMARY"),
-          ),
-        );
-      }
-
-      // -------------------------------------------------
-      // ASSOCIATED PROCEDURES
-      // -------------------------------------------------
-
-      for (final procedure in selection.associatedProcedures) {
-        if (procedure.id == null) {
-          continue;
-        }
-
-        await database.caseProcedureDao.insertCaseProcedure(
-          CaseProceduresCompanion(
-            caseId: Value(caseId),
-            procedureId: Value(procedure.id!),
-            type: const Value("ASSOCIATED"),
-          ),
-        );
-      }
       return caseId;
     });
   }
@@ -140,9 +161,10 @@ class SurgicalCaseRepository {
   //
   // Updates:
   // 1. Surgical case details
-  // 2. Deletes all existing procedure links
-  // 3. Inserts new primary procedure link
-  // 4. Inserts new associated procedure links
+  // 2. Deletes all existing technical-step exposure records
+  // 3. Deletes all existing procedure links
+  // 4. Inserts new primary procedure link
+  // 5. Inserts new associated procedure links
   //
   // Atomic transaction
   // =====================================================
@@ -154,7 +176,7 @@ class SurgicalCaseRepository {
     final caseId = surgicalCase.id;
 
     if (caseId == null) {
-      throw Exception("Cannot update a surgical case without a database ID.");
+      throw Exception('Cannot update a surgical case without a database ID.');
     }
 
     await database.transaction(() async {
@@ -167,18 +189,19 @@ class SurgicalCaseRepository {
       );
 
       // -------------------------------------------------
-      // REMOVE EXISTING PROCEDURE LINKS
-      //
-      // This allows the user to:
-      // - change the primary procedure
-      // - add associated procedures
-      // - remove associated procedures
-      // - promote an associated procedure to primary
-      //
+      // GET EXISTING PROCEDURE LINKS
       // -------------------------------------------------
 
       final existingProcedures = await database.caseProcedureDao
           .getProceduresForCase(caseId);
+
+      // -------------------------------------------------
+      // DELETE TECHNICAL-STEP EXPOSURE RECORDS FIRST
+      //
+      // Technical-step records depend on CaseProcedures.
+      // Therefore, they must be removed before the
+      // CaseProcedures records themselves.
+      // -------------------------------------------------
 
       for (final procedure in existingProcedures) {
         await database.caseProcedureStepsDao.deleteForCaseProcedure(
@@ -186,41 +209,17 @@ class SurgicalCaseRepository {
         );
       }
 
+      // -------------------------------------------------
+      // DELETE EXISTING PROCEDURE LINKS
+      // -------------------------------------------------
+
       await database.caseProcedureDao.deleteForCase(caseId);
 
       // -------------------------------------------------
-      // INSERT PRIMARY PROCEDURE
+      // INSERT UPDATED PROCEDURE LINKS
       // -------------------------------------------------
 
-      final primary = selection.primaryProcedure;
-
-      if (primary != null && primary.id != null) {
-        await database.caseProcedureDao.insertCaseProcedure(
-          CaseProceduresCompanion(
-            caseId: Value(caseId),
-            procedureId: Value(primary.id!),
-            type: const Value("PRIMARY"),
-          ),
-        );
-      }
-
-      // -------------------------------------------------
-      // INSERT ASSOCIATED PROCEDURES
-      // -------------------------------------------------
-
-      for (final procedure in selection.associatedProcedures) {
-        if (procedure.id == null) {
-          continue;
-        }
-
-        await database.caseProcedureDao.insertCaseProcedure(
-          CaseProceduresCompanion(
-            caseId: Value(caseId),
-            procedureId: Value(procedure.id!),
-            type: const Value("ASSOCIATED"),
-          ),
-        );
-      }
+      await _insertProcedureLinks(caseId: caseId, selection: selection);
     });
   }
 
@@ -228,24 +227,26 @@ class SurgicalCaseRepository {
   // DELETE CASE
   //
   // Removes:
-  // 1. All procedure links
-  // 2. Surgical case
+  // 1. Technical-step exposure records
+  // 2. Procedure links
+  // 3. Surgical case
   //
   // Atomic transaction
   // =====================================================
 
   Future<void> deleteCase(int id) async {
     await database.transaction(() async {
-      // Remove linked procedures first
-      await database.caseProcedureDao.deleteForCase(id);
+      // -------------------------------------------------
+      // GET LINKED PROCEDURES FIRST
+      // -------------------------------------------------
 
-      // Then delete the surgical case
-      await database.surgicalCaseDao.deleteCase(id);
-    });
-    await database.transaction(() async {
       final procedures = await database.caseProcedureDao.getProceduresForCase(
         id,
       );
+
+      // -------------------------------------------------
+      // DELETE TECHNICAL-STEP EXPOSURE RECORDS
+      // -------------------------------------------------
 
       for (final procedure in procedures) {
         await database.caseProcedureStepsDao.deleteForCaseProcedure(
@@ -253,7 +254,15 @@ class SurgicalCaseRepository {
         );
       }
 
+      // -------------------------------------------------
+      // DELETE PROCEDURE LINKS
+      // -------------------------------------------------
+
       await database.caseProcedureDao.deleteForCase(id);
+
+      // -------------------------------------------------
+      // DELETE SURGICAL CASE
+      // -------------------------------------------------
 
       await database.surgicalCaseDao.deleteCase(id);
     });

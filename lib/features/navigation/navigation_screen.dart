@@ -28,19 +28,18 @@ class NavigationScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('SurgiTrack'),
 
-        actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: const Icon(Icons.menu),
+        // Single navigation entry point
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
 
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              );
-            },
-          ),
-        ],
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
       ),
 
       drawer: Drawer(
@@ -131,7 +130,7 @@ class NavigationScreen extends ConsumerWidget {
               ),
 
               // =====================================================
-              // SECONDARY MODULES
+              // ANALYTICS
               // =====================================================
               ListTile(
                 leading: const Icon(Icons.analytics_outlined),
@@ -185,66 +184,78 @@ class NavigationScreen extends ConsumerWidget {
 
       body: navigationShell,
 
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
+      // ===========================================================
+      // BOTTOM NAVIGATION
+      // ===========================================================
+      bottomNavigationBar: SafeArea(
+        child: Stack(
+          alignment: Alignment.center,
 
-        onDestinationSelected: (index) {
-          _goToBranch(context, index);
-        },
+          children: [
+            NavigationBar(
+              selectedIndex: navigationShell.currentIndex,
 
-        destinations: [
-          const NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-
-            selectedIcon: Icon(Icons.home),
-
-            label: 'Home',
-          ),
-
-          const NavigationDestination(
-            icon: Icon(Icons.assignment_outlined),
-
-            selectedIcon: Icon(Icons.assignment),
-
-            label: 'Cases',
-          ),
-
-          NavigationDestination(
-            icon: _AddPatientButton(
-              onPressed: () {
-                _openAddPatient(context);
+              onDestinationSelected: (index) {
+                _goToBranch(context, index);
               },
+
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.home_outlined),
+
+                  selectedIcon: Icon(Icons.home),
+
+                  label: 'Home',
+                ),
+
+                NavigationDestination(
+                  icon: Icon(Icons.assignment_outlined),
+
+                  selectedIcon: Icon(Icons.assignment),
+
+                  label: 'Cases',
+                ),
+
+                NavigationDestination(
+                  icon: Icon(Icons.description_outlined),
+
+                  selectedIcon: Icon(Icons.description),
+
+                  label: 'Reports',
+                ),
+
+                NavigationDestination(
+                  icon: Icon(Icons.settings_outlined),
+
+                  selectedIcon: Icon(Icons.settings),
+
+                  label: 'Settings',
+                ),
+              ],
             ),
 
-            selectedIcon: _AddPatientButton(
-              onPressed: () {
-                _openAddPatient(context);
-              },
+            // =======================================================
+            // CENTRAL ADD PATIENT BUTTON
+            // =======================================================
+            Positioned(
+              bottom: 28,
+
+              child: _AddPatientButton(
+                onPressed: () {
+                  _openAddPatient(context);
+                },
+              ),
             ),
-
-            label: '',
-          ),
-
-          const NavigationDestination(
-            icon: Icon(Icons.description_outlined),
-
-            selectedIcon: Icon(Icons.description),
-
-            label: 'Reports',
-          ),
-
-          const NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-
-            selectedIcon: Icon(Icons.settings),
-
-            label: 'Settings',
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
+
+// ===============================================================
+// CENTRAL ADD PATIENT BUTTON
+// ===============================================================
 
 class _AddPatientButton extends StatelessWidget {
   const _AddPatientButton({required this.onPressed});
@@ -255,28 +266,24 @@ class _AddPatientButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Transform.translate(
-      offset: const Offset(0, -12),
+    return Material(
+      elevation: 6,
 
-      child: Material(
-        elevation: 6,
+      shape: const CircleBorder(),
 
-        shape: const CircleBorder(),
+      color: theme.colorScheme.primary,
 
-        color: theme.colorScheme.primary,
+      child: InkWell(
+        onTap: onPressed,
 
-        child: InkWell(
-          onTap: onPressed,
+        customBorder: const CircleBorder(),
 
-          customBorder: const CircleBorder(),
+        child: const SizedBox(
+          width: 58,
 
-          child: const SizedBox(
-            width: 58,
+          height: 58,
 
-            height: 58,
-
-            child: Icon(Icons.add, size: 32, color: Colors.white),
-          ),
+          child: Icon(Icons.add, size: 32, color: Colors.white),
         ),
       ),
     );
