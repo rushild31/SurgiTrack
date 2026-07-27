@@ -1,7 +1,9 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:surgitrack/features/settings/data/app_settings_repository.dart';
-
 import 'package:surgitrack/features/settings/domain/app_settings.dart';
 
 // =====================================================
@@ -24,6 +26,17 @@ final appSettingsProvider =
     });
 
 // =====================================================
+// Application Lock State
+// =====================================================
+
+/// Tracks whether the current app session has been unlocked.
+///
+/// This resets to false whenever the application process starts again.
+final appUnlockedProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
+// =====================================================
 // Settings Controller
 // =====================================================
 
@@ -34,9 +47,9 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
     loadSettings();
   }
 
-  // ===============================
+  // =====================================================
   // Load Settings
-  // ===============================
+  // =====================================================
 
   Future<void> loadSettings() async {
     try {
@@ -48,9 +61,9 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
     }
   }
 
-  // ===============================
+  // =====================================================
   // Update Settings
-  // ===============================
+  // =====================================================
 
   Future<void> updateSettings(AppSettings settings) async {
     await repository.saveSettings(settings);
@@ -58,18 +71,47 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
     state = AsyncValue.data(settings);
   }
 
-  // ===============================
-  // Security
-  // ===============================
+  // =====================================================
+  // PIN SECURITY
+  // =====================================================
 
-  Future<void> enablePinLock(String pinHash) async {
+  /// Converts a PIN into a SHA-256 hash.
+  ///
+  /// The raw PIN is never stored permanently.
+  String _hashPin(String pin) {
+    return sha256.convert(utf8.encode(pin)).toString();
+  }
+
+  /// Enables PIN lock after hashing the PIN.
+  ///
+  /// The raw PIN should be passed only temporarily from the
+  /// PIN creation screen.
+  Future<void> enablePinLock(String pin) async {
     final current = state.value ?? const AppSettings();
 
-    final updated = current.copyWith(pinLockEnabled: true, pinHash: pinHash);
+    final hashedPin = _hashPin(pin);
+
+    final updated = current.copyWith(pinLockEnabled: true, pinHash: hashedPin);
 
     await updateSettings(updated);
   }
 
+  /// Verifies a user-entered PIN against the stored hash.
+  bool verifyPin(String pin) {
+    final settings = state.value;
+
+    if (settings == null ||
+        !settings.pinLockEnabled ||
+        settings.pinHash == null) {
+      return false;
+    }
+
+    final enteredHash = _hashPin(pin);
+
+    return enteredHash == settings.pinHash;
+  }
+
+  /// Disables PIN lock and removes the stored PIN hash.
   Future<void> disablePinLock() async {
     final current = state.value ?? const AppSettings();
 
@@ -78,11 +120,12 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
     await updateSettings(updated);
   }
 
-  // ===============================
-  // Cloud Sync
-  // Future Supabase hooks
-  // ===============================
+  // =====================================================
+  // CLOUD SYNC
+  // Future Supabase Hooks
+  // =====================================================
 
+  /// Stores cloud account details after successful authentication.
   Future<void> updateCloudAccount({
     required String userId,
     required String email,
@@ -98,6 +141,7 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
     await updateSettings(updated);
   }
 
+  /// Updates the last successful synchronization timestamp.
   Future<void> updateLastSync(DateTime timestamp) async {
     final current = state.value ?? const AppSettings();
 
@@ -106,6 +150,7 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
     await updateSettings(updated);
   }
 
+  /// Disconnects the cloud account and clears cloud metadata.
   Future<void> disconnectCloudAccount() async {
     final current = state.value ?? const AppSettings();
 
